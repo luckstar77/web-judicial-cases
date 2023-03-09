@@ -1,0 +1,25 @@
+{
+  "short_name": "權息通",
+  "name": "權息通 - 輕鬆查詢各股票歷年除權息資料",
+  "icons": [
+    {
+      "src": "stock_icon.png",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "stock_icon.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "stock_icon.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
