@@ -47,6 +47,20 @@
 
 ```
 
+## 安裝 Mysql
+
+-   安裝指令
+
+```
+https://dev.mysql.com/get/mysql-apt-config_0.8.22-1_all.deb
+sudo dpkg -i mysql-apt-config_0.8.22-1_all.deb
+sudo apt update
+sudo apt-cache policy mysql-server
+sudo apt install mysql-client mysql-server
+```
+
+-   設定密碼
+
 ## 參考技術文章
 
 -   [在 s3 上架設網站](https://blog.cloudthat.com/step-by-step-guide-to-deploy-reactjs-app-on-aws-s3/)
