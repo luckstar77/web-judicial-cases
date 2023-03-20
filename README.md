@@ -10,20 +10,6 @@
         -   案件 ID
         -   年份
 
-## 資料庫
-
--   mysql
-    -   rental
-        -   judicialFileset
-            -   id `string`
-            -   plaintiff `string`
-            -   defendant `string`
-            -   city `string`
-            -   win `enum`
-                -   plaintiff
-                -   defendant
-            -   rent `int`
-
 ## 後台 API
 
 -   取得預警資訊 <http://localhost:3010/cases?search=張淑晶>
@@ -46,20 +32,6 @@
 
 
 ```
-
-## 安裝 Mysql
-
--   安裝指令
-
-```
-https://dev.mysql.com/get/mysql-apt-config_0.8.22-1_all.deb
-sudo dpkg -i mysql-apt-config_0.8.22-1_all.deb
-sudo apt update
-sudo apt-cache policy mysql-server
-sudo apt install mysql-client mysql-server
-```
-
--   設定密碼
 
 ## 參考技術文章
 
