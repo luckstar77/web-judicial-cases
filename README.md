@@ -33,6 +33,57 @@
 
 ```
 
+## 網站環境架設
+
+-   在 AWS S3 建立公開儲存桶
+
+    -   名稱為 rental.imallenlai.com
+    -   關閉「封鎖所有公有存取權」
+
+-   選擇已建立的儲存桶，選擇許可，編輯儲存桶政策
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicRead",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": [
+                "s3:GetObject",
+                "s3:GetObjectVersion"
+            ],
+            "Resource": "arn:aws:s3:::rental.imallenlai.com/*"
+        }
+    ]
+}
+```
+
+-   選擇屬性，編輯靜態網站託管
+    -   啟用託管靜態網站
+    -   索引文件 `index.html`
+    -   錯誤文件 `index.html`
+-   專案設定 homepage `https://rental.imallenlai.com/`
+-   編譯專案產出 build 資料夾
+-   上傳 build 資料夾內所有檔案到 S3 儲存桶
+-   建立 cloudfront
+    -   在 route 53 建立紀錄驗證 ACM SSL 憑證
+    -   來源網域選 S3 的儲存桶 rental.imallenlai.com
+    -   名稱輸入 rental.imallenlai.com
+    -   快取政策選 CachingOptimized
+    -   備用網域名稱設定 rental.imallenlai.com
+    -   自訂 ACM SSL 憑證 rental.imallenlai.com
+        -   DNS 驗證
+    -   建立錯誤回應
+        -   HTTP 錯誤碼 404
+        -   錯誤快取最短 TTL 300
+        -   自訂錯誤回應
+            -   回應頁面路徑 index.html
+            -   HTTP 回應碼 200
+-   建立 Route 53 A 紀錄
+    -   設定別名到 Cloundfront 的 rental.imallenlai.com
+
 ## 參考技術文章
 
 -   [在 s3 上架設網站](https://blog.cloudthat.com/step-by-step-guide-to-deploy-reactjs-app-on-aws-s3/)
