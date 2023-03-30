@@ -13,6 +13,7 @@ import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
 import StockLogo from './rental_icon.png';
+import CaseList from './component/CaseList';
 
 const API_URL = process.env.REACT_APP_API_URL;
 const CASES_API_URL = `${API_URL}/cases`;
@@ -36,7 +37,7 @@ function App() {
     const [jyear, setJyear] = React.useState('');
     const [win, setWin] = React.useState('');
     const [search, setSearch] = React.useState('');
-    const [stocks, setStocks] = React.useState([]);
+    const [cases, setCases] = React.useState([]);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(event.target.value);
@@ -130,26 +131,7 @@ function App() {
                                                         },
                                                     })
                                                     .then(({ data }) => {
-                                                        const {
-                                                            id,
-                                                            jyear,
-                                                            plaintiff,
-                                                            defendant,
-                                                            rent,
-                                                            city,
-                                                            win,
-                                                        } = data[0];
-                                                        setId(id);
-                                                        setPlaintiff(plaintiff);
-                                                        setDefendant(defendant);
-                                                        setWin(
-                                                            win
-                                                                ? TABLE_WIN[win]
-                                                                : undefined
-                                                        );
-                                                        setRent(rent);
-                                                        setCity(city);
-                                                        setJyear(jyear);
+                                                        setCases(data);
                                                     })
                                                     .catch((error) => {
                                                         setOpen(true);
@@ -164,31 +146,13 @@ function App() {
                             }}
                         />
                     </Box>
-                    <Card>
-                        <CardContent>
-                            <Typography variant="subtitle1" gutterBottom>
-                                案件 ID: {id}
-                            </Typography>
-                            <Typography variant="subtitle1" gutterBottom>
-                                原告: {plaintiff}
-                            </Typography>
-                            <Typography variant="subtitle1" gutterBottom>
-                                被告: {defendant}
-                            </Typography>
-                            <Typography variant="subtitle1" gutterBottom>
-                                年份: {jyear}
-                            </Typography>
-                            <Typography variant="subtitle1" gutterBottom>
-                                勝訴方: {win}
-                            </Typography>
-                            <Typography variant="subtitle1" gutterBottom>
-                                租金: {rent}
-                            </Typography>
-                            <Typography variant="subtitle1" gutterBottom>
-                                地區: {city}
-                            </Typography>
-                        </CardContent>
-                    </Card>
+                    <Typography gutterBottom variant="h5" component="h2">
+                        預警等級: {cases.length}
+                    </Typography>
+                    <Typography gutterBottom variant="h5" component="h2">
+                        租賃案件
+                    </Typography>
+                    <CaseList items={cases}></CaseList>
                 </Box>
             </Grid>
         </div>
