@@ -14,6 +14,7 @@ import RentalCaseCard from './RentalCaseCard';
 
 type Props = {
     items: any[];
+    search: string;
 };
 
 type ListItemButtonProps = {
@@ -30,48 +31,43 @@ const ListItemButton = styled(ListItem)<ListItemButtonProps>(({ theme }) => ({
 }));
 
 function ExampleList(props: Props) {
-    const [selectedItem, setSelectedItem] = useState('');
+    const { items, search } = props;
+    const [selectedItem, setSelectedItem] = useState<any | null>(null);
 
-    const handleItemClick = (item: string) => {
+    const handleItemClick = (item: any) => {
         setSelectedItem(item);
     };
 
     const handleClose = () => {
-        setSelectedItem('');
+        setSelectedItem(null);
     };
 
     return (
         <>
             <List style={{ overflow: 'auto', height: '30vh' }}>
-                {props.items.map((item) => (
+                {items.map((item) => (
                     <ListItemButton
                         key={item}
                         onClick={() => handleItemClick(item)}
                     >
                         <ListItemText
                             primary={
-                                <Link
-                                    href={`https://judgment.judicial.gov.tw/FJUD/data.aspx?ty=JD&id=${item.id}`}
-                                    target="_blank"
-                                >
-                                    <RentalCaseCard {...item} />
-                                </Link>
+                                <RentalCaseCard {...item} search={search} />
                             }
                         />
                     </ListItemButton>
                 ))}
             </List>
-            {/* <Dialog open={!!selectedItem} onClose={handleClose}>
-                <DialogTitle>{selectedItem}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        This is some text about {selectedItem}.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>Close</Button>
-                </DialogActions>
-            </Dialog> */}
+            {selectedItem && (
+                <Dialog open={Boolean(selectedItem)} onClose={handleClose}>
+                    <DialogTitle>案由</DialogTitle>
+                    <DialogContent dividers>
+                        <div style={{ whiteSpace: 'pre-wrap' }}>
+                            {selectedItem.jfull}
+                        </div>
+                    </DialogContent>
+                </Dialog>
+            )}
         </>
     );
 }

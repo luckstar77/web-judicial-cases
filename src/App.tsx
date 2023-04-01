@@ -37,6 +37,7 @@ function App() {
     const [jyear, setJyear] = React.useState('');
     const [win, setWin] = React.useState('');
     const [search, setSearch] = React.useState('');
+    const [searchCompare, setSearchCompare] = React.useState('');
     const [cases, setCases] = React.useState([]);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -124,6 +125,7 @@ function App() {
                                             type="button"
                                             aria-label="search"
                                             onClick={() => {
+                                                setSearchCompare(search);
                                                 axios
                                                     .get(CASES_API_URL, {
                                                         params: {
@@ -149,10 +151,7 @@ function App() {
                     <Typography gutterBottom variant="h5" component="h2">
                         預警等級: {cases.length}
                     </Typography>
-                    <Typography gutterBottom variant="h5" component="h2">
-                        租賃案件
-                    </Typography>
-                    <CaseList items={cases}></CaseList>
+                    <CaseList items={cases} search={searchCompare}></CaseList>
                 </Box>
             </Grid>
         </div>
