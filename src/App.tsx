@@ -149,7 +149,7 @@ function App() {
                         />
                     </Box>
                     <Typography gutterBottom variant="h5" component="h2">
-                        預警等級: {cases.length}
+                        預警分數: {cases.length}
                     </Typography>
                     <CaseList items={cases} search={searchCompare}></CaseList>
                 </Box>
