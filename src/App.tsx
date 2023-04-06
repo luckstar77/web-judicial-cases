@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
@@ -14,6 +14,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
 import StockLogo from './rental_icon.png';
 import CaseList from './component/CaseList';
+import WarningNameList from './component/WarningNameList';
+import { Button, ButtonGroup } from '@mui/material';
 
 const API_URL = process.env.REACT_APP_API_URL;
 const CASES_API_URL = `${API_URL}/cases`;
@@ -39,6 +41,9 @@ function App() {
     const [search, setSearch] = React.useState('');
     const [searchCompare, setSearchCompare] = React.useState('');
     const [cases, setCases] = React.useState([]);
+    const [activeComponent, setActiveComponent] = useState<
+        'name' | 'condition'
+    >('name');
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(event.target.value);
@@ -112,46 +117,95 @@ function App() {
                     >
                         輕鬆查詢房東房客預警資訊
                     </Typography>
-                    <Box style={{ marginTop: '16px' }}>
-                        <TextField
-                            onChange={handleSearchChange}
-                            label="請輸入房東或房客姓名"
-                            variant="outlined"
-                            fullWidth
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            type="button"
-                                            aria-label="search"
-                                            onClick={() => {
-                                                setSearchCompare(search);
-                                                axios
-                                                    .get(CASES_API_URL, {
-                                                        params: {
-                                                            search,
-                                                        },
-                                                    })
-                                                    .then(({ data }) => {
-                                                        setCases(data);
-                                                    })
-                                                    .catch((error) => {
-                                                        setOpen(true);
-                                                        setErrorMessage(error);
-                                                    });
-                                            }}
-                                        >
-                                            <SearchIcon />
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                    </Box>
-                    <Typography gutterBottom variant="h5" component="h2">
-                        預警分數: {cases.length}
-                    </Typography>
-                    <CaseList items={cases} search={searchCompare}></CaseList>
+
+                    <ButtonGroup fullWidth>
+                        <Button
+                            onClick={() => setActiveComponent('name')}
+                            variant={
+                                activeComponent === 'name'
+                                    ? 'contained'
+                                    : 'outlined'
+                            }
+                            color="primary"
+                        >
+                            查姓名
+                        </Button>
+                        <Button
+                            onClick={() => setActiveComponent('condition')}
+                            variant={
+                                activeComponent === 'condition'
+                                    ? 'contained'
+                                    : 'outlined'
+                            }
+                            color="primary"
+                        >
+                            查條件
+                        </Button>
+                    </ButtonGroup>
+
+                    {activeComponent === 'name' && (
+                        <>
+                            <Box style={{ marginTop: '16px' }}>
+                                <TextField
+                                    onChange={handleSearchChange}
+                                    label="請輸入房東或房客姓名"
+                                    variant="outlined"
+                                    fullWidth
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    type="button"
+                                                    aria-label="search"
+                                                    onClick={() => {
+                                                        setSearchCompare(
+                                                            search
+                                                        );
+                                                        axios
+                                                            .get(
+                                                                CASES_API_URL,
+                                                                {
+                                                                    params: {
+                                                                        search,
+                                                                    },
+                                                                }
+                                                            )
+                                                            .then(
+                                                                ({ data }) => {
+                                                                    setCases(
+                                                                        data
+                                                                    );
+                                                                }
+                                                            )
+                                                            .catch((error) => {
+                                                                setOpen(true);
+                                                                setErrorMessage(
+                                                                    error
+                                                                );
+                                                            });
+                                                    }}
+                                                >
+                                                    <SearchIcon />
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                            </Box>
+                            <Typography
+                                gutterBottom
+                                variant="h5"
+                                component="h2"
+                            >
+                                預警分數: {cases.length}
+                            </Typography>
+                            <CaseList
+                                items={cases}
+                                search={searchCompare}
+                            ></CaseList>
+                        </>
+                    )}
+                    {activeComponent === 'condition' && <WarningNameList />}
                 </Box>
             </Grid>
         </div>
