@@ -40,7 +40,7 @@ function App() {
     const [win, setWin] = React.useState('');
     const [search, setSearch] = React.useState('');
     const [searchCompare, setSearchCompare] = React.useState('');
-    const [cases, setCases] = React.useState([]);
+    const [cases, setCases]: [any, any] = React.useState([]);
     const [activeComponent, setActiveComponent] = useState<
         'name' | 'condition'
     >('name');
@@ -197,7 +197,56 @@ function App() {
                                 variant="h5"
                                 component="h2"
                             >
-                                預警分數: {cases.length}
+                                預警風險:
+                                {cases.filter(
+                                    (caseItem: any) =>
+                                        (caseItem.plaintiff === searchCompare &&
+                                            caseItem.win === 'defendant') ||
+                                        (caseItem.defendant === searchCompare &&
+                                            caseItem.win === 'plaintiff')
+                                ).length === 0
+                                    ? '無'
+                                    : cases.filter(
+                                        (caseItem: any) =>
+                                            (caseItem.plaintiff ===
+                                                  searchCompare &&
+                                                  caseItem.win ===
+                                                      'defendant') ||
+                                              (caseItem.defendant ===
+                                                  searchCompare &&
+                                                  caseItem.win === 'plaintiff')
+                                    ).length === 1
+                                        ? '低'
+                                        : cases.filter(
+                                            (caseItem: any) =>
+                                                (caseItem.plaintiff ===
+                                                  searchCompare &&
+                                                  caseItem.win ===
+                                                      'defendant') ||
+                                              (caseItem.defendant ===
+                                                  searchCompare &&
+                                                  caseItem.win === 'plaintiff')
+                                        ).length === 2
+                                            ? '中'
+                                            : '高'}
+                            </Typography>
+                            <Typography
+                                gutterBottom
+                                variant="h5"
+                                component="h2"
+                            >
+                                預警案件數:
+                                {
+                                    cases.filter(
+                                        (caseItem: any) =>
+                                            (caseItem.plaintiff ===
+                                                searchCompare &&
+                                                caseItem.win === 'defendant') ||
+                                            (caseItem.defendant ===
+                                                searchCompare &&
+                                                caseItem.win === 'plaintiff')
+                                    ).length
+                                }
                             </Typography>
                             <CaseList
                                 items={cases}
