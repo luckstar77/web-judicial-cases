@@ -16,6 +16,7 @@ import StockLogo from './rental_icon.png';
 import CaseList from './component/CaseList';
 import WarningNameList from './component/WarningNameList';
 import { Button, ButtonGroup } from '@mui/material';
+import ButtonAppBar from './layout/ButtonAppBar';
 
 const API_URL = process.env.REACT_APP_API_URL;
 const CASES_API_URL = `${API_URL}/cases`;
@@ -64,6 +65,7 @@ function App() {
 
     return (
         <div>
+            <ButtonAppBar />
             <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
                 <Alert
                     onClose={handleClose}
@@ -78,7 +80,7 @@ function App() {
                 direction="row"
                 justifyContent="center"
                 alignItems="center"
-                style={{ minHeight: '100vh' }}
+                // style={{ minHeight: '100vh' }}
             >
                 <Box minWidth={275}>
                     <Grid
