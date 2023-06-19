@@ -13,6 +13,8 @@ import MailIcon from '@mui/icons-material/Mail';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import FacebookIcon from '@mui/icons-material/Facebook';
+import InfoIcon from '@mui/icons-material/Info';
+import QuizIcon from '@mui/icons-material/Quiz';
 import Link from '@mui/material/Link';
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -48,6 +50,22 @@ export default function TemporaryDrawer() {
             onKeyDown={toggleDrawer(anchor, false)}
         >
             <List>
+                <ListItem disablePadding>
+                    <ListItemButton>
+                        <ListItemIcon>
+                            <QuizIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={'FAQ'} />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                    <ListItemButton>
+                        <ListItemIcon>
+                            <InfoIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={'關於我們'} />
+                    </ListItemButton>
+                </ListItem>
                 <Link
                     href="https://www.facebook.com/profile.php?id=100093981245377"
                     target="_blank"
