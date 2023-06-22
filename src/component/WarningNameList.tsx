@@ -56,7 +56,10 @@ const App: React.FC = () => {
                 padding: '0px !important',
             }}
         >
-            <FormControl fullWidth>
+            <FormControl
+                fullWidth
+                sx={{ marginTop: '16px', backgroundColor: 'white' }}
+            >
                 <InputLabel htmlFor="city-select">城市</InputLabel>
                 <Select
                     value={city}
@@ -110,14 +113,20 @@ const App: React.FC = () => {
                     inputProps={{
                         min: 1,
                     }}
+                    sx={{ backgroundColor: 'white' }}
                 />
             </FormControl>
 
-            <Button onClick={handleSearch} variant="contained" color="primary">
+            <Button
+                onClick={handleSearch}
+                variant="contained"
+                color="primary"
+                sx={{ marginTop: '16px' }}
+            >
                 搜尋
             </Button>
 
-            <List style={{ overflow: 'auto', height: '30vh' }}>
+            <List style={{ overflow: 'auto' }}>
                 {results.map((result, index) => (
                     <ListItem key={index}>
                         <ListItemText

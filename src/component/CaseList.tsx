@@ -44,7 +44,7 @@ function ExampleList(props: Props) {
 
     return (
         <>
-            <List style={{ overflow: 'auto', height: '30vh' }}>
+            <List style={{ overflow: 'auto' }}>
                 {items.map((item) => (
                     <ListItemButton
                         key={item}

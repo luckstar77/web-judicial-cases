@@ -74,6 +74,7 @@ function App() {
             sx={{
                 position: 'relative',
                 backgroundColor: 'whiite',
+                height: '390px',
             }}
         >
             <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>

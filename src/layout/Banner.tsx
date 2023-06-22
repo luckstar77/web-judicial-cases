@@ -1,7 +1,7 @@
 import React from 'react';
-import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
 import SearchContent from '../component/SearchContent';
+import Grid from '@mui/material/Grid';
 
 const Banner = () => {
     return (
@@ -21,11 +21,21 @@ const Banner = () => {
                     width: '100%',
                     height: '100%',
                     objectFit: 'cover',
-                    opacity: 0.7,
+                    opacity: 0.5,
                     position: 'absolute',
                 }}
             />
-            <SearchContent />
+            <Box
+                component="div"
+                sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                }}
+            >
+                <SearchContent />
+            </Box>
         </Box>
     );
 };
