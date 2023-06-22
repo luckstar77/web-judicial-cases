@@ -50,7 +50,12 @@ const App: React.FC = () => {
     };
 
     return (
-        <Container maxWidth="sm">
+        <Container
+            maxWidth="sm"
+            sx={{
+                padding: '0px !important',
+            }}
+        >
             <FormControl fullWidth>
                 <InputLabel htmlFor="city-select">城市</InputLabel>
                 <Select
