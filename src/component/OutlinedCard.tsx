@@ -8,6 +8,7 @@ import {
     CardActions,
     IconButton,
     Typography,
+    useTheme,
 } from '@mui/material';
 import {
     Favorite as FavoriteIcon,
@@ -28,12 +29,17 @@ type Props = {
 };
 
 export default function OutlinedCard(props: Props) {
+    // 在元件內部
+    const theme = useTheme();
     const { plaintiff, defendant, rent, city, win, jyear, jtitle, search } =
         props;
     const isWinPlaintiff = win === 'plaintiff' && search === plaintiff;
     const isWinDefendant = win === 'defendant' && search === defendant;
     const cardStyle = {
-        backgroundColor: isWinPlaintiff || isWinDefendant ? '#00ff02' : 'red',
+        backgroundColor:
+            isWinPlaintiff || isWinDefendant
+                ? 'grey'
+                : theme.palette.primary.main,
         minWidth: 400,
         width: '50vw',
         transition: 'box-shadow 0.3s', // 添加過渡效果
