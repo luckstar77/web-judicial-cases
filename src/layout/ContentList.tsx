@@ -20,7 +20,7 @@ const YourComponent = () => {
     const searchCompare = useSelector((state: any) => state.data.searchCompare);
     return (
         <Box display="flex" flexDirection="column" alignItems="center">
-            <Typography gutterBottom variant="h5" component="h2">
+            {/* <Typography gutterBottom variant="h5" component="h2">
                 預警風險:
                 {cases.filter(
                     (caseItem: any) =>
@@ -47,19 +47,24 @@ const YourComponent = () => {
                         ).length === 2
                             ? '中'
                             : '高'}
-            </Typography>
-            <Typography gutterBottom variant="h5" component="h2">
-                預警案件數:
-                {
-                    cases.filter(
-                        (caseItem: any) =>
-                            (caseItem.plaintiff === searchCompare &&
-                                caseItem.win === 'defendant') ||
-                            (caseItem.defendant === searchCompare &&
-                                caseItem.win === 'plaintiff')
-                    ).length
-                }
-            </Typography>
+            </Typography> */}
+            {searchCompare !== '' ? (
+                <Typography gutterBottom variant="h5" component="h2">
+                    預警案件數:
+                    {
+                        cases.filter(
+                            (caseItem: any) =>
+                                (caseItem.plaintiff === searchCompare &&
+                                    caseItem.win === 'defendant') ||
+                                (caseItem.defendant === searchCompare &&
+                                    caseItem.win === 'plaintiff')
+                        ).length
+                    }
+                </Typography>
+            ) : (
+                <></>
+            )}
+
             <CaseList items={cases} search={searchCompare}></CaseList>
         </Box>
     );
