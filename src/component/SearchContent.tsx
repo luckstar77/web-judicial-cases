@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import axios from 'axios';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import Grid from '@mui/material/Grid';
@@ -12,12 +8,11 @@ import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
 import StockLogo from '../asset/rental_icon.png';
-import CaseList from './CaseList';
 import WarningNameList from './WarningNameList';
 import { Button, ButtonGroup } from '@mui/material';
 
-const API_URL = process.env.REACT_APP_API_URL;
-const CASES_API_URL = `${API_URL}/cases`;
+import { useDispatch } from 'react-redux';
+import { fetchData, updateSearchCompare } from '../redux/dataSlice';
 
 const selected = {
     backgroundColor: 'primary.main',
@@ -27,27 +22,13 @@ const unselected = {
     color: 'black',
 };
 
-const TABLE_WIN: Map = {
-    plaintiff: '原告',
-    defendant: '被告',
-};
-
 interface Map {
     [key: string]: any;
     [index: number]: any;
 }
 
 function App() {
-    const [id, setId] = React.useState();
-    const [plaintiff, setPlaintiff] = React.useState();
-    const [defendant, setDefendant] = React.useState();
-    const [rent, setRent] = React.useState();
-    const [city, setCity] = React.useState('');
-    const [jyear, setJyear] = React.useState('');
-    const [win, setWin] = React.useState('');
     const [search, setSearch] = React.useState('');
-    const [searchCompare, setSearchCompare] = React.useState('');
-    const [cases, setCases]: [any, any] = React.useState([]);
     const [activeComponent, setActiveComponent] = useState<
         'name' | 'condition'
     >('name');
@@ -68,6 +49,8 @@ function App() {
 
         setOpen(false);
     };
+
+    const dispatch = useDispatch();
 
     return (
         <Box
@@ -144,31 +127,16 @@ function App() {
                                                     type="button"
                                                     aria-label="search"
                                                     onClick={() => {
-                                                        setSearchCompare(
-                                                            search
+                                                        dispatch(
+                                                            updateSearchCompare(
+                                                                search
+                                                            )
                                                         );
-                                                        axios
-                                                            .get(
-                                                                CASES_API_URL,
-                                                                {
-                                                                    params: {
-                                                                        search,
-                                                                    },
-                                                                }
-                                                            )
-                                                            .then(
-                                                                ({ data }) => {
-                                                                    setCases(
-                                                                        data
-                                                                    );
-                                                                }
-                                                            )
-                                                            .catch((error) => {
-                                                                setOpen(true);
-                                                                setErrorMessage(
-                                                                    error
-                                                                );
-                                                            });
+                                                        dispatch(
+                                                            fetchData({
+                                                                search,
+                                                            })
+                                                        );
                                                     }}
                                                 >
                                                     <SearchIcon />
@@ -178,66 +146,6 @@ function App() {
                                     }}
                                 />
                             </Box>
-                            <Typography
-                                gutterBottom
-                                variant="h5"
-                                component="h2"
-                            >
-                                預警風險:
-                                {cases.filter(
-                                    (caseItem: any) =>
-                                        (caseItem.plaintiff === searchCompare &&
-                                            caseItem.win === 'defendant') ||
-                                        (caseItem.defendant === searchCompare &&
-                                            caseItem.win === 'plaintiff')
-                                ).length === 0
-                                    ? '無'
-                                    : cases.filter(
-                                        (caseItem: any) =>
-                                            (caseItem.plaintiff ===
-                                                  searchCompare &&
-                                                  caseItem.win ===
-                                                      'defendant') ||
-                                              (caseItem.defendant ===
-                                                  searchCompare &&
-                                                  caseItem.win === 'plaintiff')
-                                    ).length === 1
-                                        ? '低'
-                                        : cases.filter(
-                                            (caseItem: any) =>
-                                                (caseItem.plaintiff ===
-                                                  searchCompare &&
-                                                  caseItem.win ===
-                                                      'defendant') ||
-                                              (caseItem.defendant ===
-                                                  searchCompare &&
-                                                  caseItem.win === 'plaintiff')
-                                        ).length === 2
-                                            ? '中'
-                                            : '高'}
-                            </Typography>
-                            <Typography
-                                gutterBottom
-                                variant="h5"
-                                component="h2"
-                            >
-                                預警案件數:
-                                {
-                                    cases.filter(
-                                        (caseItem: any) =>
-                                            (caseItem.plaintiff ===
-                                                searchCompare &&
-                                                caseItem.win === 'defendant') ||
-                                            (caseItem.defendant ===
-                                                searchCompare &&
-                                                caseItem.win === 'plaintiff')
-                                    ).length
-                                }
-                            </Typography>
-                            <CaseList
-                                items={cases}
-                                search={searchCompare}
-                            ></CaseList>
                         </>
                     )}
                     {activeComponent === 'condition' && <WarningNameList />}

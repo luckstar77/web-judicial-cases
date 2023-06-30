@@ -10,7 +10,7 @@ import {
     Button,
 } from '@mui/material';
 import { Theme } from '@mui/material/styles';
-import RentalCaseCard from './RentalCaseCard';
+import OutlinedCard from './OutlinedCard';
 
 type Props = {
     items: any[];
@@ -24,10 +24,6 @@ type ListItemButtonProps = {
 
 const ListItemButton = styled(ListItem)<ListItemButtonProps>(({ theme }) => ({
     cursor: 'pointer',
-    '&:hover': {
-        backgroundColor: theme?.palette.primary.main,
-        color: theme?.palette.primary.contrastText,
-    },
 }));
 
 function ExampleList(props: Props) {
@@ -47,12 +43,13 @@ function ExampleList(props: Props) {
             <List style={{ overflow: 'auto' }}>
                 {items.map((item) => (
                     <ListItemButton
-                        key={item}
+                        key={item.id}
                         onClick={() => handleItemClick(item)}
                     >
                         <ListItemText
                             primary={
-                                <RentalCaseCard {...item} search={search} />
+                                // <RentalCaseCard {...item} search={search} />
+                                <OutlinedCard {...item} search={search} />
                             }
                         />
                     </ListItemButton>

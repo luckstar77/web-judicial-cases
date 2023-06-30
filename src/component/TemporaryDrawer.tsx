@@ -87,16 +87,15 @@ export default function TemporaryDrawer() {
         <div>
             {
                 <>
-                    <Button onClick={toggleDrawer('left', true)}>
-                        <IconButton
-                            size="large"
-                            edge="start"
-                            aria-label="menu"
-                            sx={{ mr: 2, color: 'white' }}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                    </Button>
+                    <IconButton
+                        size="large"
+                        edge="start"
+                        aria-label="menu"
+                        sx={{ mr: 2, color: 'white' }}
+                        onClick={toggleDrawer('left', true)}
+                    >
+                        <MenuIcon />
+                    </IconButton>
                     <Drawer
                         anchor={'left'}
                         open={state['left']}
