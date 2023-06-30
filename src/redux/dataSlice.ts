@@ -18,10 +18,19 @@ export const fetchData: any = createAsyncThunk(
 // 創建我們的 data slice
 export const dataSlice = createSlice({
     name: 'data',
-    initialState: { list: [], status: 'idle', error: null, searchCompare: '' },
+    initialState: {
+        list: [],
+        status: 'idle',
+        error: null,
+        searchCompare: '',
+        searchMode: 'name',
+    },
     reducers: {
         updateSearchCompare: (state, action) => {
             state.searchCompare = action.payload;
+        },
+        updateSearchMode: (state, action) => {
+            state.searchMode = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -40,6 +49,6 @@ export const dataSlice = createSlice({
     },
 });
 
-export const { updateSearchCompare } = dataSlice.actions;
+export const { updateSearchCompare, updateSearchMode } = dataSlice.actions;
 
 export default dataSlice.reducer;

@@ -9,25 +9,25 @@ import {
     Button,
     Typography,
     Slider,
-    List,
-    ListItem,
-    ListItemText,
 } from '@mui/material';
 import axios from 'axios';
+
+import { useSelector, useDispatch } from 'react-redux';
+import {
+    setCity,
+    setRentRange,
+    setScore,
+    setResults,
+} from '../redux/searchSlice';
 
 const API_URL = process.env.REACT_APP_API_URL;
 const NAME_API_URL = `${API_URL}/name`;
 
-type ApiResponse = {
-    name: string;
-    count: number;
-};
-
 const App: React.FC = () => {
-    const [city, setCity] = useState('');
-    const [rentRange, setRentRange] = useState<[number, number]>([0, 100000]);
-    const [score, setScore] = useState(1);
-    const [results, setResults] = useState<ApiResponse[]>([]);
+    const dispatch = useDispatch();
+    const city = useSelector((state: any) => state.search.city);
+    const rentRange = useSelector((state: any) => state.search.rentRange);
+    const score = useSelector((state: any) => state.search.score);
 
     const handleSearch = async () => {
         const query = new URLSearchParams({
@@ -42,7 +42,7 @@ const App: React.FC = () => {
                 params: query,
             })
             .then(({ data }) => {
-                setResults(data);
+                dispatch(setResults(data));
             })
             .catch((error: any) => {
                 console.error(error);
@@ -63,7 +63,9 @@ const App: React.FC = () => {
                 <InputLabel htmlFor="city-select">城市</InputLabel>
                 <Select
                     value={city}
-                    onChange={(e) => setCity(e.target.value as string)}
+                    onChange={(e) =>
+                        dispatch(setCity(e.target.value as string))
+                    }
                     label="城市"
                     inputProps={{
                         name: 'city',
@@ -97,7 +99,7 @@ const App: React.FC = () => {
             <Slider
                 value={rentRange}
                 onChange={(_, newValue) =>
-                    setRentRange(newValue as [number, number])
+                    dispatch(setRentRange(newValue as [number, number]))
                 }
                 valueLabelDisplay="auto"
                 min={1000}
@@ -109,7 +111,9 @@ const App: React.FC = () => {
                     label="預警案件數"
                     type="number"
                     value={score}
-                    onChange={(e) => setScore(parseInt(e.target.value))}
+                    onChange={(e) =>
+                        dispatch(setScore(parseInt(e.target.value)))
+                    }
                     inputProps={{
                         min: 1,
                     }}
@@ -125,17 +129,6 @@ const App: React.FC = () => {
             >
                 搜尋
             </Button>
-
-            <List style={{ overflow: 'auto' }}>
-                {results.map((result, index) => (
-                    <ListItem key={index}>
-                        <ListItemText
-                            primary={result.name}
-                            secondary={`預警案件數：${result.count}`}
-                        />
-                    </ListItem>
-                ))}
-            </List>
         </Container>
     );
 };

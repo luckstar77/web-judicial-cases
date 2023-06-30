@@ -11,8 +11,12 @@ import StockLogo from '../asset/rental_icon.png';
 import WarningNameList from './WarningNameList';
 import { Button, ButtonGroup } from '@mui/material';
 
-import { useDispatch } from 'react-redux';
-import { fetchData, updateSearchCompare } from '../redux/dataSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    fetchData,
+    updateSearchCompare,
+    updateSearchMode,
+} from '../redux/dataSlice';
 
 const selected = {
     backgroundColor: 'primary.main',
@@ -29,9 +33,6 @@ interface Map {
 
 function App() {
     const [search, setSearch] = React.useState('');
-    const [activeComponent, setActiveComponent] = useState<
-        'name' | 'condition'
-    >('name');
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(event.target.value);
@@ -51,6 +52,7 @@ function App() {
     };
 
     const dispatch = useDispatch();
+    const searchMode = useSelector((state: any) => state.data.searchMode);
 
     return (
         <Box
@@ -88,21 +90,19 @@ function App() {
 
                     <ButtonGroup fullWidth>
                         <Button
-                            onClick={() => setActiveComponent('name')}
+                            onClick={() => dispatch(updateSearchMode('name'))}
                             variant={'contained'}
-                            sx={
-                                activeComponent === 'name'
-                                    ? selected
-                                    : unselected
-                            }
+                            sx={searchMode === 'name' ? selected : unselected}
                         >
                             查姓名
                         </Button>
                         <Button
-                            onClick={() => setActiveComponent('condition')}
+                            onClick={() =>
+                                dispatch(updateSearchMode('condition'))
+                            }
                             variant={'contained'}
                             sx={
-                                activeComponent === 'condition'
+                                searchMode === 'condition'
                                     ? selected
                                     : unselected
                             }
@@ -111,7 +111,7 @@ function App() {
                         </Button>
                     </ButtonGroup>
 
-                    {activeComponent === 'name' && (
+                    {searchMode === 'name' && (
                         <>
                             <Box sx={{ marginTop: '16px' }}>
                                 <TextField
@@ -120,6 +120,15 @@ function App() {
                                     variant="outlined"
                                     sx={{ backgroundColor: 'white' }} // 白色背景
                                     fullWidth
+                                    onKeyUp={(event) => {
+                                        if (event.key === 'Enter') {
+                                            dispatch(
+                                                updateSearchCompare(search)
+                                            );
+                                            dispatch(fetchData({ search }));
+                                            event.preventDefault();
+                                        }
+                                    }}
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
@@ -148,7 +157,7 @@ function App() {
                             </Box>
                         </>
                     )}
-                    {activeComponent === 'condition' && <WarningNameList />}
+                    {searchMode === 'condition' && <WarningNameList />}
                 </Box>
             </Grid>
         </Box>
