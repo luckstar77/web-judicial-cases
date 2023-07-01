@@ -14,6 +14,7 @@ import { Button, ButtonGroup } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     fetchData,
+    setSearch,
     updateSearchCompare,
     updateSearchMode,
 } from '../redux/dataSlice';
@@ -32,12 +33,6 @@ interface Map {
 }
 
 function App() {
-    const [search, setSearch] = React.useState('');
-
-    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearch(event.target.value);
-    };
-
     const [open, setOpen] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState('');
     const handleClose = (
@@ -53,6 +48,7 @@ function App() {
 
     const dispatch = useDispatch();
     const searchMode = useSelector((state: any) => state.data.searchMode);
+    const search = useSelector((state: any) => state.data.search);
 
     return (
         <Box
@@ -115,7 +111,12 @@ function App() {
                         <>
                             <Box sx={{ marginTop: '16px' }}>
                                 <TextField
-                                    onChange={handleSearchChange}
+                                    onChange={(
+                                        event: React.ChangeEvent<HTMLInputElement>
+                                    ) =>
+                                        dispatch(setSearch(event.target.value))
+                                    }
+                                    value={search}
                                     label="請輸入房東或房客姓名"
                                     variant="outlined"
                                     sx={{ backgroundColor: 'white' }} // 白色背景

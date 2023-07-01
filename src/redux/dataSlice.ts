@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -24,8 +24,12 @@ export const dataSlice = createSlice({
         error: null,
         searchCompare: '',
         searchMode: 'name',
+        search: '',
     },
     reducers: {
+        setSearch: (state, action: PayloadAction<string>) => {
+            state.search = action.payload;
+        },
         updateSearchCompare: (state, action) => {
             state.searchCompare = action.payload;
         },
@@ -49,6 +53,7 @@ export const dataSlice = createSlice({
     },
 });
 
-export const { updateSearchCompare, updateSearchMode } = dataSlice.actions;
+export const { setSearch, updateSearchCompare, updateSearchMode } =
+    dataSlice.actions;
 
 export default dataSlice.reducer;
