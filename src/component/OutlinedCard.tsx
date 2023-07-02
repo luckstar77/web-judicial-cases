@@ -71,15 +71,15 @@ export default function OutlinedCard(props: Props) {
                     地區：{city} | 租金：{rent}
                 </Typography>
             </CardContent>
-            <CardActions disableSpacing>
+            {/* // TODO: implement like and comment */}
+            {/* <CardActions disableSpacing>
                 <IconButton>
                     <FavoriteIcon />5
                 </IconButton>
                 <IconButton>
                     <CommentIcon />0
                 </IconButton>
-                {/* 繼續放其他 IconButtons... */}
-            </CardActions>
+            </CardActions> */}
         </Card>
     );
 }
