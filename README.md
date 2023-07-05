@@ -84,6 +84,16 @@
 -   建立 Route 53 A 紀錄
     -   設定別名到 Cloundfront 的 rental.imallenlai.com
 
+## 建立.env.local
+
+REACT_APP_FIREBASE_API_KEY=
+REACT_APP_FIREBASE_AUTH_DOMAIN=
+REACT_APP_FIREBASE_PROJECT_ID=
+REACT_APP_FIREBASE_STORAGE_BUCKET=
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=
+REACT_APP_FIREBASE_APP_ID=
+REACT_APP_MEASUREMENT_ID=
+
 ## 參考技術文章
 
 -   [在 s3 上架設網站](https://blog.cloudthat.com/step-by-step-guide-to-deploy-reactjs-app-on-aws-s3/)
