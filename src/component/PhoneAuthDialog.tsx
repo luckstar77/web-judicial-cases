@@ -6,12 +6,16 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { verifyPhoneNumber } from '../redux/phoneSlice';
+
 import { auth } from '../lib/firebase';
 import {
     RecaptchaVerifier,
     signInWithPhoneNumber,
     ConfirmationResult,
 } from 'firebase/auth';
+import { AppDispatch } from '../redux/store';
 
 interface PhoneAuthDialogProps {
     open: boolean;
@@ -28,6 +32,8 @@ export function PhoneAuthDialog({ open, onClose }: PhoneAuthDialogProps) {
     const recaptchaVerifier = React.useRef<RecaptchaVerifier | undefined>(
         undefined
     );
+
+    const dispatch = useDispatch();
 
     const handleSendCode = async () => {
         // Create a new reCAPTCHA verifier if one does not exist
@@ -60,11 +66,16 @@ export function PhoneAuthDialog({ open, onClose }: PhoneAuthDialogProps) {
         if (confirmationResult !== null) {
             // Add null-check here
             try {
-                const result = await confirmationResult.confirm(code);
+                const result: any = await confirmationResult.confirm(code);
                 // Phone number has been verified successfully
                 // Here you can add the user to your user list or perform any kind of post-verification action
+                dispatch(
+                    verifyPhoneNumber({
+                        token: result.user.accessToken,
+                    })
+                );
                 setConfirmationResult(null);
-                onClose();
+                // onClose();
             } catch (error) {
                 console.error(error);
                 // Verification code was not valid, or something else went wrong

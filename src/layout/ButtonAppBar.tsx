@@ -9,9 +9,21 @@ import MenuIcon from '@mui/icons-material/Menu';
 import StockLogo from '../rental_icon.png';
 import TemporaryDrawer from '../component/TemporaryDrawer';
 import { PhoneAuthDialog } from '../component/PhoneAuthDialog';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserData } from '../redux/phoneSlice';
 
 export default function ButtonAppBar() {
     const [isAuthDialogOpen, setAuthDialogOpen] = useState(false);
+    const { phone, ip, uid, loading, error } = useSelector(
+        (state: any) => state.user
+    );
+
+    const dispatch = useDispatch();
+
+    // When the component mounts, fetch the user data
+    React.useEffect(() => {
+        dispatch(getUserData());
+    }, [dispatch]);
 
     const handleClickOpen = () => {
         setAuthDialogOpen(true);
@@ -34,7 +46,7 @@ export default function ButtonAppBar() {
                         {/* <img src={StockLogo} style={{ width: '50px' }} /> */}
                     </Typography>
                     <Button color="inherit" onClick={handleClickOpen}>
-                        登入
+                        {uid ? uid : '登入'}
                     </Button>
                     <PhoneAuthDialog
                         open={isAuthDialogOpen}
