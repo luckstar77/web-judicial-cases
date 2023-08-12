@@ -24,8 +24,17 @@ export const getUserData: any = createAsyncThunk(
     'user/getData',
     async (_, thunkAPI) => {
         try {
-            const response = await axios.get(USER_API_URL);
-            return response.data;
+            const token = localStorage.getItem('token');
+            if (token) {
+                // Set the Authorization header with the token
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                };
+                const response = await axios.get(USER_API_URL, config);
+                return response.data;
+            }
         } catch (error) {
             const axiosError = error as AxiosError;
             return thunkAPI.rejectWithValue(axiosError.response?.data);
@@ -40,10 +49,16 @@ const phoneSlice = createSlice({
         phone: '',
         ip: '',
         uid: '',
+        token: '',
         loading: false,
         error: null,
     },
-    reducers: {},
+    reducers: {
+        setTokenFromLocalStorage: (state, action: PayloadAction<string>) => {
+            state.token = action.payload;
+        },
+        // ... other reducers ...
+    },
     extraReducers: (builder) => {
         builder
             .addCase(verifyPhoneNumber.pending, (state) => {
@@ -52,11 +67,15 @@ const phoneSlice = createSlice({
             .addCase(
                 verifyPhoneNumber.fulfilled,
                 (state, action: PayloadAction<any>) => {
-                    const { phone, ip, uid } = action.payload;
+                    const { phone, ip, uid, token } = action.payload;
                     state.loading = false;
                     state.phone = phone;
                     state.ip = ip;
                     state.uid = uid;
+                    state.token = token;
+
+                    // Store the token in localStorage
+                    localStorage.setItem('token', token);
                 }
             )
             .addCase(
@@ -89,6 +108,7 @@ const phoneSlice = createSlice({
             );
     },
 });
+export const { setTokenFromLocalStorage } = phoneSlice.actions;
 
 // Export the actions and reducer
 export default phoneSlice.reducer;
