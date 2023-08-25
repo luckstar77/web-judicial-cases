@@ -75,7 +75,7 @@ export function PhoneAuthDialog({ open, onClose }: PhoneAuthDialogProps) {
                     })
                 );
                 setConfirmationResult(null);
-                // onClose();
+                onClose();
             } catch (error) {
                 console.error(error);
                 // Verification code was not valid, or something else went wrong
