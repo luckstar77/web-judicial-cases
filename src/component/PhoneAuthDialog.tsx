@@ -5,6 +5,12 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+import InputBase from '@mui/material/InputBase';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import SendIcon from '@mui/icons-material/Send';
+import TextField from '@mui/material/TextField';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { verifyPhoneNumber } from '../redux/phoneSlice';
@@ -86,30 +92,55 @@ export function PhoneAuthDialog({ open, onClose }: PhoneAuthDialogProps) {
     return (
         <div>
             <Dialog open={open} onClose={onClose}>
-                <DialogTitle>Phone Verification</DialogTitle>
+                <DialogTitle>電話登入</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
-                        Please enter your phone number.
-                    </DialogContentText>
-                    <input
-                        type="text"
-                        placeholder="Enter phone number"
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                    />
-                    <Button onClick={handleSendCode}>Send Code</Button>
-                    <DialogContentText>
-                        Please enter the verification code that was sent to your
-                        mobile device.
-                    </DialogContentText>
-                    <input
-                        type="text"
-                        placeholder="Enter verification code"
+                    <Paper
+                        component="form"
+                        sx={{
+                            p: '2px 4px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            width: 400,
+                        }}
+                    >
+                        <InputBase
+                            sx={{ ml: 1, flex: 1 }}
+                            placeholder="請輸入你的電話號碼"
+                            inputProps={{ 'aria-label': '請輸入你的電話號碼' }}
+                            onChange={(e) => setPhoneNumber(e.target.value)}
+                        />
+                        <Divider
+                            sx={{ height: 28, m: 0.5 }}
+                            orientation="vertical"
+                        />
+                        <IconButton
+                            color="primary"
+                            sx={{ p: '10px' }}
+                            aria-label="send"
+                            onClick={handleSendCode}
+                        >
+                            <SendIcon />
+                        </IconButton>
+                        <div
+                            id="recaptcha-container"
+                            ref={recaptchaContainer}
+                        ></div>
+                    </Paper>
+                    <TextField
+                        sx={{
+                            margin: '10px 0px',
+                            color: 'gray',
+                        }}
+                        fullWidth
+                        id="standard-basic"
+                        placeholder="請接收簡訊並輸入簡訊驗證碼"
+                        variant="standard"
                         onChange={(e) => setVerificationCode(e.target.value)}
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={onClose}>Cancel</Button>
-                    <Button onClick={handleConfirmCode}>Confirm</Button>
+                    <Button onClick={onClose}>取消</Button>
+                    <Button onClick={handleConfirmCode}>登入</Button>
                 </DialogActions>
             </Dialog>
             <div id="recaptcha-container" ref={recaptchaContainer}></div>
