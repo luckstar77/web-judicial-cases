@@ -61,7 +61,8 @@ const YourComponent = () => {
             </Typography> */}
             {searchMode === 'name' && searchCompare !== '' && (
                 <>
-                    <Typography gutterBottom variant="h5" component="h2">
+                    {/* TODO: 暫時移除預警案件數資訊 */}
+                    {/* <Typography gutterBottom variant="h5" component="h2">
                         預警案件數:
                         {
                             cases.filter(
@@ -72,7 +73,7 @@ const YourComponent = () => {
                                         caseItem.win === 'plaintiff')
                             ).length
                         }
-                    </Typography>
+                    </Typography> */}
                     <CaseList items={cases} search={searchCompare}></CaseList>
                 </>
             )}

@@ -72,7 +72,7 @@ function App() {
                 direction="row"
                 justifyContent="center"
                 alignItems="center"
-                // sx={{ minHeight: '100vh' }}
+                sx={{ height: '100%' }}
             >
                 <Box minWidth={275}>
                     <Grid
@@ -84,7 +84,8 @@ function App() {
                         <img src={StockLogo} style={{ width: '100px' }} />
                     </Grid>
 
-                    <ButtonGroup fullWidth>
+                    {/* TODO: 暫時關掉選擇查姓名和查條件功能 */}
+                    {/* <ButtonGroup fullWidth>
                         <Button
                             onClick={() => dispatch(updateSearchMode('name'))}
                             variant={'contained'}
@@ -105,7 +106,7 @@ function App() {
                         >
                             查條件
                         </Button>
-                    </ButtonGroup>
+                    </ButtonGroup> */}
 
                     {searchMode === 'name' && (
                         <>

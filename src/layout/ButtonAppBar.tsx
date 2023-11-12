@@ -51,13 +51,14 @@ export default function ButtonAppBar() {
                     >
                         {/* <img src={StockLogo} style={{ width: '50px' }} /> */}
                     </Typography>
-                    <Button color="inherit" onClick={handleClickOpen}>
+                    {/* TODO: 暫時關掉登入功能 */}
+                    {/* <Button color="inherit" onClick={handleClickOpen}>
                         {phone ? phone : '登入'}
                     </Button>
                     <PhoneAuthDialog
                         open={isAuthDialogOpen}
                         onClose={handleClose}
-                    />
+                    /> */}
                 </Toolbar>
             </AppBar>
         </Box>

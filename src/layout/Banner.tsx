@@ -9,7 +9,7 @@ const Banner = () => {
             component="div"
             sx={{
                 width: '100%',
-                height: 590,
+                height: '70vh',
                 marginBottom: 2,
                 position: 'relative',
             }}

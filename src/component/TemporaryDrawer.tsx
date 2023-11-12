@@ -50,7 +50,8 @@ export default function TemporaryDrawer() {
             onKeyDown={toggleDrawer(anchor, false)}
         >
             <List>
-                <ListItem disablePadding>
+                {/* TODO: 加入FAQ和關於我們頁面 */}
+                {/* <ListItem disablePadding>
                     <ListItemButton>
                         <ListItemIcon>
                             <QuizIcon />
@@ -65,7 +66,7 @@ export default function TemporaryDrawer() {
                         </ListItemIcon>
                         <ListItemText primary={'關於我們'} />
                     </ListItemButton>
-                </ListItem>
+                </ListItem> */}
                 <Link
                     href="https://www.facebook.com/profile.php?id=100093981245377"
                     target="_blank"
