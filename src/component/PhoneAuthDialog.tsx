@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -38,6 +38,26 @@ export function PhoneAuthDialog({ open, onClose }: PhoneAuthDialogProps) {
     const recaptchaVerifier = React.useRef<RecaptchaVerifier | undefined>(
         undefined
     );
+
+    useEffect(() => {
+        // Initialize reCAPTCHA once when the component mounts
+        if (recaptchaContainer.current) {
+            recaptchaVerifier.current = new RecaptchaVerifier(
+                recaptchaContainer.current,
+                {
+                    size: 'invisible',
+                },
+                auth
+            );
+        }
+
+        // Clean up reCAPTCHA when the component unmounts
+        return () => {
+            if (recaptchaVerifier.current) {
+                recaptchaVerifier.current.clear();
+            }
+        };
+    }, []);
 
     const dispatch = useDispatch();
 
