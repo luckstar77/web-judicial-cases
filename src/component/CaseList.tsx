@@ -37,6 +37,12 @@ function ExampleList(props: Props) {
     const handleClose = () => {
         setSelectedItem(null);
     };
+    if (items.length === 0)
+        return (
+            <Typography gutterBottom variant="h5" component="h2">
+                查無資料
+            </Typography>
+        );
 
     return (
         <>
