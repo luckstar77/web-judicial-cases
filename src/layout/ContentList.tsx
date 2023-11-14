@@ -59,10 +59,12 @@ const YourComponent = () => {
                             ? '中'
                             : '高'}
             </Typography> */}
-            {searchMode === 'name' && searchCompare !== '' && (
-                <>
-                    {/* TODO: 暫時移除預警案件數資訊 */}
-                    {/* <Typography gutterBottom variant="h5" component="h2">
+            {searchMode === 'name' &&
+            searchCompare !== '' &&
+            cases.length > 0 ? (
+                    <>
+                        {/* TODO: 暫時移除預警案件數資訊 */}
+                        {/* <Typography gutterBottom variant="h5" component="h2">
                         預警案件數:
                         {
                             cases.filter(
@@ -74,9 +76,15 @@ const YourComponent = () => {
                             ).length
                         }
                     </Typography> */}
-                    <CaseList items={cases} search={searchCompare}></CaseList>
-                </>
-            )}
+                        <CaseList items={cases} search={searchCompare}></CaseList>
+                    </>
+                ) : (
+                    <>
+                        <Typography gutterBottom variant="h5" component="h2">
+                        查無資料
+                        </Typography>
+                    </>
+                )}
             {searchMode === 'condition' && (
                 <>
                     <List style={{ overflow: 'auto' }}>
