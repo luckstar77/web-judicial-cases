@@ -31,7 +31,7 @@ const YourComponent = () => {
     );
     return (
         <Box display="flex" flexDirection="column" alignItems="center">
-            {/* <Typography gutterBottom variant="h5" component="h2">
+            <Typography gutterBottom variant="h5" component="h2">
                 預警風險:
                 {cases.filter(
                     (caseItem: any) =>
@@ -58,11 +58,10 @@ const YourComponent = () => {
                         ).length === 2
                             ? '中'
                             : '高'}
-            </Typography> */}
+            </Typography>
             {searchMode === 'name' && searchCompare !== '' && (
                 <>
-                    {/* TODO: 暫時移除預警案件數資訊 */}
-                    {/* <Typography gutterBottom variant="h5" component="h2">
+                    <Typography gutterBottom variant="h5" component="h2">
                         預警案件數:
                         {
                             cases.filter(
@@ -73,7 +72,7 @@ const YourComponent = () => {
                                         caseItem.win === 'plaintiff')
                             ).length
                         }
-                    </Typography> */}
+                    </Typography>
                     <CaseList items={cases} search={searchCompare}></CaseList>
                 </>
             )}

@@ -84,8 +84,7 @@ function App() {
                         <img src={StockLogo} style={{ width: '100px' }} />
                     </Grid>
 
-                    {/* TODO: 暫時關掉選擇查姓名和查條件功能 */}
-                    {/* <ButtonGroup fullWidth>
+                    <ButtonGroup fullWidth>
                         <Button
                             onClick={() => dispatch(updateSearchMode('name'))}
                             variant={'contained'}
@@ -106,7 +105,7 @@ function App() {
                         >
                             查條件
                         </Button>
-                    </ButtonGroup> */}
+                    </ButtonGroup>
 
                     {searchMode === 'name' && (
                         <>

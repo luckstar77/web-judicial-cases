@@ -104,7 +104,7 @@ export default function MapChart() {
                         {hoveredCity}
                     </text>
                 )}
-                {/* <div>
+                <div>
                     {cityData.map((city) => (
                         <Annotation
                             key={city.name}
@@ -119,7 +119,7 @@ export default function MapChart() {
                             <div>2020 年租金十分位數：{city.rent['2020']}</div>
                         </Annotation>
                     ))}
-                </div> */}
+                </div>
             </ZoomableGroup>
         </ComposableMap>
     );

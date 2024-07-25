@@ -72,14 +72,14 @@ export default function OutlinedCard(props: Props) {
                 </Typography>
             </CardContent>
             {/* // TODO: implement like and comment */}
-            {/* <CardActions disableSpacing>
+            <CardActions disableSpacing>
                 <IconButton>
                     <FavoriteIcon />5
                 </IconButton>
                 <IconButton>
                     <CommentIcon />0
                 </IconButton>
-            </CardActions> */}
+            </CardActions>
         </Card>
     );
 }
