@@ -23,6 +23,8 @@ import {
 } from 'firebase/auth';
 import { AppDispatch } from '../redux/store';
 
+const COUNTRY_CODE = '+886';
+
 interface PhoneAuthDialogProps {
     open: boolean;
     onClose: () => void;
@@ -79,7 +81,7 @@ export function PhoneAuthDialog({ open, onClose }: PhoneAuthDialogProps) {
 
         const result = await signInWithPhoneNumber(
             auth,
-            phoneNumber,
+            COUNTRY_CODE + phoneNumber,
             recaptchaVerifier.current
         );
         setConfirmationResult(result);

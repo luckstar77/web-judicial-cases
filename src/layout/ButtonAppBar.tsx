@@ -51,7 +51,7 @@ export default function ButtonAppBar() {
                     >
                         {/* <img src={StockLogo} style={{ width: '50px' }} /> */}
                     </Typography>
-                    <Button color="inherit" onClick={handleClickOpen}>
+                    <Button color="inherit" style={{fontSize:18}} onClick={handleClickOpen}>
                         {phone ? phone : '登入'}
                     </Button>
                     <PhoneAuthDialog
