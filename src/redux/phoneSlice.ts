@@ -52,10 +52,15 @@ const phoneSlice = createSlice({
         token: '',
         loading: false,
         error: null,
+        showLogin: false,
+        showData: false,
     },
     reducers: {
         setTokenFromLocalStorage: (state, action: PayloadAction<string>) => {
             state.token = action.payload;
+        },
+        setShowLogin: (state, action: PayloadAction<boolean>) => {
+            state.showLogin = action.payload;
         },
         // ... other reducers ...
     },
@@ -73,6 +78,7 @@ const phoneSlice = createSlice({
                     state.ip = ip;
                     state.uid = uid;
                     state.token = token;
+                    state.showLogin = false;
 
                     // Store the token in localStorage
                     localStorage.setItem('token', token);
@@ -108,7 +114,7 @@ const phoneSlice = createSlice({
             );
     },
 });
-export const { setTokenFromLocalStorage } = phoneSlice.actions;
+export const { setTokenFromLocalStorage, setShowLogin } = phoneSlice.actions;
 
 // Export the actions and reducer
 export default phoneSlice.reducer;

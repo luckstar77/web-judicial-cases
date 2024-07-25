@@ -8,7 +8,7 @@ import TemporaryDrawer from '../component/TemporaryDrawer';
 import { PhoneAuthDialog } from '../component/PhoneAuthDialog';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserData } from '../redux/phoneSlice';
-import { setTokenFromLocalStorage } from '../redux/phoneSlice';
+import { setTokenFromLocalStorage, setShowLogin } from '../redux/phoneSlice';
 
 export default function ButtonAppBar() {
     const dispatch = useDispatch(); // Hook to get the dispatch function
@@ -22,7 +22,7 @@ export default function ButtonAppBar() {
     }, [dispatch]);
 
     const [isAuthDialogOpen, setAuthDialogOpen] = useState(false);
-    const { phone, ip, uid, token, loading, error } = useSelector(
+    const { phone, ip, uid, token, loading, erro, showLogin } = useSelector(
         (state: any) => state.user
     );
 
@@ -31,12 +31,16 @@ export default function ButtonAppBar() {
         dispatch(getUserData());
     }, [dispatch]);
 
+    React.useEffect(() => {
+        setAuthDialogOpen(showLogin);
+    }, [showLogin]);
+
     const handleClickOpen = () => {
-        setAuthDialogOpen(true);
+        dispatch(setShowLogin(true));
     };
 
     const handleClose = () => {
-        setAuthDialogOpen(false);
+        dispatch(setShowLogin(false));
     };
 
     return (
@@ -55,8 +59,6 @@ export default function ButtonAppBar() {
                         {phone ? phone : '登入'}
                     </Button>
                     <PhoneAuthDialog
-                        open={isAuthDialogOpen}
-                        onClose={handleClose}
                     />
                 </Toolbar>
             </AppBar>

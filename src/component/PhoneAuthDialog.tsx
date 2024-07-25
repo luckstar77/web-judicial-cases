@@ -13,7 +13,7 @@ import SendIcon from '@mui/icons-material/Send';
 import TextField from '@mui/material/TextField';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { verifyPhoneNumber } from '../redux/phoneSlice';
+import { verifyPhoneNumber, setShowLogin } from '../redux/phoneSlice';
 
 import { auth } from '../lib/firebase';
 import {
@@ -25,12 +25,7 @@ import { AppDispatch } from '../redux/store';
 
 const COUNTRY_CODE = '+886';
 
-interface PhoneAuthDialogProps {
-    open: boolean;
-    onClose: () => void;
-}
-
-export function PhoneAuthDialog({ open, onClose }: PhoneAuthDialogProps) {
+export function PhoneAuthDialog() {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [verificationCode, setVerificationCode] = useState('');
     const [confirmationResult, setConfirmationResult] =
@@ -39,6 +34,10 @@ export function PhoneAuthDialog({ open, onClose }: PhoneAuthDialogProps) {
     const recaptchaContainer = useRef(null);
     const recaptchaVerifier = React.useRef<RecaptchaVerifier | undefined>(
         undefined
+    );
+
+    const { showLogin } = useSelector(
+        (state: any) => state.user
     );
 
     useEffect(() => {
@@ -86,6 +85,10 @@ export function PhoneAuthDialog({ open, onClose }: PhoneAuthDialogProps) {
         );
         setConfirmationResult(result);
     };
+    
+    const handleClose = async () => {
+        dispatch(setShowLogin(false));
+    };
 
     const handleConfirmCode = async () => {
         const code = verificationCode;
@@ -103,7 +106,7 @@ export function PhoneAuthDialog({ open, onClose }: PhoneAuthDialogProps) {
                     })
                 );
                 setConfirmationResult(null);
-                onClose();
+                handleClose();
             } catch (error) {
                 console.error(error);
                 // Verification code was not valid, or something else went wrong
@@ -113,7 +116,7 @@ export function PhoneAuthDialog({ open, onClose }: PhoneAuthDialogProps) {
 
     return (
         <div>
-            <Dialog open={open} onClose={onClose}>
+            <Dialog open={showLogin} onClose={handleClose}>
                 <DialogTitle>電話登入</DialogTitle>
                 <DialogContent>
                     <Paper
@@ -161,7 +164,7 @@ export function PhoneAuthDialog({ open, onClose }: PhoneAuthDialogProps) {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={onClose}>取消</Button>
+                    <Button onClick={handleClose}>取消</Button>
                     <Button onClick={handleConfirmCode}>登入</Button>
                 </DialogActions>
             </Dialog>
