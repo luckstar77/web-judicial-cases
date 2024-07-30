@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosError } from 'axios';
+import { USER_DIALOG_STATUS } from '../types/enums';
 
 const API_URL = process.env.REACT_APP_API_URL;
 const CASES_API_URL = `${API_URL}/verify`;
@@ -54,13 +55,16 @@ const phoneSlice = createSlice({
         error: null,
         showLogin: false,
         showData: false,
+        showDialog: USER_DIALOG_STATUS.NONE,
+        name: '',
+        email: ''
     },
     reducers: {
         setTokenFromLocalStorage: (state, action: PayloadAction<string>) => {
             state.token = action.payload;
         },
-        setShowLogin: (state, action: PayloadAction<boolean>) => {
-            state.showLogin = action.payload;
+        setShowDialog: (state, action: PayloadAction<USER_DIALOG_STATUS>) => {
+            state.showDialog = action.payload;
         },
         // ... other reducers ...
     },
@@ -114,7 +118,7 @@ const phoneSlice = createSlice({
             );
     },
 });
-export const { setTokenFromLocalStorage, setShowLogin } = phoneSlice.actions;
+export const { setTokenFromLocalStorage, setShowDialog } = phoneSlice.actions;
 
 // Export the actions and reducer
 export default phoneSlice.reducer;

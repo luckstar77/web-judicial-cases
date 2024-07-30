@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
@@ -13,7 +12,7 @@ import SendIcon from '@mui/icons-material/Send';
 import TextField from '@mui/material/TextField';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { verifyPhoneNumber, setShowLogin } from '../redux/phoneSlice';
+import { verifyPhoneNumber, setShowDialog } from '../redux/phoneSlice';
 
 import { auth } from '../lib/firebase';
 import {
@@ -21,7 +20,7 @@ import {
     signInWithPhoneNumber,
     ConfirmationResult,
 } from 'firebase/auth';
-import { AppDispatch } from '../redux/store';
+import { USER_DIALOG_STATUS } from '../types/enums';
 
 const COUNTRY_CODE = '+886';
 
@@ -36,7 +35,7 @@ export function PhoneAuthDialog() {
         undefined
     );
 
-    const { showLogin } = useSelector(
+    const { showDialog } = useSelector(
         (state: any) => state.user
     );
 
@@ -87,7 +86,7 @@ export function PhoneAuthDialog() {
     };
     
     const handleClose = async () => {
-        dispatch(setShowLogin(false));
+        dispatch(setShowDialog(USER_DIALOG_STATUS.NONE));
     };
 
     const handleConfirmCode = async () => {
@@ -116,7 +115,7 @@ export function PhoneAuthDialog() {
 
     return (
         <div>
-            <Dialog open={showLogin} onClose={handleClose}>
+            <Dialog open={showDialog === USER_DIALOG_STATUS.PHONE_AUTH} onClose={handleClose}>
                 <DialogTitle>電話登入</DialogTitle>
                 <DialogContent>
                     <Paper

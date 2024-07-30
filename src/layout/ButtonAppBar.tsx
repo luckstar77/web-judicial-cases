@@ -5,10 +5,11 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import TemporaryDrawer from '../component/TemporaryDrawer';
-import { PhoneAuthDialog } from '../component/PhoneAuthDialog';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserData } from '../redux/phoneSlice';
-import { setTokenFromLocalStorage, setShowLogin } from '../redux/phoneSlice';
+import { setTokenFromLocalStorage, setShowDialog } from '../redux/phoneSlice';
+import { UserDialog } from '../component/UserDialog';
+import { USER_DIALOG_STATUS } from '../types/enums';
 
 export default function ButtonAppBar() {
     const dispatch = useDispatch(); // Hook to get the dispatch function
@@ -21,8 +22,7 @@ export default function ButtonAppBar() {
         }
     }, [dispatch]);
 
-    const [isAuthDialogOpen, setAuthDialogOpen] = useState(false);
-    const { phone, ip, uid, token, loading, erro, showLogin } = useSelector(
+    const { phone } = useSelector(
         (state: any) => state.user
     );
 
@@ -31,16 +31,10 @@ export default function ButtonAppBar() {
         dispatch(getUserData());
     }, [dispatch]);
 
-    React.useEffect(() => {
-        setAuthDialogOpen(showLogin);
-    }, [showLogin]);
-
     const handleClickOpen = () => {
-        dispatch(setShowLogin(true));
-    };
-
-    const handleClose = () => {
-        dispatch(setShowLogin(false));
+        if(phone) dispatch(setShowDialog(USER_DIALOG_STATUS.USER_DATA));
+        else dispatch(setShowDialog(USER_DIALOG_STATUS.PHONE_AUTH));
+        
     };
 
     return (
@@ -58,8 +52,7 @@ export default function ButtonAppBar() {
                     <Button color="inherit" style={{fontSize:18}} onClick={handleClickOpen}>
                         {phone ? phone : '登入'}
                     </Button>
-                    <PhoneAuthDialog
-                    />
+                    <UserDialog/>
                 </Toolbar>
             </AppBar>
         </Box>
