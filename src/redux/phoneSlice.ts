@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosError } from 'axios';
-import { USER_DIALOG_STATUS } from '../types/enums';
+import { FETCH_STATUS, USER_DIALOG_STATUS } from '../types/enums';
 
 const API_URL = process.env.REACT_APP_API_URL;
 const CASES_API_URL = `${API_URL}/verify`;
@@ -74,7 +74,7 @@ const phoneSlice = createSlice({
         ip: '',
         uid: '',
         token: '',
-        loading: false,
+        fetchStatus: FETCH_STATUS.NONE,
         error: null,
         showLogin: false,
         showData: false,
@@ -89,18 +89,21 @@ const phoneSlice = createSlice({
         setShowDialog: (state, action: PayloadAction<USER_DIALOG_STATUS>) => {
             state.showDialog = action.payload;
         },
+        setFetchStatus: (state, action: PayloadAction<FETCH_STATUS>) => {
+            state.fetchStatus = action.payload;
+        },
         // ... other reducers ...
     },
     extraReducers: (builder) => {
         builder
             .addCase(verifyPhoneNumber.pending, (state) => {
-                state.loading = true;
+                state.fetchStatus = FETCH_STATUS.LOADING;
             })
             .addCase(
                 verifyPhoneNumber.fulfilled,
                 (state, action: PayloadAction<any>) => {
                     const { phone, ip, uid, token } = action.payload;
-                    state.loading = false;
+                    state.fetchStatus = FETCH_STATUS.SUCCESS;
                     state.phone = phone;
                     state.ip = ip;
                     state.uid = uid;
@@ -114,19 +117,19 @@ const phoneSlice = createSlice({
             .addCase(
                 verifyPhoneNumber.rejected,
                 (state, action: PayloadAction<any>) => {
-                    state.loading = false;
+                    state.fetchStatus = FETCH_STATUS.ERROR;
                     state.error = action.payload.message;
                 }
             )
             // Handling the getUserData async thunk
             .addCase(getUserData.pending, (state) => {
-                state.loading = true;
+                state.fetchStatus = FETCH_STATUS.LOADING;
             })
             .addCase(
                 getUserData.fulfilled,
                 (state, action: PayloadAction<any>) => {
                     const { phone, ip, uid, name, email } = action.payload;
-                    state.loading = false;
+                    state.fetchStatus = FETCH_STATUS.SUCCESS;
                     state.phone = phone;
                     state.name = name;
                     state.email = email;
@@ -137,19 +140,19 @@ const phoneSlice = createSlice({
             .addCase(
                 getUserData.rejected,
                 (state, action: PayloadAction<any>) => {
-                    state.loading = false;
+                    state.fetchStatus = FETCH_STATUS.ERROR;
                     state.error = action.payload.message;
                 }
             )
             // Handling the getUserData async thunk
             .addCase(updateUserData.pending, (state) => {
-                state.loading = true;
+                state.fetchStatus = FETCH_STATUS.LOADING;
             })
             .addCase(
                 updateUserData.fulfilled,
                 (state, action: PayloadAction<any>) => {
                     const { name, email, token } = action.payload;
-                    state.loading = false;
+                    state.fetchStatus = FETCH_STATUS.SUCCESS;
                     state.name = name;
                     state.email = email;
                     state.token = token;
@@ -161,13 +164,13 @@ const phoneSlice = createSlice({
             .addCase(
                 updateUserData.rejected,
                 (state, action: PayloadAction<any>) => {
-                    state.loading = false;
+                    state.fetchStatus = FETCH_STATUS.ERROR;
                     state.error = action.payload.message;
                 }
             );
     },
 });
-export const { setTokenFromLocalStorage, setShowDialog } = phoneSlice.actions;
+export const { setTokenFromLocalStorage, setShowDialog, setFetchStatus } = phoneSlice.actions;
 
 // Export the actions and reducer
 export default phoneSlice.reducer;

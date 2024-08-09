@@ -14,6 +14,7 @@ import {
     ConfirmationResult,
 } from 'firebase/auth';
 import { USER_DIALOG_STATUS } from '../types/enums';
+import SuccessAlert from './SuccessAlert';
 
 export function UserDataDialog() {
     const [nameInComponent, setNameInComponent] = useState('');
@@ -98,6 +99,7 @@ export function UserDataDialog() {
                     <Button onClick={handleConfirmData}>確定</Button>
                     {/* <Button onClick={handleConfirmCode}>登出</Button> */}
                 </DialogActions>
+                <SuccessAlert/>
             </Dialog>
         </div>
     );
