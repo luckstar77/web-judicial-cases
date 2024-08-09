@@ -20,6 +20,29 @@ export const verifyPhoneNumber: any = createAsyncThunk(
     }
 );
 
+// Create the async thunk for phone verification
+export const updateUserData: any = createAsyncThunk(
+    'user/udateData',
+    async (data, thunkAPI) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (token) {
+                // Set the Authorization header with the token
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                };
+                const response = await axios.post(USER_API_URL, data, config);
+                return response.data;
+            }
+        } catch (error) {
+            const axiosError = error as AxiosError;
+            return thunkAPI.rejectWithValue(axiosError.response?.data);
+        }
+    }
+);
+
 // Create the async thunk for getting user data
 export const getUserData: any = createAsyncThunk(
     'user/getData',
@@ -102,15 +125,41 @@ const phoneSlice = createSlice({
             .addCase(
                 getUserData.fulfilled,
                 (state, action: PayloadAction<any>) => {
-                    const { phone, ip, uid } = action.payload;
+                    const { phone, ip, uid, name, email } = action.payload;
                     state.loading = false;
                     state.phone = phone;
+                    state.name = name;
+                    state.email = email;
                     state.ip = ip;
                     state.uid = uid;
                 }
             )
             .addCase(
                 getUserData.rejected,
+                (state, action: PayloadAction<any>) => {
+                    state.loading = false;
+                    state.error = action.payload.message;
+                }
+            )
+            // Handling the getUserData async thunk
+            .addCase(updateUserData.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(
+                updateUserData.fulfilled,
+                (state, action: PayloadAction<any>) => {
+                    const { name, email, token } = action.payload;
+                    state.loading = false;
+                    state.name = name;
+                    state.email = email;
+                    state.token = token;
+
+                    // Store the token in localStorage
+                    localStorage.setItem('token', token);
+                }
+            )
+            .addCase(
+                updateUserData.rejected,
                 (state, action: PayloadAction<any>) => {
                     state.loading = false;
                     state.error = action.payload.message;

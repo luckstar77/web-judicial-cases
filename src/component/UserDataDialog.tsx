@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { setShowDialog } from '../redux/phoneSlice';
+import { setShowDialog, updateUserData } from '../redux/phoneSlice';
 
 import { auth } from '../lib/firebase';
 import {
@@ -37,15 +37,18 @@ export function UserDataDialog() {
     }, [email]);
 
     const dispatch = useDispatch();
-
-    const handleSendCode = async () => {
-    };
     
     const handleClose = async () => {
         dispatch(setShowDialog(USER_DIALOG_STATUS.NONE));
     };
 
-    const handleConfirmCode = async () => {
+    const handleConfirmData = async () => {
+        dispatch(
+            updateUserData({
+                name: nameInComponent,
+                email: emailInComponent
+            })
+        );
     };
 
     return (
@@ -73,7 +76,7 @@ export function UserDataDialog() {
                         required
                         id="outlined-required"
                         label="姓名"
-                        defaultValue={nameInComponent}
+                        defaultValue={name}
                         onChange={(e) => setNameInComponent(e.target.value)}
                     />
                     <TextField
@@ -85,15 +88,15 @@ export function UserDataDialog() {
                         required
                         id="outlined-required"
                         label="Email"
-                        defaultValue={emailInComponent}
+                        defaultValue={email}
                         onChange={(e) => setEmailInComponent(e.target.value)}
                     />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>取消</Button>
-                    {/* TODO: implement function */}
-                    {/* <Button onClick={handleConfirmCode}>確定</Button>
-                    <Button onClick={handleConfirmCode}>登出</Button> */}
+                    
+                    <Button onClick={handleConfirmData}>確定</Button>
+                    {/* <Button onClick={handleConfirmCode}>登出</Button> */}
                 </DialogActions>
             </Dialog>
         </div>
