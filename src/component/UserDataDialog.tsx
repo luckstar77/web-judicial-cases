@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { setShowDialog, updateUserData } from '../redux/phoneSlice';
+import { logout, setShowDialog, updateUserData } from '../redux/phoneSlice';
 
 import { auth } from '../lib/firebase';
 import {
@@ -49,6 +49,12 @@ export function UserDataDialog() {
                 name: nameInComponent,
                 email: emailInComponent
             })
+        );
+    };
+
+    const handleLogout = async () => {
+        dispatch(
+            logout()
         );
     };
 
@@ -97,7 +103,7 @@ export function UserDataDialog() {
                     <Button onClick={handleClose}>取消</Button>
                     
                     <Button onClick={handleConfirmData}>確定</Button>
-                    {/* <Button onClick={handleConfirmCode}>登出</Button> */}
+                    <Button onClick={handleLogout}>登出</Button>
                 </DialogActions>
                 <SuccessAlert/>
             </Dialog>

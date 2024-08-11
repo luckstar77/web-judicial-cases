@@ -76,7 +76,6 @@ const phoneSlice = createSlice({
         token: '',
         fetchStatus: FETCH_STATUS.NONE,
         error: null,
-        showLogin: false,
         showData: false,
         showDialog: USER_DIALOG_STATUS.NONE,
         name: '',
@@ -92,7 +91,11 @@ const phoneSlice = createSlice({
         setFetchStatus: (state, action: PayloadAction<FETCH_STATUS>) => {
             state.fetchStatus = action.payload;
         },
-        // ... other reducers ...
+        logout: (state) => {
+            state.phone = '';
+            state.showDialog = USER_DIALOG_STATUS.NONE;
+            localStorage.setItem('token', '');
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -102,13 +105,14 @@ const phoneSlice = createSlice({
             .addCase(
                 verifyPhoneNumber.fulfilled,
                 (state, action: PayloadAction<any>) => {
-                    const { phone, ip, uid, token } = action.payload;
+                    const { phone, ip, uid, token, name, email } = action.payload;
                     state.fetchStatus = FETCH_STATUS.SUCCESS;
                     state.phone = phone;
                     state.ip = ip;
                     state.uid = uid;
+                    state.name = name;
+                    state.email = email;
                     state.token = token;
-                    state.showLogin = false;
 
                     // Store the token in localStorage
                     localStorage.setItem('token', token);
@@ -170,7 +174,7 @@ const phoneSlice = createSlice({
             );
     },
 });
-export const { setTokenFromLocalStorage, setShowDialog, setFetchStatus } = phoneSlice.actions;
+export const { setTokenFromLocalStorage, setShowDialog, setFetchStatus, logout } = phoneSlice.actions;
 
 // Export the actions and reducer
 export default phoneSlice.reducer;
