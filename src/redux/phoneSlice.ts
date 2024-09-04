@@ -22,7 +22,7 @@ export const verifyPhoneNumber: any = createAsyncThunk(
 
 // Create the async thunk for phone verification
 export const updateUserData: any = createAsyncThunk(
-    'user/udateData',
+    'user/updateData',
     async (data, thunkAPI) => {
         try {
             const token = localStorage.getItem('token');
