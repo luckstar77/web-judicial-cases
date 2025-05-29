@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { Theme } from '@mui/material/styles';
 import OutlinedCard from './OutlinedCard';
+import JudicialFilesetComments from './JudicialFilesetComments';
 
 type Props = {
     items: any[];
@@ -29,13 +30,19 @@ const ListItemButton = styled(ListItem)<ListItemButtonProps>(({ theme }) => ({
 function ExampleList(props: Props) {
     const { items, search } = props;
     const [selectedItem, setSelectedItem] = useState<any | null>(null);
+    const [openCommentId, setOpenCommentId] = useState<number | null>(null);
 
     const handleItemClick = (item: any) => {
         setSelectedItem(item);
     };
 
+    const handleCommentClick = (id: number) => {
+        setOpenCommentId(id);
+    };
+
     const handleClose = () => {
         setSelectedItem(null);
+        setOpenCommentId(null);
     };
     if (items.length === 0)
         return (
@@ -55,7 +62,9 @@ function ExampleList(props: Props) {
                         <ListItemText
                             primary={
                                 // <RentalCaseCard {...item} search={search} />
-                                <OutlinedCard {...item} search={search} />
+                                <OutlinedCard {...item} search={search}
+                                    id={item.id}
+                                    onCommentClick={handleCommentClick} />
                             }
                         />
                     </ListItemButton>
@@ -68,6 +77,16 @@ function ExampleList(props: Props) {
                         <div style={{ whiteSpace: 'pre-wrap' }}>
                             {selectedItem.jfull}
                         </div>
+                    </DialogContent>
+                </Dialog>
+            )}
+
+            {/* 新增 Dialog：顯示留言訊息 */}
+            {openCommentId !== null && (
+                <Dialog open={true} onClose={handleClose} maxWidth="md" fullWidth>
+                    <DialogTitle>留言訊息</DialogTitle>
+                    <DialogContent dividers>
+                        <JudicialFilesetComments filesetId={openCommentId} />
                     </DialogContent>
                 </Dialog>
             )}

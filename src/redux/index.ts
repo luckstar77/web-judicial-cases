@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import dataReducer from './dataSlice';
 import searchReducer from './searchSlice';
 import phoneReducer from './phoneSlice';
+import commentsReducer from './commentSlice';
 
 export const store = configureStore({
     reducer: {
         data: dataReducer,
         search: searchReducer,
         user: phoneReducer,
+        comments: commentsReducer,
     },
 });
 

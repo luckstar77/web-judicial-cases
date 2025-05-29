@@ -26,12 +26,14 @@ type Props = {
     jyear: string;
     jtitle: string;
     search: string;
+    id: number; // 新增 filesetId (judicialFileset.id)
+    onCommentClick?: (id: number) => void; // 點擊事件
 };
 
 export default function OutlinedCard(props: Props) {
     // 在元件內部
     const theme = useTheme();
-    const { plaintiff, defendant, rent, city, win, jyear, jtitle, search } =
+    const { plaintiff, defendant, rent, city, win, jyear, jtitle, search, id, onCommentClick } =
         props;
     const isWinPlaintiff = win === 'plaintiff' && search === plaintiff;
     const isWinDefendant = win === 'defendant' && search === defendant;
@@ -76,7 +78,11 @@ export default function OutlinedCard(props: Props) {
                 <IconButton>
                     <FavoriteIcon />5
                 </IconButton>
-                <IconButton>
+                <IconButton 
+                    onClick={(e) => {
+                        e.stopPropagation();      // ← 阻止冒泡
+                        onCommentClick?.(id);     // 只開啟留言燈箱
+                    }}>
                     <CommentIcon />0
                 </IconButton>
             </CardActions>
