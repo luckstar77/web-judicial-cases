@@ -16,6 +16,9 @@ import {
     Balance as BalanceIcon,
 } from '@mui/icons-material';
 import WinnerTypo from './WinnerTypo';
+import { useAppSelector } from '../hooks/redux';
+import { selectCommentsByFileset } from '../redux/commentSlice';
+
 
 type Props = {
     plaintiff: string;
@@ -35,6 +38,9 @@ export default function OutlinedCard(props: Props) {
     const theme = useTheme();
     const { plaintiff, defendant, rent, city, win, jyear, jtitle, search, id, onCommentClick } =
         props;
+    // 從 Redux 讀取此 fileset 的留言列表，並取長度
+    const comments = useAppSelector(selectCommentsByFileset(id));
+    const commentCount = comments.length;
     const isWinPlaintiff = win === 'plaintiff' && search === plaintiff;
     const isWinDefendant = win === 'defendant' && search === defendant;
     const cardStyle = {
@@ -78,12 +84,9 @@ export default function OutlinedCard(props: Props) {
                 <IconButton>
                     <FavoriteIcon />5
                 </IconButton>
-                <IconButton 
-                    onClick={(e) => {
-                        e.stopPropagation();      // ← 阻止冒泡
-                        onCommentClick?.(id);     // 只開啟留言燈箱
-                    }}>
-                    <CommentIcon />0
+                <IconButton >
+                    <CommentIcon />
+                    {commentCount}
                 </IconButton>
             </CardActions>
         </Card>
