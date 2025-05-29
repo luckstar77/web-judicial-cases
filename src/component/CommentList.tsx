@@ -1,4 +1,16 @@
 import React, { useEffect } from 'react';
+import {
+    Avatar,
+    Divider,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
+    Paper,
+    Skeleton,
+    Typography,
+} from '@mui/material';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { fetchComments, selectCommentsByFileset } from '../redux/commentSlice';
 
@@ -15,20 +27,50 @@ const CommentList: React.FC<Props> = ({ filesetId }) => {
         dispatch(fetchComments(filesetId));
     }, [dispatch, filesetId]);
 
-    if (loading) return <div>載入中…</div>;
-    if (!comments.length) return <div>尚無留言</div>;
+    if (loading) {
+        return (
+            <Paper elevation={0} sx={{ p: 2 }}>
+                <Typography variant="h6" gutterBottom>留言</Typography>
+                <Skeleton variant="rounded" height={80} sx={{ mb: 1 }} />
+                <Skeleton variant="rounded" height={80} />
+            </Paper>
+        );
+    }
 
     return (
-        <>
-            {comments.map((c) => (
-                <div key={c.id}>
-                    <p>{c.content}</p>
-                    <small>
-                        名字：{c.name} IP：({c.ip}) - 留言時間：{new Date(c.createdAt).toLocaleString()}
-                    </small>
-                </div>
-            ))}
-        </>
+        <Paper elevation={0} sx={{ p: 2 }}>
+            <Typography variant="h6" gutterBottom>
+        留言（{comments.length}）
+            </Typography>
+            {comments.length === 0 ? (
+                <Typography color="text.secondary">目前尚無留言。</Typography>
+            ) : (
+                <List disablePadding>
+                    {comments.map((c, idx) => (
+                        <React.Fragment key={c.id}>
+                            <ListItem alignItems="flex-start">
+                                <ListItemAvatar>
+                                    <Avatar sx={{ bgcolor: 'primary.main' }}>
+                                        <ChatBubbleIcon fontSize="small" />
+                                    </Avatar>
+                                </ListItemAvatar>
+                                <ListItemText
+                                    primary={c.content}
+                                    secondary={
+                                        <>
+                                            {c.name || '匿名'} ({c.email ?? '無信箱'}) ·{' '}
+                                            {new Date(c.createdAt).toLocaleString()}
+                                        </>
+                                    }
+                                />
+                            </ListItem>
+                            {idx !== comments.length - 1 && <Divider variant="inset" />}
+                        </React.Fragment>
+                    ))}
+                </List>
+            )}
+        </Paper>
     );
 };
+
 export default CommentList;
