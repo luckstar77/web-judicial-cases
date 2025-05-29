@@ -18,7 +18,7 @@ import {
 } from '@mui/icons-material';
 import WinnerTypo from './WinnerTypo';
 import { fetchComments, selectCommentsByFileset } from '../redux/commentSlice';
-import { fetchLikeCount, toggleLike } from '../redux/likeSlice';
+import { fetchLikeCount, fetchLikeStatus, toggleLike } from '../redux/likeSlice';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 
 
@@ -62,13 +62,12 @@ export default function OutlinedCard(props: Props) {
     const count = useAppSelector(state => state.likes.counts[id] || 0);
     const liked = useAppSelector(state => state.likes.liked[id] || false);
     const loading = useAppSelector(state => state.likes.loading[id] || false);
+    
 
     useEffect(() => {
         dispatch(fetchComments(id));
-    }, [dispatch, id]);
-
-    useEffect(() => {
         dispatch(fetchLikeCount(id));
+        dispatch(fetchLikeStatus(id));
     }, [dispatch, id]);
 
     const handleToggle = (

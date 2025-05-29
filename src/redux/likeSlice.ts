@@ -16,6 +16,31 @@ const initialState: LikeState = {
     loading: {}
 };
 
+// Thunks
+export const fetchLikeStatus = createAsyncThunk<
+  { filesetId: number; liked: boolean },
+  number,
+  { rejectValue: string }
+>('likes/fetchStatus', async (filesetId, { rejectWithValue }) => {
+    try {
+        const token = localStorage.getItem('token');
+        if (token) {
+            // Set the Authorization header with the token
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            };
+
+            const resp = await axios.get<{ liked: boolean }>(`${LIKES_API_URL}/${filesetId}/status`, config);
+            return { filesetId, liked: resp.data.liked };
+        }
+        throw new Error('no token');
+    } catch (e: any) {
+        return rejectWithValue(e.message);
+    }
+});
+
 export const fetchLikeCount = createAsyncThunk(
     'likes/fetchCount',
     async (filesetId: number) => {
@@ -66,6 +91,11 @@ const likeSlice = createSlice({
             .addCase(toggleLike.rejected, (state, action) => {
                 const id = (action.meta.arg as any).filesetId;
                 state.loading[id] = false;
+            })
+            .addCase(fetchLikeStatus.fulfilled, (state, action: PayloadAction<{ filesetId: number; liked: boolean }>) => {
+                const { filesetId, liked } = action.payload;
+                state.loading[filesetId] = false;
+                state.liked[filesetId] = liked;
             });
     }
 });
