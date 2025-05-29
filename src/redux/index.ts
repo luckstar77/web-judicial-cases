@@ -3,6 +3,7 @@ import dataReducer from './dataSlice';
 import searchReducer from './searchSlice';
 import phoneReducer from './phoneSlice';
 import commentsReducer from './commentSlice';
+import likesReducer from './likeSlice';
 
 export const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
         search: searchReducer,
         user: phoneReducer,
         comments: commentsReducer,
+        likes: likesReducer,
     },
 });
 

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import {
@@ -9,6 +9,7 @@ import {
     IconButton,
     Typography,
     useTheme,
+    CircularProgress,
 } from '@mui/material';
 import {
     Favorite as FavoriteIcon,
@@ -16,8 +17,9 @@ import {
     Balance as BalanceIcon,
 } from '@mui/icons-material';
 import WinnerTypo from './WinnerTypo';
-import { useAppSelector } from '../hooks/redux';
-import { selectCommentsByFileset } from '../redux/commentSlice';
+import { fetchComments, selectCommentsByFileset } from '../redux/commentSlice';
+import { fetchLikeCount, toggleLike } from '../redux/likeSlice';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
 
 
 type Props = {
@@ -56,6 +58,27 @@ export default function OutlinedCard(props: Props) {
         },
     };
 
+    const dispatch = useAppDispatch();
+    const count = useAppSelector(state => state.likes.counts[id] || 0);
+    const liked = useAppSelector(state => state.likes.liked[id] || false);
+    const loading = useAppSelector(state => state.likes.loading[id] || false);
+
+    useEffect(() => {
+        dispatch(fetchComments(id));
+    }, [dispatch, id]);
+
+    useEffect(() => {
+        dispatch(fetchLikeCount(id));
+    }, [dispatch, id]);
+
+    const handleToggle = (
+        e: React.MouseEvent) => {
+        if (!loading) {
+            e.stopPropagation();      // ← 阻止冒泡
+            dispatch(toggleLike({  filesetId:id }));
+        }
+    };
+
     return (
         <Card sx={cardStyle} variant="outlined">
             <CardHeader
@@ -81,8 +104,9 @@ export default function OutlinedCard(props: Props) {
             </CardContent>
             {/* // TODO: implement like and comment */}
             <CardActions disableSpacing>
-                <IconButton>
-                    <FavoriteIcon />5
+                <IconButton onClick={handleToggle} disabled={loading} color={liked ? 'error' : 'default'}>
+                    { loading ? <CircularProgress size={24} /> : <FavoriteIcon /> }
+                    {count}
                 </IconButton>
                 <IconButton >
                     <CommentIcon />
