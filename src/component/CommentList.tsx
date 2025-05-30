@@ -58,7 +58,7 @@ const CommentList: React.FC<Props> = ({ filesetId }) => {
                                     primary={c.content}
                                     secondary={
                                         <>
-                                            {c.name || '匿名'} ({c.email ?? '無信箱'}) ·{' '}
+                                            {c.name || '匿名'} ({c.ip}) ·{' '}
                                             {new Date(c.createdAt).toLocaleString()}
                                         </>
                                     }

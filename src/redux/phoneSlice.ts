@@ -59,6 +59,7 @@ export const getUserData: any = createAsyncThunk(
                 const response = await axios.get(USER_API_URL, config);
                 return response.data;
             }
+            throw new Error('no token');
         } catch (error) {
             const axiosError = error as AxiosError;
             return thunkAPI.rejectWithValue(axiosError.response?.data);

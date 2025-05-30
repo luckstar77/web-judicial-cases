@@ -14,22 +14,19 @@ import { USER_DIALOG_STATUS } from '../types/enums';
 export default function ButtonAppBar() {
     const dispatch = useDispatch(); // Hook to get the dispatch function
 
+    // When the component mounts, fetch the user data
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
             // Dispatch an action to set the token in your Redux state
             dispatch(setTokenFromLocalStorage(token));
+            dispatch(getUserData());
         }
     }, [dispatch]);
 
     const { phone } = useSelector(
         (state: any) => state.user
     );
-
-    // When the component mounts, fetch the user data
-    React.useEffect(() => {
-        dispatch(getUserData());
-    }, [dispatch]);
 
     const handleClickOpen = () => {
         if(phone) dispatch(setShowDialog(USER_DIALOG_STATUS.USER_DATA));
