@@ -20,6 +20,9 @@ import WinnerTypo from './WinnerTypo';
 import { fetchComments, selectCommentsByFileset } from '../redux/commentSlice';
 import { fetchLikeCount, fetchLikeStatus, toggleLike } from '../redux/likeSlice';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import { setShowDialog } from '../redux/phoneSlice';
+import { USER_DIALOG_STATUS } from '../types/enums';
+
 
 
 type Props = {
@@ -41,6 +44,8 @@ export default function OutlinedCard(props: Props) {
     const { plaintiff, defendant, rent, city, win, jyear, jtitle, search, id, onCommentClick } =
         props;
     // 從 Redux 讀取此 fileset 的留言列表，並取長度
+    const dispatch = useAppDispatch();
+    const isLoggedIn = useAppSelector((s) => s.user?.isLoggedIn);
     const comments = useAppSelector(selectCommentsByFileset(id));
     const commentCount = comments.length;
     const isWinPlaintiff = win === 'plaintiff' && search === plaintiff;
@@ -58,7 +63,6 @@ export default function OutlinedCard(props: Props) {
         },
     };
 
-    const dispatch = useAppDispatch();
     const count = useAppSelector(state => state.likes.counts[id] || 0);
     const liked = useAppSelector(state => state.likes.liked[id] || false);
     const loading = useAppSelector(state => state.likes.loading[id] || false);
@@ -72,8 +76,12 @@ export default function OutlinedCard(props: Props) {
 
     const handleToggle = (
         e: React.MouseEvent) => {
+        e.stopPropagation();      // ← 阻止冒泡
+        if (!isLoggedIn) {
+            dispatch(setShowDialog(USER_DIALOG_STATUS.PHONE_AUTH));
+            return;
+        }
         if (!loading) {
-            e.stopPropagation();      // ← 阻止冒泡
             dispatch(toggleLike({  filesetId:id }));
         }
     };

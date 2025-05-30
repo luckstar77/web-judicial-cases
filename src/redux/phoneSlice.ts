@@ -80,7 +80,8 @@ const phoneSlice = createSlice({
         showData: false,
         showDialog: USER_DIALOG_STATUS.NONE,
         name: '',
-        email: ''
+        email: '',
+        isLoggedIn: false,
     },
     reducers: {
         setTokenFromLocalStorage: (state, action: PayloadAction<string>) => {
@@ -94,6 +95,7 @@ const phoneSlice = createSlice({
         },
         logout: (state) => {
             state.phone = '';
+            state.isLoggedIn = false;
             state.showDialog = USER_DIALOG_STATUS.NONE;
             localStorage.setItem('token', '');
         },
@@ -109,6 +111,7 @@ const phoneSlice = createSlice({
                     const { phone, ip, uid, token, name, email } = action.payload;
                     state.fetchStatus = FETCH_STATUS.SUCCESS;
                     state.phone = phone;
+                    state.isLoggedIn = true;
                     state.ip = ip;
                     state.uid = uid;
                     state.name = name;
@@ -136,6 +139,7 @@ const phoneSlice = createSlice({
                     const { phone, ip, uid, name, email } = action.payload;
                     state.fetchStatus = FETCH_STATUS.SUCCESS;
                     state.phone = phone;
+                    state.isLoggedIn = true;
                     state.name = name;
                     state.email = email;
                     state.ip = ip;
