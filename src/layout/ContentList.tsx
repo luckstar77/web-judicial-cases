@@ -31,65 +31,8 @@ const YourComponent = () => {
     );
     return (
         <Box display="flex" flexDirection="column" alignItems="center">
-            <Typography gutterBottom variant="h5" component="h2">
-                預警風險:
-                {cases.filter(
-                    (caseItem: any) =>
-                        (caseItem.plaintiff === searchCompare &&
-                            caseItem.win === 'defendant') ||
-                        (caseItem.defendant === searchCompare &&
-                            caseItem.win === 'plaintiff')
-                ).length === 0
-                    ? '無'
-                    : cases.filter(
-                        (caseItem: any) =>
-                            (caseItem.plaintiff === searchCompare &&
-                                  caseItem.win === 'defendant') ||
-                              (caseItem.defendant === searchCompare &&
-                                  caseItem.win === 'plaintiff')
-                    ).length === 1
-                        ? '低'
-                        : cases.filter(
-                            (caseItem: any) =>
-                                (caseItem.plaintiff === searchCompare &&
-                                  caseItem.win === 'defendant') ||
-                              (caseItem.defendant === searchCompare &&
-                                  caseItem.win === 'plaintiff')
-                        ).length === 2
-                            ? '中'
-                            : '高'}
-            </Typography>
-            {searchMode === 'name' && searchCompare !== '' && (
-                <>
-                    <Typography gutterBottom variant="h5" component="h2">
-                        預警案件數:
-                        {
-                            cases.filter(
-                                (caseItem: any) =>
-                                    (caseItem.plaintiff === searchCompare &&
-                                        caseItem.win === 'defendant') ||
-                                    (caseItem.defendant === searchCompare &&
-                                        caseItem.win === 'plaintiff')
-                            ).length
-                        }
-                    </Typography>
-                    <CaseList items={cases} search={searchCompare}></CaseList>
-                </>
-            )}
-            {searchMode === 'condition' && (
-                <>
-                    <List style={{ overflow: 'auto' }}>
-                        {results.map((result, index) => (
-                            <ListItem key={index}>
-                                <ListItemText
-                                    primary={result.name}
-                                    secondary={`預警案件數：${result.count}`}
-                                />
-                            </ListItem>
-                        ))}
-                    </List>
-                </>
-            )}
+            <CaseList items={cases} search={searchCompare}></CaseList>
+            
         </Box>
     );
 };

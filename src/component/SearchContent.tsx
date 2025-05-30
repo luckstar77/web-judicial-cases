@@ -8,8 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
 import StockLogo from '../asset/rental_icon.png';
-import WarningNameList from './WarningNameList';
-import { Button, ButtonGroup } from '@mui/material';
+import { Button } from '@mui/material';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -83,82 +82,53 @@ function App() {
                     >
                         <img src={StockLogo} style={{ width: '100px' }} />
                     </Grid>
-
-                    <ButtonGroup fullWidth>
-                        <Button
-                            onClick={() => dispatch(updateSearchMode('name'))}
-                            variant={'contained'}
-                            sx={searchMode === 'name' ? selected : unselected}
-                        >
-                            查姓名
-                        </Button>
-                        <Button
-                            onClick={() =>
-                                dispatch(updateSearchMode('condition'))
+                    <Box sx={{ marginTop: '16px' }}>
+                        <TextField
+                            onChange={(
+                                event: React.ChangeEvent<HTMLInputElement>
+                            ) =>
+                                dispatch(setSearch(event.target.value))
                             }
-                            variant={'contained'}
-                            sx={
-                                searchMode === 'condition'
-                                    ? selected
-                                    : unselected
-                            }
-                        >
-                            查條件
-                        </Button>
-                    </ButtonGroup>
-
-                    {searchMode === 'name' && (
-                        <>
-                            <Box sx={{ marginTop: '16px' }}>
-                                <TextField
-                                    onChange={(
-                                        event: React.ChangeEvent<HTMLInputElement>
-                                    ) =>
-                                        dispatch(setSearch(event.target.value))
-                                    }
-                                    value={search}
-                                    label="請輸入房東或房客姓名"
-                                    variant="outlined"
-                                    sx={{ backgroundColor: 'white' }} // 白色背景
-                                    fullWidth
-                                    onKeyUp={(event) => {
-                                        if (event.key === 'Enter') {
-                                            dispatch(
-                                                updateSearchCompare(search)
-                                            );
-                                            dispatch(fetchData({ search }));
-                                            event.preventDefault();
-                                        }
-                                    }}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <IconButton
-                                                    type="button"
-                                                    aria-label="search"
-                                                    onClick={() => {
-                                                        dispatch(
-                                                            updateSearchCompare(
-                                                                search
-                                                            )
-                                                        );
-                                                        dispatch(
-                                                            fetchData({
-                                                                search,
-                                                            })
-                                                        );
-                                                    }}
-                                                >
-                                                    <SearchIcon />
-                                                </IconButton>
-                                            </InputAdornment>
-                                        ),
-                                    }}
-                                />
-                            </Box>
-                        </>
-                    )}
-                    {searchMode === 'condition' && <WarningNameList />}
+                            value={search}
+                            label="請輸入房東或房客姓名"
+                            variant="outlined"
+                            sx={{ backgroundColor: 'white' }} // 白色背景
+                            fullWidth
+                            onKeyUp={(event) => {
+                                if (event.key === 'Enter') {
+                                    dispatch(
+                                        updateSearchCompare(search)
+                                    );
+                                    dispatch(fetchData({ search }));
+                                    event.preventDefault();
+                                }
+                            }}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            type="button"
+                                            aria-label="search"
+                                            onClick={() => {
+                                                dispatch(
+                                                    updateSearchCompare(
+                                                        search
+                                                    )
+                                                );
+                                                dispatch(
+                                                    fetchData({
+                                                        search,
+                                                    })
+                                                );
+                                            }}
+                                        >
+                                            <SearchIcon />
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                    </Box>
                 </Box>
             </Grid>
         </Box>
