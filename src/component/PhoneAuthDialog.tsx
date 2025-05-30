@@ -1,18 +1,24 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {
-    Dialog, DialogActions, DialogContent, DialogTitle,
-    Button, Paper, InputBase, Divider, IconButton,
-    TextField, Typography, Stack
-} from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+import InputBase from '@mui/material/InputBase';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
 import SendIcon from '@mui/icons-material/Send';
-import CloseIcon from '@mui/icons-material/Close';
+import TextField from '@mui/material/TextField';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { verifyPhoneNumber, setShowDialog } from '../redux/phoneSlice';
+
 import { auth } from '../lib/firebase';
 import {
     RecaptchaVerifier,
     signInWithPhoneNumber,
-    ConfirmationResult
+    ConfirmationResult,
 } from 'firebase/auth';
 import { USER_DIALOG_STATUS } from '../types/enums';
 
@@ -22,144 +28,146 @@ export function PhoneAuthDialog() {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [verificationCode, setVerificationCode] = useState('');
     const [confirmationResult, setConfirmationResult] =
-    useState<ConfirmationResult | null>(null);
-    const [error, setError] = useState<string | null>(null);
-    const [sending, setSending] = useState(false);
+        useState<ConfirmationResult | null>(null);
 
-    const recaptchaContainer = useRef<HTMLDivElement>(null);
-    const recaptchaVerifier = useRef<RecaptchaVerifier>();
+    const recaptchaContainer = useRef(null);
+    const recaptchaVerifier = React.useRef<RecaptchaVerifier | undefined>(
+        undefined
+    );
 
-    const { showDialog } = useSelector((state: any) => state.user);
-    const dispatch = useDispatch();
+    const { showDialog } = useSelector(
+        (state: any) => state.user
+    );
 
     useEffect(() => {
-        if (!recaptchaVerifier.current && recaptchaContainer.current) {
+        // Initialize reCAPTCHA once when the component mounts
+        if (recaptchaContainer.current) {
             recaptchaVerifier.current = new RecaptchaVerifier(
                 recaptchaContainer.current,
-                { size: 'invisible' },
+                {
+                    size: 'invisible',
+                },
                 auth
             );
-            // 调用 render() 会向该 div 注入 iframe
-            recaptchaVerifier.current.render().catch(console.error);
         }
+
+        // Clean up reCAPTCHA when the component unmounts
         return () => {
-            // 卸载时清理，并移除所有子节点
-            recaptchaVerifier.current?.clear();
-            if (recaptchaContainer.current) {
-                recaptchaContainer.current.innerHTML = '';
+            if (recaptchaVerifier.current) {
+                recaptchaVerifier.current.clear();
             }
         };
     }, []);
 
-    const clearRecaptcha = () => {
-        recaptchaVerifier.current?.clear();
-        recaptchaVerifier.current = undefined;
-        if (recaptchaContainer.current) {
-            recaptchaContainer.current.innerHTML = '';
-        }
-    };
+    const dispatch = useDispatch();
 
     const handleSendCode = async () => {
-        setError(null);
-        clearRecaptcha();
-
-        // 重建 verifier
-        if (recaptchaContainer.current) {
+        // Create a new reCAPTCHA verifier if one does not exist
+        if (!recaptchaVerifier.current && recaptchaContainer.current) {
             recaptchaVerifier.current = new RecaptchaVerifier(
                 recaptchaContainer.current,
-                { size: 'invisible' },
+                {
+                    size: 'invisible',
+                },
                 auth
             );
-            await recaptchaVerifier.current.render();
         }
 
-        try {
-            const result = await signInWithPhoneNumber(
-                auth,
-                COUNTRY_CODE + phoneNumber,
-      recaptchaVerifier.current!
-            );
-            setConfirmationResult(result);
-        } catch (err: any) {
-            console.error(err);
-            // 这里处理 auth/invalid-app-credential 或 Timeout
-            setError(err.message);
+        if (!recaptchaVerifier.current) {
+            throw new Error('Unable to initialize recaptcha verifier.');
         }
+
+        const result = await signInWithPhoneNumber(
+            auth,
+            COUNTRY_CODE + phoneNumber,
+            recaptchaVerifier.current
+        );
+        setConfirmationResult(result);
     };
-
-    const handleConfirmCode = async () => {
-        if (!confirmationResult) return;
-        try {
-            const result: any = await confirmationResult.confirm(verificationCode);
-            dispatch(verifyPhoneNumber({ token: result.user.accessToken }));
-            dispatch(setShowDialog(USER_DIALOG_STATUS.NONE));
-        } catch (err) {
-            console.error(err);
-            setError('驗證碼錯誤，請重新輸入');
-        }
-    };
-
-    const handleClose = () => {
+    
+    const handleClose = async () => {
         dispatch(setShowDialog(USER_DIALOG_STATUS.NONE));
     };
 
+    const handleConfirmCode = async () => {
+        const code = verificationCode;
+
+        // Confirm the phone number with the verification code
+        if (confirmationResult !== null) {
+            // Add null-check here
+            try {
+                const result: any = await confirmationResult.confirm(code);
+                // Phone number has been verified successfully
+                // Here you can add the user to your user list or perform any kind of post-verification action
+                dispatch(
+                    verifyPhoneNumber({
+                        token: result.user.accessToken,
+                    })
+                );
+                setConfirmationResult(null);
+                handleClose();
+            } catch (error) {
+                console.error(error);
+                // Verification code was not valid, or something else went wrong
+            }
+        }
+    };
+
     return (
-        <Dialog open={showDialog === USER_DIALOG_STATUS.PHONE_AUTH} onClose={handleClose}>
-            <DialogTitle sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
-        電話登入
-                <Typography flexGrow={1} />
-                <IconButton size="small" onClick={handleClose}>
-                    <CloseIcon fontSize="small" />
-                </IconButton>
-            </DialogTitle>
-            <DialogContent dividers>
-                <Stack spacing={2}>
+        <div>
+            <Dialog open={showDialog === USER_DIALOG_STATUS.PHONE_AUTH} onClose={handleClose}>
+                <DialogTitle>電話登入</DialogTitle>
+                <DialogContent>
                     <Paper
                         component="form"
-                        sx={{ p: 1, display: 'flex', alignItems: 'center' }}
-                        onSubmit={(e) => { e.preventDefault(); handleSendCode(); }}
+                        sx={{
+                            p: '2px 4px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            width: 400,
+                        }}
                     >
                         <InputBase
                             sx={{ ml: 1, flex: 1 }}
-                            placeholder="請輸入電話號碼"
-                            inputProps={{ 'aria-label': '電話號碼' }}
-                            value={phoneNumber}
+                            placeholder="請輸入你的電話號碼"
+                            inputProps={{ 'aria-label': '請輸入你的電話號碼' }}
                             onChange={(e) => setPhoneNumber(e.target.value)}
                         />
-                        <Divider orientation="vertical" flexItem sx={{ mx: 1 }} />
+                        <Divider
+                            sx={{ height: 28, m: 0.5 }}
+                            orientation="vertical"
+                        />
                         <IconButton
                             color="primary"
+                            sx={{ p: '10px' }}
+                            aria-label="send"
                             onClick={handleSendCode}
-                            disabled={sending}
                         >
                             <SendIcon />
                         </IconButton>
+                        <div
+                            id="recaptcha-container"
+                            ref={recaptchaContainer}
+                        ></div>
                     </Paper>
-                    {error && (
-                        <Typography color="error" variant="body2">
-                            {error}
-                        </Typography>
-                    )}
-                    {confirmationResult && (
-                        <TextField
-                            label="輸入驗證碼"
-                            variant="outlined"
-                            fullWidth
-                            value={verificationCode}
-                            onChange={(e) => setVerificationCode(e.target.value)}
-                        />
-                    )}
-                </Stack>
-                <div id="recaptcha-container" ref={recaptchaContainer} />
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={handleClose}>取消</Button>
-                {confirmationResult && (
-                    <Button onClick={handleConfirmCode} variant="contained">
-            登入
-                    </Button>
-                )}
-            </DialogActions>
-        </Dialog>
+                    <TextField
+                        sx={{
+                            margin: '10px 0px',
+                            color: 'gray',
+                        }}
+                        fullWidth
+                        id="standard-basic"
+                        placeholder="請接收簡訊並輸入簡訊驗證碼"
+                        variant="standard"
+                        onChange={(e) => setVerificationCode(e.target.value)}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>取消</Button>
+                    <Button onClick={handleConfirmCode}>登入</Button>
+                </DialogActions>
+            </Dialog>
+            <div id="recaptcha-container" ref={recaptchaContainer}></div>
+        </div>
     );
 }
