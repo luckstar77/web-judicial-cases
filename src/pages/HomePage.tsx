@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../App.css';
-import ButtonAppBar from './ButtonAppBar';
-import Banner from './Banner';
-import ContentList from './ContentList';
+import Banner from '../layout/Banner';
+import ContentList from '../layout/ContentList';
 import { useSelector } from 'react-redux';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
@@ -13,7 +12,7 @@ function App() {
     const dataStatus = useSelector((state: any) => state.data.status);
 
     return (
-        <div>
+        <div style={{marginTop:'-48px'}}>
             {dataStatus === 'loading' && (
                 <div
                     style={{
@@ -38,7 +37,6 @@ function App() {
                     </LoadingButton>
                 </div>
             )}
-            <ButtonAppBar />
             <Banner />
             <ContentList />
         </div>

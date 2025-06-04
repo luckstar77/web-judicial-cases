@@ -13,9 +13,12 @@ import MailIcon from '@mui/icons-material/Mail';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import FacebookIcon from '@mui/icons-material/Facebook';
-import InfoIcon from '@mui/icons-material/Info';
-import QuizIcon from '@mui/icons-material/Quiz';
+import HomeIcon   from '@mui/icons-material/Home';
+import QuizIcon   from '@mui/icons-material/Quiz';
+import InfoIcon   from '@mui/icons-material/Info';
 import Link from '@mui/material/Link';
+import { Link as RouterLink } from 'react-router-dom';
+
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
 export default function TemporaryDrawer() {
@@ -50,21 +53,29 @@ export default function TemporaryDrawer() {
             onKeyDown={toggleDrawer(anchor, false)}
         >
             <List>
-                {/* TODO: 加入FAQ和關於我們頁面 */}
+                {/* 🔹 首頁 */}
                 <ListItem disablePadding>
-                    <ListItemButton>
+                    <ListItemButton component={RouterLink} to="/">
                         <ListItemIcon>
-                            <QuizIcon />
+                            <HomeIcon />
                         </ListItemIcon>
-                        <ListItemText primary={'FAQ'} />
+                        <ListItemText primary="首頁" />
                     </ListItemButton>
                 </ListItem>
+
+                {/* FAQ */}
                 <ListItem disablePadding>
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <InfoIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={'關於我們'} />
+                    <ListItemButton component={RouterLink} to="/faq">
+                        <ListItemIcon><QuizIcon /></ListItemIcon>
+                        <ListItemText primary="FAQ" />
+                    </ListItemButton>
+                </ListItem>
+
+                {/* 關於我們 */}
+                <ListItem disablePadding>
+                    <ListItemButton component={RouterLink} to="/about">
+                        <ListItemIcon><InfoIcon /></ListItemIcon>
+                        <ListItemText primary="關於我們" />
                     </ListItemButton>
                 </ListItem>
                 <Link
