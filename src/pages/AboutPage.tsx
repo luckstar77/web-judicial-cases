@@ -15,10 +15,6 @@ const preRegisterInfo = [
     '本平台並非法律機構，若有疑問請透過留言板提問。',
 ];
 
-const releaseNotes = [
-    { date: '2025-06-04', ver: 'V1.0', note: '核心功能到位，現已開放註冊、留言與關注機制' },
-];
-
 export default function AboutPage() {
     return (
         <Container sx={{ py: 4 }}>
@@ -27,8 +23,8 @@ export default function AboutPage() {
             </Typography>
 
             <Typography variant="body1" paragraph>
-                「租屋通」是由站長自發籌組並共同維護，
-                採開源模式運作。我們以「資訊互通、風險減少」為核心理念，
+                「租屋通」是由站長自發籌組維護，
+                採開源模式運作。以「資訊互通、風險減少」為核心理念，
                 協助房東與租客在整個租賃流程中快速掌握可能的風險，
                 同步促進租屋市場的透明與公平。
             </Typography>
@@ -47,18 +43,6 @@ export default function AboutPage() {
             </List>
 
             <Divider sx={{ my: 3 }} />
-
-            <Typography variant="h5" gutterBottom>
-                版本更新
-            </Typography>
-            {releaseNotes.map((r, idx) => (
-                <Box key={idx} sx={{ mb: 1 }}>
-                    <Typography variant="subtitle1">
-                        {r.date} – {r.ver}
-                    </Typography>
-                    <Typography variant="body2">{r.note}</Typography>
-                </Box>
-            ))}
 
             <Divider sx={{ my: 3 }} />
 
