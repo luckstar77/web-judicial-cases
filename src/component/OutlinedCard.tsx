@@ -86,6 +86,12 @@ export default function OutlinedCard(props: Props) {
         }
     };
 
+    const handleComment = (
+        e: React.MouseEvent) => {
+        e.stopPropagation();
+        onCommentClick?.(id);
+    };
+
     return (
         <Card sx={cardStyle} variant="outlined">
             <CardHeader
@@ -115,7 +121,7 @@ export default function OutlinedCard(props: Props) {
                     { loading ? <CircularProgress size={24} /> : <FavoriteIcon /> }
                     {count}
                 </IconButton>
-                <IconButton >
+                <IconButton onClick={handleComment}>
                     <CommentIcon />
                     {commentCount}
                 </IconButton>
