@@ -53,7 +53,7 @@ function App() {
         <Box
             sx={{
                 position: 'relative',
-                backgroundColor: 'whiite',
+                backgroundColor: 'white',
                 height: '390px',
             }}
         >
