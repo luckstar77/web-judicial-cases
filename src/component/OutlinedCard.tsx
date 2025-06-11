@@ -115,7 +115,12 @@ export default function OutlinedCard(props: Props) {
                     { loading ? <CircularProgress size={24} /> : <FavoriteIcon /> }
                     {count}
                 </IconButton>
-                <IconButton >
+                <IconButton
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        onCommentClick?.(id);
+                    }}
+                >
                     <CommentIcon />
                     {commentCount}
                 </IconButton>
