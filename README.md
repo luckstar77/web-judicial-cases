@@ -82,7 +82,7 @@
             -   回應頁面路徑 index.html
             -   HTTP 回應碼 200
 -   建立 Route 53 A 紀錄
-    -   設定別名到 Cloundfront 的 rental.imallenlai.com
+    -   設定別名到 Cloudfront 的 rental.imallenlai.com
 
 ## 建立.env.local
 
