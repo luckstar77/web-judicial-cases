@@ -4,6 +4,7 @@ import searchReducer from './searchSlice';
 import phoneReducer from './phoneSlice';
 import commentsReducer from './commentSlice';
 import likesReducer from './likeSlice';
+import uploadReducer from './uploadSlice';
 
 export const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
         user: phoneReducer,
         comments: commentsReducer,
         likes: likesReducer,
+        upload: uploadReducer,
     },
 });
 

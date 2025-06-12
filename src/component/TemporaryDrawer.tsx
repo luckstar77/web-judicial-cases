@@ -78,6 +78,13 @@ export default function TemporaryDrawer() {
                         <ListItemText primary="關於我們" />
                     </ListItemButton>
                 </ListItem>
+                {/* 上傳案例 */}
+                <ListItem disablePadding>
+                    <ListItemButton component={RouterLink} to="/upload">
+                        <ListItemIcon><InboxIcon /></ListItemIcon>
+                        <ListItemText primary="上傳案例" />
+                    </ListItemButton>
+                </ListItem>
                 <Link
                     href="https://www.facebook.com/profile.php?id=100093981245377"
                     target="_blank"
