@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import {
     Card,
     CardHeader,
@@ -9,21 +9,21 @@ import {
     Typography,
     CircularProgress,
     Box,
-} from "@mui/material";
+} from '@mui/material';
 import {
     Favorite as FavoriteIcon,
     Comment as CommentIcon,
-} from "@mui/icons-material";
-import CaseComments from "./CaseComments";
-import { useAppDispatch, useAppSelector } from "../hooks/redux";
+} from '@mui/icons-material';
+import CaseComments from './CaseComments';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import {
     fetchCaseLikeCount,
     fetchCaseLikeStatus,
     toggleCaseLike,
-} from "../redux/caseLikeSlice";
-import { selectCaseComments } from "../redux/caseCommentSlice";
-import { setShowDialog } from "../redux/phoneSlice";
-import { USER_DIALOG_STATUS } from "../types/enums";
+} from '../redux/caseLikeSlice';
+import { selectCaseComments } from '../redux/caseCommentSlice';
+import { setShowDialog } from '../redux/phoneSlice';
+import { USER_DIALOG_STATUS } from '../types/enums';
 
 export interface CaseData {
     id: number;
@@ -61,20 +61,20 @@ const CaseCard: React.FC<Props> = ({ item }) => {
     };
 
     return (
-        <Card sx={{ width: "100%", maxWidth: 600, mb: 3 }}>
+        <Card sx={{ width: '100%', maxWidth: 600, mb: 3 }}>
             <CardHeader title={`被告：${item.defendantName}`} />
             {item.images && item.images.length > 0 && (
                 <CardMedia
                     component="img"
                     image={item.images[0]}
-                    sx={{ maxHeight: 300, objectFit: "cover" }}
+                    sx={{ maxHeight: 300, objectFit: 'cover' }}
                 />
             )}
             <CardActions disableSpacing>
                 <IconButton
                     onClick={handleToggleLike}
                     disabled={loading}
-                    color={liked ? "error" : "default"}
+                    color={liked ? 'error' : 'default'}
                 >
                     {loading ? (
                         <CircularProgress size={24} />

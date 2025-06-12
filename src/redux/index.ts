@@ -1,12 +1,12 @@
-import { configureStore } from "@reduxjs/toolkit";
-import dataReducer from "./dataSlice";
-import searchReducer from "./searchSlice";
-import phoneReducer from "./phoneSlice";
-import commentsReducer from "./commentSlice";
-import likesReducer from "./likeSlice";
-import caseCommentsReducer from "./caseCommentSlice";
-import caseLikesReducer from "./caseLikeSlice";
-import uploadReducer from "./uploadSlice";
+import { configureStore } from '@reduxjs/toolkit';
+import dataReducer from './dataSlice';
+import searchReducer from './searchSlice';
+import phoneReducer from './phoneSlice';
+import commentsReducer from './commentSlice';
+import likesReducer from './likeSlice';
+import caseCommentsReducer from './caseCommentSlice';
+import caseLikesReducer from './caseLikeSlice';
+import uploadReducer from './uploadSlice';
 
 export const store = configureStore({
     reducer: {

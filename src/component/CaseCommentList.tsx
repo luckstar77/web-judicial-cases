@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import {
     Avatar,
     Divider,
@@ -9,13 +9,13 @@ import {
     Paper,
     Skeleton,
     Typography,
-} from "@mui/material";
-import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
-import { useAppDispatch, useAppSelector } from "../hooks/redux";
+} from '@mui/material';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import {
     fetchCaseComments,
     selectCaseComments,
-} from "../redux/caseCommentSlice";
+} from '../redux/caseCommentSlice';
 
 interface Props {
     caseId: number;
@@ -55,7 +55,7 @@ const CaseCommentList: React.FC<Props> = ({ caseId }) => {
                         <React.Fragment key={c.id}>
                             <ListItem alignItems="flex-start">
                                 <ListItemAvatar>
-                                    <Avatar sx={{ bgcolor: "primary.main" }}>
+                                    <Avatar sx={{ bgcolor: 'primary.main' }}>
                                         <ChatBubbleIcon fontSize="small" />
                                     </Avatar>
                                 </ListItemAvatar>
@@ -63,7 +63,7 @@ const CaseCommentList: React.FC<Props> = ({ caseId }) => {
                                     primary={c.content}
                                     secondary={
                                         <>
-                                            {c.name || "匿名"} ({c.ip}) ·{" "}
+                                            {c.name || '匿名'} ({c.ip}) ·{" "}
                                             {new Date(
                                                 c.createdAt,
                                             ).toLocaleString()}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
     Container,
     Typography,
@@ -7,11 +7,11 @@ import {
     Button,
     Snackbar,
     Alert,
-} from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { uploadCase, resetStatus } from "../redux/uploadSlice";
-import { setShowDialog } from "../redux/phoneSlice";
-import { USER_DIALOG_STATUS } from "../types/enums";
+} from '@mui/material';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import { uploadCase, resetStatus } from '../redux/uploadSlice';
+import { setShowDialog } from '../redux/phoneSlice';
+import { USER_DIALOG_STATUS } from '../types/enums';
 
 export default function UploadCasePage() {
     const dispatch = useAppDispatch();
@@ -19,15 +19,15 @@ export default function UploadCasePage() {
     const isLoggedIn = useAppSelector((s) => s.user.isLoggedIn);
 
     const [form, setForm] = useState({
-        defendantName: "",
-        defendantPhone: "",
-        defendantIdNo: "",
+        defendantName: '',
+        defendantPhone: '',
+        defendantIdNo: '',
         images: [] as File[],
     });
 
     const handleChange =
         (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
-            if (key === "images" && e.target.files) {
+            if (key === 'images' && e.target.files) {
                 setForm({ ...form, images: Array.from(e.target.files) });
             } else {
                 setForm({ ...form, [key]: e.target.value });
@@ -56,8 +56,8 @@ export default function UploadCasePage() {
                 component="form"
                 onSubmit={handleSubmit}
                 sx={{
-                    display: "flex",
-                    flexDirection: "column",
+                    display: 'flex',
+                    flexDirection: 'column',
                     gap: 2,
                     maxWidth: 600,
                 }}
@@ -65,19 +65,19 @@ export default function UploadCasePage() {
                 <TextField
                     label="被告姓名"
                     value={form.defendantName}
-                    onChange={handleChange("defendantName")}
+                    onChange={handleChange('defendantName')}
                     required
                 />
                 <TextField
                     label="被告電話"
                     value={form.defendantPhone}
-                    onChange={handleChange("defendantPhone")}
+                    onChange={handleChange('defendantPhone')}
                     required
                 />
                 <TextField
                     label="被告身分證字號"
                     value={form.defendantIdNo}
-                    onChange={handleChange("defendantIdNo")}
+                    onChange={handleChange('defendantIdNo')}
                     required
                 />
                 <Button variant="contained" component="label">
@@ -87,7 +87,7 @@ export default function UploadCasePage() {
                         multiple
                         type="file"
                         accept="image/*"
-                        onChange={handleChange("images")}
+                        onChange={handleChange('images')}
                     />
                 </Button>
                 <Button

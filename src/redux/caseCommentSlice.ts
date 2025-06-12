@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
-import { RootState } from "./";
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { RootState } from './';
 
 const API_URL = process.env.REACT_APP_API_URL;
 const CASE_API_URL = `${API_URL}/case`;
@@ -32,7 +32,7 @@ export const fetchCaseComments = createAsyncThunk<
     CaseComment[],
     number,
     { rejectValue: string }
->("caseComments/fetch", async (caseId, { rejectWithValue }) => {
+>('caseComments/fetch', async (caseId, { rejectWithValue }) => {
     try {
         const { data } = await axios.get<CaseComment[]>(
             `${CASE_API_URL}/${caseId}/comments`,
@@ -47,9 +47,9 @@ export const addCaseComment = createAsyncThunk<
     CaseComment | any,
     { caseId: number; content: string },
     { rejectValue: string }
->("caseComments/add", async ({ caseId, content }, { rejectWithValue }) => {
+>('caseComments/add', async ({ caseId, content }, { rejectWithValue }) => {
     try {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem('token');
         if (token) {
             const config = {
                 headers: { Authorization: `Bearer ${token}` },
@@ -68,7 +68,7 @@ export const addCaseComment = createAsyncThunk<
 });
 
 const caseCommentSlice = createSlice({
-    name: "caseComments",
+    name: 'caseComments',
     initialState,
     reducers: {
         clearCaseComments(state, action: PayloadAction<number>) {
@@ -91,7 +91,7 @@ const caseCommentSlice = createSlice({
             })
             .addCase(fetchCaseComments.rejected, (state, { payload }) => {
                 state.loading = false;
-                state.error = payload ?? "error";
+                state.error = payload ?? 'error';
             })
             .addCase(addCaseComment.fulfilled, (state, { payload }) => {
                 const id = (payload.caseId ?? payload.filesetId) as number;

@@ -1,6 +1,6 @@
-import React from "react";
-import { Box, Typography } from "@mui/material";
-import CaseCard from "./CaseCard";
+import React from 'react';
+import { Box, Typography } from '@mui/material';
+import CaseCard from './CaseCard';
 
 interface Props {
     items: any[];

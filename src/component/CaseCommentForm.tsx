@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import { Paper, Stack, TextField, Typography } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
-import SendIcon from "@mui/icons-material/Send";
-import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { addCaseComment } from "../redux/caseCommentSlice";
-import { setShowDialog } from "../redux/phoneSlice";
-import { USER_DIALOG_STATUS } from "../types/enums";
+import React, { useState } from 'react';
+import { Paper, Stack, TextField, Typography } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import SendIcon from '@mui/icons-material/Send';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import { addCaseComment } from '../redux/caseCommentSlice';
+import { setShowDialog } from '../redux/phoneSlice';
+import { USER_DIALOG_STATUS } from '../types/enums';
 
 interface Props {
     caseId: number;
 }
 
 const CaseCommentForm: React.FC<Props> = ({ caseId }) => {
-    const [content, setContent] = useState("");
+    const [content, setContent] = useState('');
     const [loading, setLoading] = useState(false);
     const dispatch = useAppDispatch();
     const isLoggedIn = useAppSelector((s) => s.user.isLoggedIn);
@@ -27,7 +27,7 @@ const CaseCommentForm: React.FC<Props> = ({ caseId }) => {
         setLoading(true);
         await dispatch(addCaseComment({ caseId, content }));
         setLoading(false);
-        setContent("");
+        setContent('');
     };
 
     if (!isLoggedIn) return <></>;

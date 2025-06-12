@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import { Typography, Box } from "@mui/material";
-import CaseCardList from "../component/CaseCardList";
-import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { fetchData } from "../redux/dataSlice";
+import React, { useEffect } from 'react';
+import { Typography, Box } from '@mui/material';
+import CaseCardList from '../component/CaseCardList';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
+import { fetchData } from '../redux/dataSlice';
 
 export default function DiscussionPage() {
     const dispatch = useAppDispatch();

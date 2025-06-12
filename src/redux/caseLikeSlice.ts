@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL;
 const CASE_API_URL = `${API_URL}/case`;
@@ -20,9 +20,9 @@ export const fetchCaseLikeStatus = createAsyncThunk<
     { caseId: number; liked: boolean },
     number,
     { rejectValue: string }
->("caseLikes/fetchStatus", async (caseId, { rejectWithValue }) => {
+>('caseLikes/fetchStatus', async (caseId, { rejectWithValue }) => {
     try {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem('token');
         if (token) {
             const config = { headers: { Authorization: `Bearer ${token}` } };
             const resp = await axios.get<{ liked: boolean }>(
@@ -31,14 +31,14 @@ export const fetchCaseLikeStatus = createAsyncThunk<
             );
             return { caseId, liked: resp.data.liked };
         }
-        throw new Error("no token");
+        throw new Error('no token');
     } catch (e: any) {
         return rejectWithValue(e.message);
     }
 });
 
 export const fetchCaseLikeCount = createAsyncThunk(
-    "caseLikes/fetchCount",
+    'caseLikes/fetchCount',
     async (caseId: number) => {
         const res = await axios.get(`${CASE_API_URL}/${caseId}`);
         return { caseId, count: res.data.likeCount };
@@ -46,9 +46,9 @@ export const fetchCaseLikeCount = createAsyncThunk(
 );
 
 export const toggleCaseLike = createAsyncThunk(
-    "caseLikes/toggle",
+    'caseLikes/toggle',
     async ({ caseId }: { caseId: number }) => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem('token');
         if (token) {
             const config = { headers: { Authorization: `Bearer ${token}` } };
             const res = await axios.post(
@@ -58,12 +58,12 @@ export const toggleCaseLike = createAsyncThunk(
             );
             return { caseId, liked: res.data.liked };
         }
-        throw new Error("no token");
+        throw new Error('no token');
     },
 );
 
 const caseLikeSlice = createSlice({
-    name: "caseLikes",
+    name: 'caseLikes',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
