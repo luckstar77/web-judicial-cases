@@ -1,22 +1,23 @@
 import React, { useEffect } from 'react';
-import { Container, Typography } from '@mui/material';
-import ContentList from '../layout/ContentList';
-import { useAppDispatch } from '../hooks/redux';
+import { Typography, Box } from '@mui/material';
+import CaseCardList from '../component/CaseCardList';
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { fetchData } from '../redux/dataSlice';
 
 export default function DiscussionPage() {
     const dispatch = useAppDispatch();
+    const cases = useAppSelector((s) => s.data.list);
 
     useEffect(() => {
         dispatch(fetchData({}));
     }, [dispatch]);
 
     return (
-        <Container sx={{ py: 4 }}>
-            <Typography variant="h4" gutterBottom>
+        <Box sx={{ mt: '-48px', p: 2 }}>
+            <Typography variant="h4" gutterBottom textAlign="center">
                 討論區
             </Typography>
-            <ContentList />
-        </Container>
+            <CaseCardList items={cases} />
+        </Box>
     );
 }
