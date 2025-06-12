@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
     Container,
     Typography,
@@ -7,11 +7,11 @@ import {
     Button,
     Snackbar,
     Alert,
-} from '@mui/material';
-import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { uploadCase, resetStatus } from '../redux/uploadSlice';
-import { setShowDialog } from '../redux/phoneSlice';
-import { USER_DIALOG_STATUS } from '../types/enums';
+} from "@mui/material";
+import { useAppDispatch, useAppSelector } from "../hooks/redux";
+import { uploadCase, resetStatus } from "../redux/uploadSlice";
+import { setShowDialog } from "../redux/phoneSlice";
+import { USER_DIALOG_STATUS } from "../types/enums";
 
 export default function UploadCasePage() {
     const dispatch = useAppDispatch();
@@ -19,19 +19,20 @@ export default function UploadCasePage() {
     const isLoggedIn = useAppSelector((s) => s.user.isLoggedIn);
 
     const [form, setForm] = useState({
-        defendantName: '',
-        defendantPhone: '',
-        defendantIdNo: '',
+        defendantName: "",
+        defendantPhone: "",
+        defendantIdNo: "",
         images: [] as File[],
     });
 
-    const handleChange = (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (key === 'images' && e.target.files) {
-            setForm({ ...form, images: Array.from(e.target.files) });
-        } else {
-            setForm({ ...form, [key]: e.target.value });
-        }
-    };
+    const handleChange =
+        (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+            if (key === "images" && e.target.files) {
+                setForm({ ...form, images: Array.from(e.target.files) });
+            } else {
+                setForm({ ...form, [key]: e.target.value });
+            }
+        };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -54,26 +55,72 @@ export default function UploadCasePage() {
             <Box
                 component="form"
                 onSubmit={handleSubmit}
-                sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 600 }}
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 2,
+                    maxWidth: 600,
+                }}
             >
-                <TextField label="被告姓名" value={form.defendantName} onChange={handleChange('defendantName')} required />
-                <TextField label="被告電話" value={form.defendantPhone} onChange={handleChange('defendantPhone')} required />
-                <TextField label="被告身分證字號" value={form.defendantIdNo} onChange={handleChange('defendantIdNo')} required />
+                <TextField
+                    label="被告姓名"
+                    value={form.defendantName}
+                    onChange={handleChange("defendantName")}
+                    required
+                />
+                <TextField
+                    label="被告電話"
+                    value={form.defendantPhone}
+                    onChange={handleChange("defendantPhone")}
+                    required
+                />
+                <TextField
+                    label="被告身分證字號"
+                    value={form.defendantIdNo}
+                    onChange={handleChange("defendantIdNo")}
+                    required
+                />
                 <Button variant="contained" component="label">
                     上傳圖片
-                    <input hidden multiple type="file" accept="image/*" onChange={handleChange('images')} />
+                    <input
+                        hidden
+                        multiple
+                        type="file"
+                        accept="image/*"
+                        onChange={handleChange("images")}
+                    />
                 </Button>
-                <Button type="submit" variant="contained" disabled={status === 'loading'}>
+                <Button
+                    type="submit"
+                    variant="contained"
+                    disabled={status === "loading"}
+                >
                     送出
                 </Button>
             </Box>
-            <Snackbar open={status === 'succeeded'} autoHideDuration={2000} onClose={handleClose}>
-                <Alert severity="success" onClose={handleClose} sx={{ width: '100%' }}>
+            <Snackbar
+                open={status === "succeeded"}
+                autoHideDuration={2000}
+                onClose={handleClose}
+            >
+                <Alert
+                    severity="success"
+                    onClose={handleClose}
+                    sx={{ width: "100%" }}
+                >
                     上傳成功
                 </Alert>
             </Snackbar>
-            <Snackbar open={status === 'failed'} autoHideDuration={2000} onClose={handleClose}>
-                <Alert severity="error" onClose={handleClose} sx={{ width: '100%' }}>
+            <Snackbar
+                open={status === "failed"}
+                autoHideDuration={2000}
+                onClose={handleClose}
+            >
+                <Alert
+                    severity="error"
+                    onClose={handleClose}
+                    sx={{ width: "100%" }}
+                >
                     {error}
                 </Alert>
             </Snackbar>

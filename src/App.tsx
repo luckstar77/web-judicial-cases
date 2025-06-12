@@ -1,14 +1,14 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import { store } from './redux';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from "react";
+import { Provider } from "react-redux";
+import { store } from "./redux";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import AppLayout from './layout/AppLayout';
-import AllLayout from './pages/HomePage'; // 原本首頁
-import FAQPage from './pages/FAQPage';
-import AboutPage from './pages/AboutPage';
-import UploadCasePage from './pages/UploadCasePage';
-import DiscussionPage from './pages/DiscussionPage';
+import AppLayout from "./layout/AppLayout";
+import AllLayout from "./pages/HomePage"; // 原本首頁
+import FAQPage from "./pages/FAQPage";
+import AboutPage from "./pages/AboutPage";
+import UploadCasePage from "./pages/UploadCasePage";
+import DiscussionPage from "./pages/DiscussionPage";
 
 export default function App() {
     return (

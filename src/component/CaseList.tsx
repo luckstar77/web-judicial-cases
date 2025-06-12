@@ -1,7 +1,15 @@
-import React, { useState } from 'react';
-import { Link, List, ListItem, ListItemText, Typography, IconButton, Box } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import { styled } from '@mui/material/styles';
+import React, { useState } from "react";
+import {
+    Link,
+    List,
+    ListItem,
+    ListItemText,
+    Typography,
+    IconButton,
+    Box,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { styled } from "@mui/material/styles";
 import {
     Dialog,
     DialogTitle,
@@ -9,10 +17,10 @@ import {
     DialogContentText,
     DialogActions,
     Button,
-} from '@mui/material';
-import { Theme } from '@mui/material/styles';
-import OutlinedCard from './OutlinedCard';
-import CaseComments from './CaseComments';
+} from "@mui/material";
+import { Theme } from "@mui/material/styles";
+import OutlinedCard from "./OutlinedCard";
+import CaseComments from "./CaseComments";
 type Props = {
     items: any[];
     search: string;
@@ -24,7 +32,7 @@ type ListItemButtonProps = {
 };
 
 const ListItemButton = styled(ListItem)<ListItemButtonProps>(({ theme }) => ({
-    cursor: 'pointer',
+    cursor: "pointer",
 }));
 
 function ExampleList(props: Props) {
@@ -53,7 +61,7 @@ function ExampleList(props: Props) {
 
     return (
         <>
-            <List style={{ overflow: 'auto' }}>
+            <List style={{ overflow: "auto" }}>
                 {items.map((item) => (
                     <ListItemButton
                         key={item.id}
@@ -62,23 +70,28 @@ function ExampleList(props: Props) {
                         <ListItemText
                             primary={
                                 // <RentalCaseCard {...item} search={search} />
-                                <OutlinedCard {...item} search={search}
+                                <OutlinedCard
+                                    {...item}
+                                    search={search}
                                     id={item.id}
-                                    onCommentClick={handleCommentClick} />
+                                    onCommentClick={handleCommentClick}
+                                />
                             }
                         />
                     </ListItemButton>
                 ))}
             </List>
             {selectedItem && (
-                <Dialog
-                    open
-                    onClose={handleClose}
-                    maxWidth="lg"
-                    fullWidth
-                >
-                    <DialogTitle sx={{ m: 0, p: 2, display: 'flex', alignItems: 'center' }}>
-      案由 / 留言
+                <Dialog open onClose={handleClose} maxWidth="lg" fullWidth>
+                    <DialogTitle
+                        sx={{
+                            m: 0,
+                            p: 2,
+                            display: "flex",
+                            alignItems: "center",
+                        }}
+                    >
+                        案由 / 留言
                         <Box flexGrow={1} />
                         <IconButton size="small" onClick={handleClose}>
                             <CloseIcon fontSize="small" />
@@ -89,9 +102,9 @@ function ExampleList(props: Props) {
                         dividers
                         sx={{
                             p: 0,
-                            display: 'flex',
-                            flexDirection: { xs: 'column', md: 'row' },
-                            height: '60vh',
+                            display: "flex",
+                            flexDirection: { xs: "column", md: "row" },
+                            height: "60vh",
                         }}
                     >
                         {/* 左側：案例內容 */}
@@ -100,16 +113,20 @@ function ExampleList(props: Props) {
                             p={2}
                             sx={{
                                 // 在 md 尺寸以上顯示 1px 實線，其他尺寸不顯示
-                                borderRight: { xs: 'none', md: '1px solid' },
+                                borderRight: { xs: "none", md: "1px solid" },
                                 // 邊框顏色
-                                borderColor: 'divider',
-                                overflowY: 'auto',
-                                bgcolor: 'grey.50',
+                                borderColor: "divider",
+                                overflowY: "auto",
+                                bgcolor: "grey.50",
                             }}
                         >
                             <Typography
                                 component="pre"
-                                sx={{ whiteSpace: 'pre-wrap', fontFamily: 'inherit', lineHeight: 1.6 }}
+                                sx={{
+                                    whiteSpace: "pre-wrap",
+                                    fontFamily: "inherit",
+                                    lineHeight: 1.6,
+                                }}
                             >
                                 {selectedItem.jfull}
                             </Typography>
@@ -120,8 +137,8 @@ function ExampleList(props: Props) {
                             flex={1}
                             p={2}
                             sx={{
-                                overflowY: 'auto',
-                                bgcolor: 'background.paper',
+                                overflowY: "auto",
+                                bgcolor: "background.paper",
                             }}
                         >
                             <CaseComments caseId={selectedItem.id} />
@@ -130,7 +147,7 @@ function ExampleList(props: Props) {
 
                     <DialogActions>
                         <Button onClick={handleClose} variant="contained">
-        關閉
+                            關閉
                         </Button>
                     </DialogActions>
                 </Dialog>
