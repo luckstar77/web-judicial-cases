@@ -17,7 +17,7 @@ import {
     Balance as BalanceIcon,
 } from '@mui/icons-material';
 import WinnerTypo from './WinnerTypo';
-import { fetchComments, selectCommentsByCase } from '../redux/commentSlice';
+import { fetchComments, selectCommentsByFileset } from '../redux/commentSlice';
 import { fetchLikeCount, fetchLikeStatus, toggleLike } from '../redux/likeSlice';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { setShowDialog } from '../redux/phoneSlice';
@@ -46,7 +46,7 @@ export default function OutlinedCard(props: Props) {
     // 從 Redux 讀取此 fileset 的留言列表，並取長度
     const dispatch = useAppDispatch();
     const isLoggedIn = useAppSelector((s) => s.user?.isLoggedIn);
-    const comments = useAppSelector(selectCommentsByCase(id));
+    const comments = useAppSelector(selectCommentsByFileset(id));
     const commentCount = comments.length;
     const isWinPlaintiff = win === 'plaintiff' && search === plaintiff;
     const isWinDefendant = win === 'defendant' && search === defendant;
