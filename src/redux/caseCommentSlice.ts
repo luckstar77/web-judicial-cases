@@ -103,4 +103,3 @@ export default caseCommentSlice.reducer;
 
 export const selectCaseComments = (id: number) => (state: RootState) =>
   state.caseComments.items[id] ?? [];
-export { fetchCaseComments, addCaseComment, selectCaseComments };

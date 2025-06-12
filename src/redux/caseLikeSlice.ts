@@ -88,4 +88,3 @@ const caseLikeSlice = createSlice({
 });
 
 export default caseLikeSlice.reducer;
-export { fetchCaseLikeCount, fetchCaseLikeStatus, toggleCaseLike };
