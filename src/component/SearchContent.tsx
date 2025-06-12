@@ -12,7 +12,7 @@ import { Button } from '@mui/material';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
-    fetchData,
+    fetchCases,
     setSearch,
     updateSearchCompare,
     updateSearchMode,
@@ -99,7 +99,7 @@ function App() {
                                     dispatch(
                                         updateSearchCompare(search)
                                     );
-                                    dispatch(fetchData({ search }));
+                                    dispatch(fetchCases({ search }));
                                     event.preventDefault();
                                 }
                             }}
@@ -116,7 +116,7 @@ function App() {
                                                     )
                                                 );
                                                 dispatch(
-                                                    fetchData({
+                                                    fetchCases({
                                                         search,
                                                     })
                                                 );

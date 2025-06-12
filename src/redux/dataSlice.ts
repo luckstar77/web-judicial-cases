@@ -2,20 +2,27 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL;
-const CASES_API_URL = `${API_URL}/case`;
+const CASES_API_URL = `${API_URL}/cases`;
+const CASE_API_URL = `${API_URL}/case`;
 
-// 創建一個非同步 thunk action，該 action 將為我們的 slice 取得資料
-export const fetchData: any = createAsyncThunk(
-    'data/fetchData',
+// 取得首頁案例列表 (/cases)
+export const fetchCases: any = createAsyncThunk(
+    'data/fetchCases',
     async (params, thunkAPI) => {
-        const response = await axios.get(CASES_API_URL, {
-            params: params, // 这里我们将params传递给axios的get方法，axios会自动处理参数并将它们添加到URL后面
-        }); // 替換為你的 API endpoint
+        const response = await axios.get(CASES_API_URL, { params });
         return response.data;
     }
 );
 
-// 創建我們的 data slice
+// 取得討論區案例列表 (/case)
+export const fetchData: any = createAsyncThunk(
+    'data/fetchData',
+    async (params, thunkAPI) => {
+        const response = await axios.get(CASE_API_URL, { params });
+        return response.data;
+    }
+);
+
 export const dataSlice = createSlice({
     name: 'data',
     initialState: {
@@ -44,11 +51,20 @@ export const dataSlice = createSlice({
             })
             .addCase(fetchData.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                state.list = action.payload; // 在這裡假設 response.data 是陣列
+                state.list = action.payload;
             })
-            .addCase(fetchData.rejected, (state, action) => {
+            .addCase(fetchData.rejected, (state) => {
                 state.status = 'failed';
-                // state.error = action.error.message;
+            })
+            .addCase(fetchCases.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchCases.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.list = action.payload;
+            })
+            .addCase(fetchCases.rejected, (state) => {
+                state.status = 'failed';
             });
     },
 });
