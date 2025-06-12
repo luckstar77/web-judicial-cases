@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL;
-const CASES_API_URL = `${API_URL}/cases`;
+const CASES_API_URL = `${API_URL}/case`;
 
 // 創建一個非同步 thunk action，該 action 將為我們的 slice 取得資料
 export const fetchData: any = createAsyncThunk(

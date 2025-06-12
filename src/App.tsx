@@ -8,6 +8,7 @@ import AllLayout from './pages/HomePage'; // 原本首頁
 import FAQPage from './pages/FAQPage';
 import AboutPage from './pages/AboutPage';
 import UploadCasePage from './pages/UploadCasePage';
+import DiscussionPage from './pages/DiscussionPage';
 
 export default function App() {
     return (
@@ -19,6 +20,7 @@ export default function App() {
                         <Route index element={<AllLayout />} />
                         <Route path="faq" element={<FAQPage />} />
                         <Route path="about" element={<AboutPage />} />
+                        <Route path="cases" element={<DiscussionPage />} />
                         <Route path="upload" element={<UploadCasePage />} />
                         {/* 其它既有子路由也搬進來即可 */}
                     </Route>

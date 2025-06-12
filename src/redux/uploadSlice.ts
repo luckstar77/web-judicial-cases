@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL;
-const UPLOAD_API_URL = `${API_URL}/cases`;
+const UPLOAD_API_URL = `${API_URL}/case`;
 
 interface UploadState {
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
@@ -13,15 +13,30 @@ const initialState: UploadState = {
     status: 'idle',
 };
 
-export const uploadCase = createAsyncThunk<any, any, { rejectValue: string }>(
+export interface UploadPayload {
+    defendantName: string;
+    defendantPhone: string;
+    defendantIdNo: string;
+    images: File[];
+}
+
+export const uploadCase = createAsyncThunk<any, UploadPayload, { rejectValue: string }>(
     'upload/uploadCase',
     async (data, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem('token');
+
+            const formData = new FormData();
+            formData.append('defendantName', data.defendantName);
+            formData.append('defendantPhone', data.defendantPhone);
+            formData.append('defendantIdNo', data.defendantIdNo);
+            data.images.forEach((f) => formData.append('images', f));
+
             const config = token
-                ? { headers: { Authorization: `Bearer ${token}` } }
-                : undefined;
-            const response = await axios.post(UPLOAD_API_URL, data, config);
+                ? { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } }
+                : { headers: { 'Content-Type': 'multipart/form-data' } };
+
+            const response = await axios.post(UPLOAD_API_URL, formData, config);
             return response.data;
         } catch (err: any) {
             return rejectWithValue(err.message);

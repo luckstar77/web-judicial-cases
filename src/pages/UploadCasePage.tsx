@@ -5,7 +5,6 @@ import {
     TextField,
     Box,
     Button,
-    MenuItem,
     Snackbar,
     Alert,
 } from '@mui/material';
@@ -20,18 +19,18 @@ export default function UploadCasePage() {
     const isLoggedIn = useAppSelector((s) => s.user.isLoggedIn);
 
     const [form, setForm] = useState({
-        jtitle: '',
-        jyear: '',
-        plaintiff: '',
-        defendant: '',
-        rent: '',
-        city: '',
-        win: 'plaintiff',
-        jfull: '',
+        defendantName: '',
+        defendantPhone: '',
+        defendantIdNo: '',
+        images: [] as File[],
     });
 
     const handleChange = (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
-        setForm({ ...form, [key]: e.target.value });
+        if (key === 'images' && e.target.files) {
+            setForm({ ...form, images: Array.from(e.target.files) });
+        } else {
+            setForm({ ...form, [key]: e.target.value });
+        }
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -40,7 +39,7 @@ export default function UploadCasePage() {
             dispatch(setShowDialog(USER_DIALOG_STATUS.PHONE_AUTH));
             return;
         }
-        dispatch(uploadCase({ ...form, rent: Number(form.rent) }));
+        dispatch(uploadCase(form));
     };
 
     const handleClose = () => {
@@ -57,28 +56,13 @@ export default function UploadCasePage() {
                 onSubmit={handleSubmit}
                 sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 600 }}
             >
-                <TextField label="案由" value={form.jtitle} onChange={handleChange('jtitle')} required />
-                <TextField label="年度" value={form.jyear} onChange={handleChange('jyear')} required />
-                <TextField label="原告" value={form.plaintiff} onChange={handleChange('plaintiff')} required />
-                <TextField label="被告" value={form.defendant} onChange={handleChange('defendant')} required />
-                <TextField label="租金" type="number" value={form.rent} onChange={handleChange('rent')} required />
-                <TextField label="地區" value={form.city} onChange={handleChange('city')} required />
-                <TextField
-                    select
-                    label="勝訴方"
-                    value={form.win}
-                    onChange={handleChange('win')}
-                >
-                    <MenuItem value="plaintiff">原告</MenuItem>
-                    <MenuItem value="defendant">被告</MenuItem>
-                </TextField>
-                <TextField
-                    label="判決全文"
-                    value={form.jfull}
-                    onChange={handleChange('jfull')}
-                    multiline
-                    minRows={3}
-                />
+                <TextField label="被告姓名" value={form.defendantName} onChange={handleChange('defendantName')} required />
+                <TextField label="被告電話" value={form.defendantPhone} onChange={handleChange('defendantPhone')} required />
+                <TextField label="被告身分證字號" value={form.defendantIdNo} onChange={handleChange('defendantIdNo')} required />
+                <Button variant="contained" component="label">
+                    上傳圖片
+                    <input hidden multiple type="file" accept="image/*" onChange={handleChange('images')} />
+                </Button>
                 <Button type="submit" variant="contained" disabled={status === 'loading'}>
                     送出
                 </Button>

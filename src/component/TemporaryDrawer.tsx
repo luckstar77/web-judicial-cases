@@ -78,6 +78,13 @@ export default function TemporaryDrawer() {
                         <ListItemText primary="關於我們" />
                     </ListItemButton>
                 </ListItem>
+                {/* 討論區 */}
+                <ListItem disablePadding>
+                    <ListItemButton component={RouterLink} to="/cases">
+                        <ListItemIcon><InboxIcon /></ListItemIcon>
+                        <ListItemText primary="討論區" />
+                    </ListItemButton>
+                </ListItem>
                 {/* 上傳案例 */}
                 <ListItem disablePadding>
                     <ListItemButton component={RouterLink} to="/upload">

@@ -3,12 +3,13 @@ import axios from 'axios';
 import { RootState } from './';              // store 型別
 
 const API_URL = process.env.REACT_APP_API_URL;
-const COMMENT_API_URL = `${API_URL}/comment`;
+const COMMENT_API_URL = `${API_URL}/case`;
 
 export interface Comment {
   id: number;
   userId: string;
-  filesetId: number;
+  filesetId?: number;
+  caseId?: number;
   content: string;
   createdAt: string;
   name?: string;
@@ -17,7 +18,7 @@ export interface Comment {
 }
 
 interface CommentState {
-  items: Record<number, Comment[]>;  // key = filesetId
+  items: Record<number, Comment[]>;  // key = caseId
   loading: boolean;
   error?: string | null;
 }
@@ -32,9 +33,11 @@ export const fetchComments = createAsyncThunk<
   Comment[],
   number,
   { rejectValue: string }
->('comments/fetch', async (filesetId, { rejectWithValue }) => {
+>('comments/fetch', async (caseId, { rejectWithValue }) => {
     try {
-        const { data } = await axios.get<Comment[]>(`${COMMENT_API_URL}/${filesetId}`);
+        const { data } = await axios.get<Comment[]>(
+            `${COMMENT_API_URL}/${caseId}/comments`
+        );
         return data;
     } catch (err: any) {
         return rejectWithValue(err.message);
@@ -43,9 +46,9 @@ export const fetchComments = createAsyncThunk<
 
 export const addComment = createAsyncThunk<
   Comment | any,
-  { filesetId: number; content: string },
+  { caseId: number; content: string },
   { rejectValue: string; state: RootState }
->('comments/add', async ({ filesetId, content }, { rejectWithValue }) => {
+>('comments/add', async ({ caseId, content }, { rejectWithValue }) => {
     try {
         const token = localStorage.getItem('token');
         if (token) {
@@ -56,11 +59,12 @@ export const addComment = createAsyncThunk<
                 },
             };
 
-            const { data } = await axios.post<Comment>(COMMENT_API_URL, {
-                filesetId: filesetId,
-                content,
-            }, config);
-            
+            const { data } = await axios.post<Comment>(
+                `${COMMENT_API_URL}/${caseId}/comments`,
+                { content },
+                config
+            );
+
             return data;
 
         }
@@ -88,7 +92,7 @@ const commentSlice = createSlice({
             .addCase(fetchComments.fulfilled, (state, { payload }) => {
                 state.loading = false;
                 if (payload.length) {
-                    state.items[payload[0].filesetId] = payload;
+                    state.items[payload[0].filesetId || payload[0].caseId] = payload;
                 }
             })
             .addCase(fetchComments.rejected, (state, { payload }) => {
@@ -96,8 +100,9 @@ const commentSlice = createSlice({
                 state.error = payload ?? 'error';
             })
             .addCase(addComment.fulfilled, (state, { payload }) => {
-                const list = state.items[payload.filesetId] ?? [];
-                state.items[payload.filesetId] = [payload, ...list];
+                const id = payload.filesetId ?? payload.caseId;
+                const list = state.items[id] ?? [];
+                state.items[id] = [payload, ...list];
             });
     },
 });
@@ -107,4 +112,8 @@ export default commentSlice.reducer;
 
 // selector
 export const selectCommentsByFileset = (id: number) => (state: RootState) =>
+    state.comments.items[id] ?? [];
+
+// alias for new api
+export const selectCommentsByCase = (id: number) => (state: RootState) =>
     state.comments.items[id] ?? [];
