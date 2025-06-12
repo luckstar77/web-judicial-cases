@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import { Theme } from '@mui/material/styles';
 import OutlinedCard from './OutlinedCard';
-import JudicialFilesetComments from './JudicialFilesetComments';
+import CaseComments from './CaseComments';
 type Props = {
     items: any[];
     search: string;
@@ -124,7 +124,7 @@ function ExampleList(props: Props) {
                                 bgcolor: 'background.paper',
                             }}
                         >
-                            <JudicialFilesetComments filesetId={selectedItem.id} />
+                            <CaseComments caseId={selectedItem.id} />
                         </Box>
                     </DialogContent>
 

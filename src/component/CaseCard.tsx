@@ -11,10 +11,10 @@ import {
     Box,
 } from '@mui/material';
 import { Favorite as FavoriteIcon, Comment as CommentIcon } from '@mui/icons-material';
-import JudicialFilesetComments from './JudicialFilesetComments';
+import CaseComments from './CaseComments';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { fetchLikeCount, fetchLikeStatus, toggleLike } from '../redux/likeSlice';
-import { selectCommentsByCase } from '../redux/commentSlice';
+import { fetchCaseLikeCount, fetchCaseLikeStatus, toggleCaseLike } from '../redux/caseLikeSlice';
+import { selectCaseComments } from '../redux/caseCommentSlice';
 import { setShowDialog } from '../redux/phoneSlice';
 import { USER_DIALOG_STATUS } from '../types/enums';
 
@@ -31,14 +31,14 @@ interface Props {
 const CaseCard: React.FC<Props> = ({ item }) => {
     const dispatch = useAppDispatch();
     const isLoggedIn = useAppSelector((s) => s.user?.isLoggedIn);
-    const comments = useAppSelector(selectCommentsByCase(item.id));
-    const likeCount = useAppSelector((s) => s.likes.counts[item.id] || 0);
-    const liked = useAppSelector((s) => s.likes.liked[item.id] || false);
-    const loading = useAppSelector((s) => s.likes.loading[item.id] || false);
+    const comments = useAppSelector(selectCaseComments(item.id));
+    const likeCount = useAppSelector((s) => s.caseLikes.counts[item.id] || 0);
+    const liked = useAppSelector((s) => s.caseLikes.liked[item.id] || false);
+    const loading = useAppSelector((s) => s.caseLikes.loading[item.id] || false);
 
     useEffect(() => {
-        dispatch(fetchLikeCount(item.id));
-        dispatch(fetchLikeStatus(item.id));
+        dispatch(fetchCaseLikeCount(item.id));
+        dispatch(fetchCaseLikeStatus(item.id));
     }, [dispatch, item.id]);
 
     const handleToggleLike = () => {
@@ -47,7 +47,7 @@ const CaseCard: React.FC<Props> = ({ item }) => {
             return;
         }
         if (!loading) {
-            dispatch(toggleLike({ filesetId: item.id }));
+            dispatch(toggleCaseLike({ caseId: item.id }));
         }
     };
 
@@ -68,7 +68,7 @@ const CaseCard: React.FC<Props> = ({ item }) => {
                 </IconButton>
             </CardActions>
             <CardContent>
-                <JudicialFilesetComments filesetId={item.id} />
+                <CaseComments caseId={item.id} />
             </CardContent>
         </Card>
     );

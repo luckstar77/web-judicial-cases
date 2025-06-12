@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL;
-const CASE_API_URL = `${API_URL}/case`;
+const LIKES_API_URL = `${API_URL}/likes`;
 
 interface LikeState {
   counts: Record<string, number>;
@@ -25,13 +25,14 @@ export const fetchLikeStatus = createAsyncThunk<
     try {
         const token = localStorage.getItem('token');
         if (token) {
+            // Set the Authorization header with the token
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             };
 
-            const resp = await axios.get<{ liked: boolean }>(`${CASE_API_URL}/${filesetId}`, config);
+            const resp = await axios.get<{ liked: boolean }>(`${LIKES_API_URL}/${filesetId}/status`, config);
             return { filesetId, liked: resp.data.liked };
         }
         throw new Error('no token');
@@ -43,8 +44,8 @@ export const fetchLikeStatus = createAsyncThunk<
 export const fetchLikeCount = createAsyncThunk(
     'likes/fetchCount',
     async (filesetId: number) => {
-        const res = await axios.get(`${CASE_API_URL}/${filesetId}`);
-        return { filesetId, count: res.data.likeCount };
+        const res = await axios.get(`${LIKES_API_URL}/${filesetId}`);
+        return { filesetId, count: res.data.count };
     }
 );
 
@@ -53,13 +54,14 @@ export const toggleLike = createAsyncThunk(
     async ({ filesetId }: { filesetId: number }) => {
         const token = localStorage.getItem('token');
         if (token) {
+            // Set the Authorization header with the token
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             };
 
-            const res = await axios.post(`${CASE_API_URL}/${filesetId}/like`, {}, config);
+            const res = await axios.post(`${LIKES_API_URL}/${filesetId}`, {}, config);
             return { filesetId, liked: res.data.liked };
         }
         throw new Error('no token');

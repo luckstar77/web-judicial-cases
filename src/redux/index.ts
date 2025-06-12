@@ -4,6 +4,8 @@ import searchReducer from './searchSlice';
 import phoneReducer from './phoneSlice';
 import commentsReducer from './commentSlice';
 import likesReducer from './likeSlice';
+import caseCommentsReducer from './caseCommentSlice';
+import caseLikesReducer from './caseLikeSlice';
 import uploadReducer from './uploadSlice';
 
 export const store = configureStore({
@@ -13,6 +15,8 @@ export const store = configureStore({
         user: phoneReducer,
         comments: commentsReducer,
         likes: likesReducer,
+        caseComments: caseCommentsReducer,
+        caseLikes: caseLikesReducer,
         upload: uploadReducer,
     },
 });

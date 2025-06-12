@@ -26,7 +26,7 @@ const CommentForm: React.FC<Props> = ({ filesetId }) => {
         }
         if (!content.trim()) return;
         setLoading(true);
-        await dispatch(addComment({ caseId: filesetId, content }));
+        await dispatch(addComment({ filesetId, content }));
         setLoading(false);
         setContent('');
     };
