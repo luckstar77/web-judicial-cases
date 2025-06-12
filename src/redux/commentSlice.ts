@@ -92,7 +92,8 @@ const commentSlice = createSlice({
             .addCase(fetchComments.fulfilled, (state, { payload }) => {
                 state.loading = false;
                 if (payload.length) {
-                    state.items[payload[0].filesetId || payload[0].caseId] = payload;
+                    const id = (payload[0].caseId ?? payload[0].filesetId) as number;
+                    state.items[id] = payload;
                 }
             })
             .addCase(fetchComments.rejected, (state, { payload }) => {
@@ -100,7 +101,7 @@ const commentSlice = createSlice({
                 state.error = payload ?? 'error';
             })
             .addCase(addComment.fulfilled, (state, { payload }) => {
-                const id = payload.filesetId ?? payload.caseId;
+                const id = (payload.caseId ?? payload.filesetId) as number;
                 const list = state.items[id] ?? [];
                 state.items[id] = [payload, ...list];
             });

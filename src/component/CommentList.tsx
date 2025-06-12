@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { fetchComments, selectCommentsByFileset } from '../redux/commentSlice';
+import { fetchComments, selectCommentsByCase } from '../redux/commentSlice';
 
 interface Props {
   filesetId: number;
@@ -20,7 +20,7 @@ interface Props {
 
 const CommentList: React.FC<Props> = ({ filesetId }) => {
     const dispatch = useAppDispatch();
-    const comments = useAppSelector(selectCommentsByFileset(filesetId));
+    const comments = useAppSelector(selectCommentsByCase(filesetId));
     const loading = useAppSelector((s) => s.comments.loading);
 
     useEffect(() => {
