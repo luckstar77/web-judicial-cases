@@ -31,17 +31,17 @@ export default function TemporaryDrawer() {
 
     const toggleDrawer =
         (anchor: Anchor, open: boolean) =>
-        (event: React.KeyboardEvent | React.MouseEvent) => {
-            if (
-                event.type === 'keydown' &&
+            (event: React.KeyboardEvent | React.MouseEvent) => {
+                if (
+                    event.type === 'keydown' &&
                 ((event as React.KeyboardEvent).key === 'Tab' ||
                     (event as React.KeyboardEvent).key === 'Shift')
-            ) {
-                return;
-            }
+                ) {
+                    return;
+                }
 
-            setState({ ...state, [anchor]: open });
-        };
+                setState({ ...state, [anchor]: open });
+            };
 
     const list = (anchor: Anchor) => (
         <Box

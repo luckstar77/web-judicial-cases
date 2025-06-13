@@ -13,7 +13,7 @@ export default function DiscussionPage() {
     }, [dispatch]);
 
     return (
-        <Box sx={{ mt: "-48px", p: 2 }}>
+        <Box sx={{ mt: '-48px', p: 2 }}>
             <Typography variant="h4" gutterBottom textAlign="center">
                 討論區
             </Typography>

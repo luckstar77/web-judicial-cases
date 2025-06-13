@@ -93,33 +93,33 @@ export default function UploadCasePage() {
                 <Button
                     type="submit"
                     variant="contained"
-                    disabled={status === "loading"}
+                    disabled={status === 'loading'}
                 >
                     送出
                 </Button>
             </Box>
             <Snackbar
-                open={status === "succeeded"}
+                open={status === 'succeeded'}
                 autoHideDuration={2000}
                 onClose={handleClose}
             >
                 <Alert
                     severity="success"
                     onClose={handleClose}
-                    sx={{ width: "100%" }}
+                    sx={{ width: '100%' }}
                 >
                     上傳成功
                 </Alert>
             </Snackbar>
             <Snackbar
-                open={status === "failed"}
+                open={status === 'failed'}
                 autoHideDuration={2000}
                 onClose={handleClose}
             >
                 <Alert
                     severity="error"
                     onClose={handleClose}
-                    sx={{ width: "100%" }}
+                    sx={{ width: '100%' }}
                 >
                     {error}
                 </Alert>
