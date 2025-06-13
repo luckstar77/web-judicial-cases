@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Card,
     CardHeader,
     CardContent,
     CardActions,
-    CardMedia,
+    Dialog,
+    DialogContent,
+    Box,
     IconButton,
     Typography,
     CircularProgress,
@@ -12,6 +14,8 @@ import {
 import {
     Favorite as FavoriteIcon,
     Comment as CommentIcon,
+    ArrowBackIosNew as ArrowBackIosNewIcon,
+    ArrowForwardIos as ArrowForwardIosIcon,
 } from '@mui/icons-material';
 import CaseComments from './CaseComments';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
@@ -46,6 +50,32 @@ const CaseCard: React.FC<Props> = ({ item }) => {
         (s) => s.caseLikes.loading[item.id] || false,
     );
 
+    const [viewerIndex, setViewerIndex] = useState<number | null>(null);
+
+    const openViewer = (idx: number) => {
+        setViewerIndex(idx);
+    };
+
+    const closeViewer = () => {
+        setViewerIndex(null);
+    };
+
+    const showPrev = () => {
+        setViewerIndex((prev) =>
+            prev !== null && item.images
+                ? (prev - 1 + item.images.length) % item.images.length
+                : prev,
+        );
+    };
+
+    const showNext = () => {
+        setViewerIndex((prev) =>
+            prev !== null && item.images
+                ? (prev + 1) % item.images.length
+                : prev,
+        );
+    };
+
     useEffect(() => {
         dispatch(fetchCaseLikeCount(item.id));
         dispatch(fetchCaseLikeStatus(item.id));
@@ -68,11 +98,23 @@ const CaseCard: React.FC<Props> = ({ item }) => {
                 subheader={`電話：${item.defendantPhone} / 身分證：${item.defendantIdNo}`}
             />
             {item.images && item.images.length > 0 && (
-                <CardMedia
-                    component="img"
-                    image={item.images[0]}
-                    sx={{ maxHeight: 300, objectFit: 'cover' }}
-                />
+                <Box sx={{ display: 'flex', gap: 1, p: 1, overflowX: 'auto' }}>
+                    {item.images.map((src, idx) => (
+                        <Box
+                            key={idx}
+                            component="img"
+                            src={src}
+                            onClick={() => openViewer(idx)}
+                            sx={{
+                                width: 80,
+                                height: 80,
+                                objectFit: 'cover',
+                                cursor: 'pointer',
+                                borderRadius: 1,
+                            }}
+                        />
+                    ))}
+                </Box>
             )}
             <CardActions disableSpacing>
                 <IconButton
@@ -95,6 +137,47 @@ const CaseCard: React.FC<Props> = ({ item }) => {
             <CardContent>
                 <CaseComments caseId={item.id} />
             </CardContent>
+            {item.images && (
+                <Dialog open={viewerIndex !== null} onClose={closeViewer}>
+                    <DialogContent>
+                        {viewerIndex !== null && (
+                            <Box
+                                sx={{ position: 'relative', textAlign: 'center' }}
+                            >
+                                <IconButton
+                                    onClick={showPrev}
+                                    disabled={item.images.length <= 1}
+                                    sx={{
+                                        position: 'absolute',
+                                        top: '50%',
+                                        left: 0,
+                                        transform: 'translateY(-50%)',
+                                    }}
+                                >
+                                    <ArrowBackIosNewIcon />
+                                </IconButton>
+                                <Box
+                                    component="img"
+                                    src={item.images[viewerIndex]}
+                                    sx={{ maxWidth: '80vw', maxHeight: '80vh' }}
+                                />
+                                <IconButton
+                                    onClick={showNext}
+                                    disabled={item.images.length <= 1}
+                                    sx={{
+                                        position: 'absolute',
+                                        top: '50%',
+                                        right: 0,
+                                        transform: 'translateY(-50%)',
+                                    }}
+                                >
+                                    <ArrowForwardIosIcon />
+                                </IconButton>
+                            </Box>
+                        )}
+                    </DialogContent>
+                </Dialog>
+            )}
         </Card>
     );
 };
