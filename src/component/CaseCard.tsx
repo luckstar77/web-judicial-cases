@@ -8,7 +8,6 @@ import {
     IconButton,
     Typography,
     CircularProgress,
-    Box,
 } from '@mui/material';
 import {
     Favorite as FavoriteIcon,
@@ -28,6 +27,8 @@ import { USER_DIALOG_STATUS } from '../types/enums';
 export interface CaseData {
     id: number;
     defendantName: string;
+    defendantPhone: string;
+    defendantIdNo: string;
     images?: string[];
 }
 
@@ -62,7 +63,10 @@ const CaseCard: React.FC<Props> = ({ item }) => {
 
     return (
         <Card sx={{ width: '100%', maxWidth: 600, mb: 3 }}>
-            <CardHeader title={`被告：${item.defendantName}`} />
+            <CardHeader
+                title={`被告：${item.defendantName}`}
+                subheader={`電話：${item.defendantPhone} / 身分證：${item.defendantIdNo}`}
+            />
             {item.images && item.images.length > 0 && (
                 <CardMedia
                     component="img"
