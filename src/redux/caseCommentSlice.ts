@@ -34,10 +34,10 @@ export const fetchCaseComments = createAsyncThunk<
     { rejectValue: string }
 >('caseComments/fetch', async (caseId, { rejectWithValue }) => {
     try {
-        const { data } = await axios.get<CaseComment[]>(
-            `${CASE_API_URL}/${caseId}/comments`,
+        const { data } = await axios.get<{ comments: CaseComment[] }>(
+            `${CASE_API_URL}/${caseId}`,
         );
-        return data;
+        return data.comments || [];
     } catch (err: any) {
         return rejectWithValue(err.message);
     }
