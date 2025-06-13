@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-import {
-    Link,
-    List,
-    ListItem,
-    ListItemText,
-    Typography,
-    IconButton,
-    Box,
-} from '@mui/material';
+import { Link, List, ListItem, ListItemText, Typography, IconButton, Box } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
 import {
@@ -20,7 +12,7 @@ import {
 } from '@mui/material';
 import { Theme } from '@mui/material/styles';
 import OutlinedCard from './OutlinedCard';
-import CaseComments from './CaseComments';
+import JudicialFilesetComments from './JudicialFilesetComments';
 type Props = {
     items: any[];
     search: string;
@@ -70,28 +62,23 @@ function ExampleList(props: Props) {
                         <ListItemText
                             primary={
                                 // <RentalCaseCard {...item} search={search} />
-                                <OutlinedCard
-                                    {...item}
-                                    search={search}
+                                <OutlinedCard {...item} search={search}
                                     id={item.id}
-                                    onCommentClick={handleCommentClick}
-                                />
+                                    onCommentClick={handleCommentClick} />
                             }
                         />
                     </ListItemButton>
                 ))}
             </List>
             {selectedItem && (
-                <Dialog open onClose={handleClose} maxWidth="lg" fullWidth>
-                    <DialogTitle
-                        sx={{
-                            m: 0,
-                            p: 2,
-                            display: 'flex',
-                            alignItems: 'center',
-                        }}
-                    >
-                        案由 / 留言
+                <Dialog
+                    open
+                    onClose={handleClose}
+                    maxWidth="lg"
+                    fullWidth
+                >
+                    <DialogTitle sx={{ m: 0, p: 2, display: 'flex', alignItems: 'center' }}>
+      案由 / 留言
                         <Box flexGrow={1} />
                         <IconButton size="small" onClick={handleClose}>
                             <CloseIcon fontSize="small" />
@@ -122,11 +109,7 @@ function ExampleList(props: Props) {
                         >
                             <Typography
                                 component="pre"
-                                sx={{
-                                    whiteSpace: 'pre-wrap',
-                                    fontFamily: 'inherit',
-                                    lineHeight: 1.6,
-                                }}
+                                sx={{ whiteSpace: 'pre-wrap', fontFamily: 'inherit', lineHeight: 1.6 }}
                             >
                                 {selectedItem.jfull}
                             </Typography>
@@ -141,13 +124,13 @@ function ExampleList(props: Props) {
                                 bgcolor: 'background.paper',
                             }}
                         >
-                            <CaseComments caseId={selectedItem.id} />
+                            <JudicialFilesetComments filesetId={selectedItem.id} />
                         </Box>
                     </DialogContent>
 
                     <DialogActions>
                         <Button onClick={handleClose} variant="contained">
-                            關閉
+        關閉
                         </Button>
                     </DialogActions>
                 </Dialog>

@@ -12,7 +12,7 @@ import { Button } from '@mui/material';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
-    fetchCases,
+    fetchData,
     setSearch,
     updateSearchCompare,
     updateSearchMode,
@@ -36,7 +36,7 @@ function App() {
     const [errorMessage, setErrorMessage] = React.useState('');
     const handleClose = (
         event?: React.SyntheticEvent | Event,
-        reason?: string,
+        reason?: string
     ) => {
         if (reason === 'clickaway') {
             return;
@@ -85,8 +85,10 @@ function App() {
                     <Box sx={{ marginTop: '16px' }}>
                         <TextField
                             onChange={(
-                                event: React.ChangeEvent<HTMLInputElement>,
-                            ) => dispatch(setSearch(event.target.value))}
+                                event: React.ChangeEvent<HTMLInputElement>
+                            ) =>
+                                dispatch(setSearch(event.target.value))
+                            }
                             value={search}
                             label="請輸入房東或房客姓名"
                             variant="outlined"
@@ -94,8 +96,10 @@ function App() {
                             fullWidth
                             onKeyUp={(event) => {
                                 if (event.key === 'Enter') {
-                                    dispatch(updateSearchCompare(search));
-                                    dispatch(fetchCases({ search }));
+                                    dispatch(
+                                        updateSearchCompare(search)
+                                    );
+                                    dispatch(fetchData({ search }));
                                     event.preventDefault();
                                 }
                             }}
@@ -107,12 +111,14 @@ function App() {
                                             aria-label="search"
                                             onClick={() => {
                                                 dispatch(
-                                                    updateSearchCompare(search),
+                                                    updateSearchCompare(
+                                                        search
+                                                    )
                                                 );
                                                 dispatch(
-                                                    fetchCases({
+                                                    fetchData({
                                                         search,
-                                                    }),
+                                                    })
                                                 );
                                             }}
                                         >

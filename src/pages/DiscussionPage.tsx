@@ -2,14 +2,14 @@ import React, { useEffect } from 'react';
 import { Typography, Box } from '@mui/material';
 import CaseCardList from '../component/CaseCardList';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { fetchData } from '../redux/dataSlice';
+import { fetchCaseList } from '../redux/caseSlice';
 
 export default function DiscussionPage() {
     const dispatch = useAppDispatch();
-    const cases = useAppSelector((s) => s.data.list);
+    const cases = useAppSelector((s) => s.cases.list);
 
     useEffect(() => {
-        dispatch(fetchData({}));
+        dispatch(fetchCaseList({}));
     }, [dispatch]);
 
     return (
