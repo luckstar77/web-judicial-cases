@@ -34,6 +34,7 @@ export interface CaseData {
     defendantPhone: string;
     defendantIdNo: string;
     images?: string[];
+    imageUrls?: string[];
 }
 
 interface Props {
@@ -50,6 +51,7 @@ const CaseCard: React.FC<Props> = ({ item }) => {
         (s) => s.caseLikes.loading[item.id] || false,
     );
 
+    const images = item.imageUrls || item.images || [];
     const [viewerIndex, setViewerIndex] = useState<number | null>(null);
 
     const openViewer = (idx: number) => {
@@ -62,16 +64,16 @@ const CaseCard: React.FC<Props> = ({ item }) => {
 
     const showPrev = () => {
         setViewerIndex((prev) =>
-            prev !== null && item.images
-                ? (prev - 1 + item.images.length) % item.images.length
+            prev !== null && images.length
+                ? (prev - 1 + images.length) % images.length
                 : prev,
         );
     };
 
     const showNext = () => {
         setViewerIndex((prev) =>
-            prev !== null && item.images
-                ? (prev + 1) % item.images.length
+            prev !== null && images.length
+                ? (prev + 1) % images.length
                 : prev,
         );
     };
@@ -97,9 +99,9 @@ const CaseCard: React.FC<Props> = ({ item }) => {
                 title={`被告：${item.defendantName}`}
                 subheader={`電話：${item.defendantPhone} / 身分證：${item.defendantIdNo}`}
             />
-            {item.images && item.images.length > 0 && (
+            {images.length > 0 && (
                 <Box sx={{ display: 'flex', gap: 1, p: 1, overflowX: 'auto' }}>
-                    {item.images.map((src, idx) => (
+                    {images.map((src, idx) => (
                         <Box
                             key={idx}
                             component="img"
@@ -137,7 +139,7 @@ const CaseCard: React.FC<Props> = ({ item }) => {
             <CardContent>
                 <CaseComments caseId={item.id} />
             </CardContent>
-            {item.images && (
+            {images.length > 0 && (
                 <Dialog open={viewerIndex !== null} onClose={closeViewer}>
                     <DialogContent>
                         {viewerIndex !== null && (
@@ -146,7 +148,7 @@ const CaseCard: React.FC<Props> = ({ item }) => {
                             >
                                 <IconButton
                                     onClick={showPrev}
-                                    disabled={item.images.length <= 1}
+                                    disabled={images.length <= 1}
                                     sx={{
                                         position: 'absolute',
                                         top: '50%',
@@ -158,12 +160,12 @@ const CaseCard: React.FC<Props> = ({ item }) => {
                                 </IconButton>
                                 <Box
                                     component="img"
-                                    src={item.images[viewerIndex]}
+                                    src={images[viewerIndex]}
                                     sx={{ maxWidth: '80vw', maxHeight: '80vh' }}
                                 />
                                 <IconButton
                                     onClick={showNext}
-                                    disabled={item.images.length <= 1}
+                                    disabled={images.length <= 1}
                                     sx={{
                                         position: 'absolute',
                                         top: '50%',
