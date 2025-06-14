@@ -3,7 +3,7 @@ import { Paper, Stack, TextField, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import SendIcon from '@mui/icons-material/Send';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { addCaseComment } from '../redux/caseCommentSlice';
+import { addCaseComment, fetchCaseComments } from '../redux/caseCommentSlice';
 import { setShowDialog } from '../redux/phoneSlice';
 import { USER_DIALOG_STATUS } from '../types/enums';
 
@@ -26,6 +26,7 @@ const CaseCommentForm: React.FC<Props> = ({ caseId }) => {
         if (!content.trim()) return;
         setLoading(true);
         await dispatch(addCaseComment({ caseId, content }));
+        await dispatch(fetchCaseComments(caseId));
         setLoading(false);
         setContent('');
     };
