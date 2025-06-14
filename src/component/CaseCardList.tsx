@@ -1,9 +1,9 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import CaseCard from './CaseCard';
+import CaseCard, { CaseData } from './CaseCard';
 
 interface Props {
-    items: any[];
+    items: CaseData[];
 }
 
 const CaseCardList: React.FC<Props> = ({ items }) => {
