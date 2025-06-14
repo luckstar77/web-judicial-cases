@@ -4,6 +4,10 @@ import searchReducer from './searchSlice';
 import phoneReducer from './phoneSlice';
 import commentsReducer from './commentSlice';
 import likesReducer from './likeSlice';
+import caseCommentsReducer from './caseCommentSlice';
+import caseLikesReducer from './caseLikeSlice';
+import uploadReducer from './uploadSlice';
+import caseReducer from './caseSlice';
 
 export const store = configureStore({
     reducer: {
@@ -12,6 +16,10 @@ export const store = configureStore({
         user: phoneReducer,
         comments: commentsReducer,
         likes: likesReducer,
+        caseComments: caseCommentsReducer,
+        caseLikes: caseLikesReducer,
+        upload: uploadReducer,
+        cases: caseReducer,
     },
 });
 

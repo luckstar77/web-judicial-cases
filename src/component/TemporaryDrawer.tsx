@@ -13,9 +13,9 @@ import MailIcon from '@mui/icons-material/Mail';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import FacebookIcon from '@mui/icons-material/Facebook';
-import HomeIcon   from '@mui/icons-material/Home';
-import QuizIcon   from '@mui/icons-material/Quiz';
-import InfoIcon   from '@mui/icons-material/Info';
+import HomeIcon from '@mui/icons-material/Home';
+import QuizIcon from '@mui/icons-material/Quiz';
+import InfoIcon from '@mui/icons-material/Info';
 import Link from '@mui/material/Link';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -48,7 +48,7 @@ export default function TemporaryDrawer() {
             sx={{
                 width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250,
             }}
-            role="presentation"
+            role='presentation'
             onClick={toggleDrawer(anchor, false)}
             onKeyDown={toggleDrawer(anchor, false)}
         >
@@ -59,23 +59,45 @@ export default function TemporaryDrawer() {
                         <ListItemIcon>
                             <HomeIcon />
                         </ListItemIcon>
-                        <ListItemText primary="首頁" />
+                        <ListItemText primary='首頁' />
                     </ListItemButton>
                 </ListItem>
 
                 {/* FAQ */}
                 <ListItem disablePadding>
                     <ListItemButton component={RouterLink} to="/faq">
-                        <ListItemIcon><QuizIcon /></ListItemIcon>
-                        <ListItemText primary="FAQ" />
+                        <ListItemIcon>
+                            <QuizIcon />
+                        </ListItemIcon>
+                        <ListItemText primary='FAQ' />
                     </ListItemButton>
                 </ListItem>
 
                 {/* 關於我們 */}
                 <ListItem disablePadding>
                     <ListItemButton component={RouterLink} to="/about">
-                        <ListItemIcon><InfoIcon /></ListItemIcon>
+                        <ListItemIcon>
+                            <InfoIcon />
+                        </ListItemIcon>
                         <ListItemText primary="關於我們" />
+                    </ListItemButton>
+                </ListItem>
+                {/* 討論區 */}
+                <ListItem disablePadding>
+                    <ListItemButton component={RouterLink} to="/cases">
+                        <ListItemIcon>
+                            <InboxIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="討論區" />
+                    </ListItemButton>
+                </ListItem>
+                {/* 上傳案例 */}
+                <ListItem disablePadding>
+                    <ListItemButton component={RouterLink} to="/upload">
+                        <ListItemIcon>
+                            <InboxIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="上傳案例" />
                     </ListItemButton>
                 </ListItem>
                 <Link
@@ -100,9 +122,9 @@ export default function TemporaryDrawer() {
             {
                 <>
                     <IconButton
-                        size="large"
-                        edge="start"
-                        aria-label="menu"
+                        size='large'
+                        edge='start'
+                        aria-label='menu'
                         sx={{ mr: 2, color: 'white' }}
                         onClick={toggleDrawer('left', true)}
                     >
