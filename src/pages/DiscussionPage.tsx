@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Box, Button } from '@mui/material';
+import { Typography, Box, Fab } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import CaseCardList from '../component/CaseCardList';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { fetchCaseList } from '../redux/caseSlice';
@@ -28,13 +29,19 @@ export default function DiscussionPage() {
                     <Typography variant="h4" gutterBottom textAlign="center">
                         討論區
                     </Typography>
-                    <Button
-                        variant="contained"
-                        sx={{ mb: 2 }}
+                    <Fab
+                        color="primary"
+                        aria-label="add"
+                        sx={{
+                            position: 'fixed',
+                            bottom: 16,
+                            right: 16,
+                            zIndex: 1000,
+                        }}
                         onClick={() => setShowUpload(true)}
                     >
-                        上傳案例
-                    </Button>
+                        <AddIcon />
+                    </Fab>
                     <CaseCardList items={cases} />
                 </>
             )}
