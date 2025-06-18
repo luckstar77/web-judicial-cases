@@ -53,6 +53,7 @@ const CaseCard: React.FC<Props> = ({ item }) => {
 
     const images = item.imageUrls || item.images || [];
     const [viewerIndex, setViewerIndex] = useState<number | null>(null);
+    const [showComments, setShowComments] = useState(false);
 
     const openViewer = (idx: number) => {
         setViewerIndex(idx);
@@ -125,7 +126,7 @@ const CaseCard: React.FC<Props> = ({ item }) => {
                     {loading ? <CircularProgress size={24} /> : <FavoriteIcon />}
                     <Typography sx={{ ml: 0.5 }}>{likeCount}</Typography>
                 </IconButton>
-                <IconButton>
+                <IconButton onClick={() => setShowComments((prev) => !prev)}>
                     <CommentIcon />
                     <Typography sx={{ ml: 0.5 }}>{comments.length}</Typography>
                 </IconButton>
@@ -136,7 +137,7 @@ const CaseCard: React.FC<Props> = ({ item }) => {
                         {item.content}
                     </Typography>
                 )}
-                <CaseComments caseId={item.id} />
+                {showComments && <CaseComments caseId={item.id} />}
             </CardContent>
             {images.length > 0 && (
                 <Dialog open={viewerIndex !== null} onClose={closeViewer}>
