@@ -18,11 +18,20 @@ export default function UploadCasePage() {
     const { status, error } = useAppSelector((s) => s.upload);
     const isLoggedIn = useAppSelector((s) => s.user.isLoggedIn);
 
-    const [form, setForm] = useState({
+    const [form, setForm] = useState<{
+        title: string;
+        content: string;
+        defendantName: string;
+        defendantPhone: string;
+        defendantIdNo: string;
+        images: File[];
+    }>({
+        title: '',
+        content: '',
         defendantName: '',
         defendantPhone: '',
         defendantIdNo: '',
-        images: [] as File[],
+        images: [],
     });
 
     const handleChange =
@@ -62,6 +71,20 @@ export default function UploadCasePage() {
                     maxWidth: 600,
                 }}
             >
+                <TextField
+                    label="標題"
+                    value={form.title}
+                    onChange={handleChange('title')}
+                    required
+                />
+                <TextField
+                    label="內容"
+                    value={form.content}
+                    onChange={handleChange('content')}
+                    multiline
+                    rows={4}
+                    required
+                />
                 <TextField
                     label="被告姓名"
                     value={form.defendantName}
@@ -103,11 +126,7 @@ export default function UploadCasePage() {
                 autoHideDuration={2000}
                 onClose={handleClose}
             >
-                <Alert
-                    severity="success"
-                    onClose={handleClose}
-                    sx={{ width: '100%' }}
-                >
+                <Alert severity="success" onClose={handleClose} sx={{ width: '100%' }}>
                     上傳成功
                 </Alert>
             </Snackbar>
@@ -116,11 +135,7 @@ export default function UploadCasePage() {
                 autoHideDuration={2000}
                 onClose={handleClose}
             >
-                <Alert
-                    severity="error"
-                    onClose={handleClose}
-                    sx={{ width: '100%' }}
-                >
+                <Alert severity="error" onClose={handleClose} sx={{ width: '100%' }}>
                     {error}
                 </Alert>
             </Snackbar>

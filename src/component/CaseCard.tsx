@@ -30,6 +30,8 @@ import { USER_DIALOG_STATUS } from '../types/enums';
 
 export interface CaseData {
     id: number;
+    title?: string;
+    content?: string;
     defendantName: string;
     defendantPhone: string;
     defendantIdNo: string;
@@ -47,9 +49,7 @@ const CaseCard: React.FC<Props> = ({ item }) => {
     const comments = useAppSelector(selectCaseComments(item.id));
     const likeCount = useAppSelector((s) => s.caseLikes.counts[item.id] || 0);
     const liked = useAppSelector((s) => s.caseLikes.liked[item.id] || false);
-    const loading = useAppSelector(
-        (s) => s.caseLikes.loading[item.id] || false,
-    );
+    const loading = useAppSelector((s) => s.caseLikes.loading[item.id] || false);
 
     const images = item.imageUrls || item.images || [];
     const [viewerIndex, setViewerIndex] = useState<number | null>(null);
@@ -72,9 +72,7 @@ const CaseCard: React.FC<Props> = ({ item }) => {
 
     const showNext = () => {
         setViewerIndex((prev) =>
-            prev !== null && images.length
-                ? (prev + 1) % images.length
-                : prev,
+            prev !== null && images.length ? (prev + 1) % images.length : prev,
         );
     };
 
@@ -96,8 +94,8 @@ const CaseCard: React.FC<Props> = ({ item }) => {
     return (
         <Card sx={{ width: '100%', maxWidth: 600, mb: 3 }}>
             <CardHeader
-                title={`被告：${item.defendantName}`}
-                subheader={`電話：${item.defendantPhone} / 身分證：${item.defendantIdNo}`}
+                title={item.title || `被告：${item.defendantName}`}
+                subheader={`被告：${item.defendantName} / 電話：${item.defendantPhone} / 身分證：${item.defendantIdNo}`}
             />
             {images.length > 0 && (
                 <Box sx={{ display: 'flex', gap: 1, p: 1, overflowX: 'auto' }}>
@@ -124,11 +122,7 @@ const CaseCard: React.FC<Props> = ({ item }) => {
                     disabled={loading}
                     color={liked ? 'error' : 'default'}
                 >
-                    {loading ? (
-                        <CircularProgress size={24} />
-                    ) : (
-                        <FavoriteIcon />
-                    )}
+                    {loading ? <CircularProgress size={24} /> : <FavoriteIcon />}
                     <Typography sx={{ ml: 0.5 }}>{likeCount}</Typography>
                 </IconButton>
                 <IconButton>
@@ -137,15 +131,18 @@ const CaseCard: React.FC<Props> = ({ item }) => {
                 </IconButton>
             </CardActions>
             <CardContent>
+                {item.content && (
+                    <Typography sx={{ whiteSpace: 'pre-wrap', mb: 2 }}>
+                        {item.content}
+                    </Typography>
+                )}
                 <CaseComments caseId={item.id} />
             </CardContent>
             {images.length > 0 && (
                 <Dialog open={viewerIndex !== null} onClose={closeViewer}>
                     <DialogContent>
                         {viewerIndex !== null && (
-                            <Box
-                                sx={{ position: 'relative', textAlign: 'center' }}
-                            >
+                            <Box sx={{ position: 'relative', textAlign: 'center' }}>
                                 <IconButton
                                     onClick={showPrev}
                                     disabled={images.length <= 1}

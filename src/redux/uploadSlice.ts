@@ -14,6 +14,8 @@ const initialState: UploadState = {
 };
 
 export interface UploadPayload {
+    title: string;
+    content: string;
     defendantName: string;
     defendantPhone: string;
     defendantIdNo: string;
@@ -29,6 +31,8 @@ export const uploadCase = createAsyncThunk<
         const token = localStorage.getItem('token');
 
         const formData = new FormData();
+        formData.append('title', data.title);
+        formData.append('content', data.content);
         formData.append('defendantName', data.defendantName);
         formData.append('defendantPhone', data.defendantPhone);
         formData.append('defendantIdNo', data.defendantIdNo);
@@ -36,11 +40,11 @@ export const uploadCase = createAsyncThunk<
 
         const config = token
             ? {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'multipart/form-data',
-                },
-            }
+                  headers: {
+                      Authorization: `Bearer ${token}`,
+                      'Content-Type': 'multipart/form-data',
+                  },
+              }
             : { headers: { 'Content-Type': 'multipart/form-data' } };
 
         const response = await axios.post(UPLOAD_API_URL, formData, config);
@@ -67,13 +71,10 @@ const uploadSlice = createSlice({
             .addCase(uploadCase.fulfilled, (state) => {
                 state.status = 'succeeded';
             })
-            .addCase(
-                uploadCase.rejected,
-                (state, action: PayloadAction<any>) => {
-                    state.status = 'failed';
-                    state.error = action.payload || 'error';
-                },
-            );
+            .addCase(uploadCase.rejected, (state, action: PayloadAction<any>) => {
+                state.status = 'failed';
+                state.error = action.payload || 'error';
+            });
     },
 });
 
