@@ -45,7 +45,7 @@ export const uploadCase = createAsyncThunk<
                     'Content-Type': 'multipart/form-data',
                 },
             }
-        : { headers: { 'Content-Type': 'multipart/form-data' } };
+            : { headers: { 'Content-Type': 'multipart/form-data' } };
 
         const response = await axios.post(UPLOAD_API_URL, formData, config);
         return response.data;
