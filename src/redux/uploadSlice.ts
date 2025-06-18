@@ -40,12 +40,12 @@ export const uploadCase = createAsyncThunk<
 
         const config = token
             ? {
-                  headers: {
-                      Authorization: `Bearer ${token}`,
-                      'Content-Type': 'multipart/form-data',
-                  },
-              }
-            : { headers: { 'Content-Type': 'multipart/form-data' } };
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data',
+                },
+            }
+        : { headers: { 'Content-Type': 'multipart/form-data' } };
 
         const response = await axios.post(UPLOAD_API_URL, formData, config);
         return response.data;
