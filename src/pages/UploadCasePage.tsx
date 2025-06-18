@@ -13,7 +13,11 @@ import { uploadCase, resetStatus } from '../redux/uploadSlice';
 import { setShowDialog } from '../redux/phoneSlice';
 import { USER_DIALOG_STATUS } from '../types/enums';
 
-export default function UploadCasePage() {
+export interface UploadCasePageProps {
+    onComplete?: () => void;
+}
+
+export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
     const dispatch = useAppDispatch();
     const { status, error } = useAppSelector((s) => s.upload);
     const isLoggedIn = useAppSelector((s) => s.user.isLoggedIn);
@@ -53,6 +57,9 @@ export default function UploadCasePage() {
     };
 
     const handleClose = () => {
+        if (status === 'succeeded' && onComplete) {
+            onComplete();
+        }
         dispatch(resetStatus());
     };
 
