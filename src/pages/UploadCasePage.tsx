@@ -7,7 +7,10 @@ import {
     Button,
     Snackbar,
     Alert,
+    Fab,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import CloseIcon from '@mui/icons-material/Close';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { uploadCase, resetStatus } from '../redux/uploadSlice';
 import { setShowDialog } from '../redux/phoneSlice';
@@ -19,6 +22,7 @@ export interface UploadCasePageProps {
 
 export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const { status, error } = useAppSelector((s) => s.upload);
     const isLoggedIn = useAppSelector((s) => s.user.isLoggedIn);
 
@@ -63,8 +67,29 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
         dispatch(resetStatus());
     };
 
+    const handleBack = () => {
+        if (onComplete) {
+            onComplete();
+        } else {
+            navigate(-1);
+        }
+    };
+
     return (
         <Container sx={{ py: 4 }}>
+            <Fab
+                color="primary"
+                aria-label="close"
+                onClick={handleBack}
+                sx={{
+                    position: 'fixed',
+                    bottom: 16,
+                    right: 16,
+                    zIndex: 1000,
+                }}
+            >
+                <CloseIcon />
+            </Fab>
             <Typography variant="h4" gutterBottom>
                 上傳案例
             </Typography>
