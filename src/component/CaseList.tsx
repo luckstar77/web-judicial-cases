@@ -44,12 +44,7 @@ function ExampleList(props: Props) {
         setSelectedItem(null);
         setOpenCommentId(null);
     };
-    if (items.length === 0)
-        return (
-            <Typography gutterBottom variant="h5" component="h2">
-                查無資料
-            </Typography>
-        );
+    if (items.length === 0) return null;
 
     return (
         <>
