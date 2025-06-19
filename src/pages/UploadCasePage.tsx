@@ -90,7 +90,7 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
             >
                 <CloseIcon />
             </Fab>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h4" gutterBottom textAlign="center">
                 上傳案例
             </Typography>
             <Box
@@ -101,6 +101,7 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
                     flexDirection: 'column',
                     gap: 2,
                     maxWidth: 600,
+                    mx: 'auto',
                 }}
             >
                 <TextField
