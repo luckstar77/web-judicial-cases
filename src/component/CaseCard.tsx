@@ -28,6 +28,16 @@ import { selectCaseComments } from '../redux/caseCommentSlice';
 import { setShowDialog } from '../redux/phoneSlice';
 import { USER_DIALOG_STATUS } from '../types/enums';
 
+const maskName = (name: string) => {
+    if (name.length < 2) return name;
+    return name[0] + '*' + name.slice(2);
+};
+
+const maskPhone = (phone: string) =>
+    phone.replace(/^(.{3})(.{3})(.*)$/, '$1***$3');
+
+const maskId = (id: string) => id.replace(/^(.{3})(.{3})(.*)$/, '$1***$3');
+
 export interface CaseData {
     id: number;
     title?: string;
@@ -97,11 +107,11 @@ const CaseCard: React.FC<Props> = ({ item }) => {
     return (
         <Card sx={{ width: '50vw', minWidth: 400, mb: 3 }}>
             <CardHeader
-                title={item.title || `姓名：${item.defendantName}`}
+                title={item.title || `姓名：${maskName(item.defendantName)}`}
                 subheader={
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                         <Typography variant="body2">
-                            姓名：{item.defendantName} / 電話：{item.defendantPhone} / 身分證：{item.defendantIdNo}
+                            姓名：{maskName(item.defendantName)} / 電話：{maskPhone(item.defendantPhone)} / 身分證：{maskId(item.defendantIdNo)}
                         </Typography>
                         {item.location && (
                             <Typography variant="body2">
