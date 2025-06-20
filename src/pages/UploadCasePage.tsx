@@ -13,6 +13,7 @@ import {
     Select,
     MenuItem,
 } from '@mui/material';
+import { SelectChangeEvent } from '@mui/material/Select';
 import { useNavigate } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
@@ -51,14 +52,21 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
         images: [],
     });
 
-    const handleChange =
-        (key: string) => (e: React.ChangeEvent<any>) => {
-            if (key === 'images' && e.target.files) {
-                setForm({ ...form, images: Array.from(e.target.files) });
-            } else {
-                setForm({ ...form, [key]: e.target.value });
-            }
+    const handleInputChange =
+        (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+            setForm({ ...form, [key]: e.target.value });
         };
+
+    const handleSelectChange =
+        (key: string) => (e: SelectChangeEvent<string>) => {
+            setForm({ ...form, [key]: e.target.value });
+        };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            setForm({ ...form, images: Array.from(e.target.files) });
+        }
+    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -116,13 +124,13 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
                 <TextField
                     label="標題"
                     value={form.title}
-                    onChange={handleChange('title')}
+                    onChange={handleInputChange('title')}
                     required
                 />
                 <TextField
                     label="內容"
                     value={form.content}
-                    onChange={handleChange('content')}
+                    onChange={handleInputChange('content')}
                     multiline
                     rows={4}
                     required
@@ -130,19 +138,19 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
                 <TextField
                     label="被告姓名"
                     value={form.defendantName}
-                    onChange={handleChange('defendantName')}
+                    onChange={handleInputChange('defendantName')}
                     required
                 />
                 <TextField
                     label="被告電話"
                     value={form.defendantPhone}
-                    onChange={handleChange('defendantPhone')}
+                    onChange={handleInputChange('defendantPhone')}
                     required
                 />
                 <TextField
                     label="被告身分證字號"
                     value={form.defendantIdNo}
-                    onChange={handleChange('defendantIdNo')}
+                    onChange={handleInputChange('defendantIdNo')}
                     required
                 />
                 <FormControl fullWidth>
@@ -151,7 +159,7 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
                         labelId="location-label"
                         value={form.location}
                         label="縣市"
-                        onChange={handleChange('location')}
+                        onChange={handleSelectChange('location')}
                     >
                         {cities.map((c) => (
                             <MenuItem key={c} value={c}>
@@ -166,7 +174,7 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
                         labelId="district-label"
                         value={form.district}
                         label="鄉鎮市區"
-                        onChange={handleChange('district')}
+                        onChange={handleSelectChange('district')}
                     >
                         {(twDistricts[form.location] || []).map((d) => (
                             <MenuItem key={d} value={d}>
@@ -182,7 +190,7 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
                         multiple
                         type="file"
                         accept="image/*"
-                        onChange={handleChange('images')}
+                        onChange={handleFileChange}
                     />
                 </Button>
                 <Button
