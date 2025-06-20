@@ -19,6 +19,8 @@ export interface UploadPayload {
     defendantName: string;
     defendantPhone: string;
     defendantIdNo: string;
+    location: string;
+    district: string;
     images: File[];
 }
 
@@ -36,6 +38,8 @@ export const uploadCase = createAsyncThunk<
         formData.append('defendantName', data.defendantName);
         formData.append('defendantPhone', data.defendantPhone);
         formData.append('defendantIdNo', data.defendantIdNo);
+        formData.append('location', data.location);
+        formData.append('district', data.district);
         data.images.forEach((f) => formData.append('images', f));
 
         const config = token

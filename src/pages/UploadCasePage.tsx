@@ -8,6 +8,10 @@ import {
     Snackbar,
     Alert,
     Fab,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
@@ -15,6 +19,7 @@ import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { uploadCase, resetStatus } from '../redux/uploadSlice';
 import { setShowDialog } from '../redux/phoneSlice';
 import { USER_DIALOG_STATUS } from '../types/enums';
+import { cities, twDistricts } from '../lib/twDistricts';
 
 export interface UploadCasePageProps {
     onComplete?: () => void;
@@ -32,6 +37,8 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
         defendantName: string;
         defendantPhone: string;
         defendantIdNo: string;
+        location: string;
+        district: string;
         images: File[];
     }>({
         title: '',
@@ -39,11 +46,13 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
         defendantName: '',
         defendantPhone: '',
         defendantIdNo: '',
+        location: '',
+        district: '',
         images: [],
     });
 
     const handleChange =
-        (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+        (key: string) => (e: React.ChangeEvent<any>) => {
             if (key === 'images' && e.target.files) {
                 setForm({ ...form, images: Array.from(e.target.files) });
             } else {
@@ -136,6 +145,36 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
                     onChange={handleChange('defendantIdNo')}
                     required
                 />
+                <FormControl fullWidth>
+                    <InputLabel id="location-label">縣市</InputLabel>
+                    <Select
+                        labelId="location-label"
+                        value={form.location}
+                        label="縣市"
+                        onChange={handleChange('location')}
+                    >
+                        {cities.map((c) => (
+                            <MenuItem key={c} value={c}>
+                                {c}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+                <FormControl fullWidth disabled={!form.location}>
+                    <InputLabel id="district-label">鄉鎮市區</InputLabel>
+                    <Select
+                        labelId="district-label"
+                        value={form.district}
+                        label="鄉鎮市區"
+                        onChange={handleChange('district')}
+                    >
+                        {(twDistricts[form.location] || []).map((d) => (
+                            <MenuItem key={d} value={d}>
+                                {d}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
                 <Button variant="contained" component="label">
                     上傳圖片
                     <input
