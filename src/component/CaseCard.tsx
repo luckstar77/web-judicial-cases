@@ -143,7 +143,7 @@ const CaseCard: React.FC<Props> = ({ item }) => {
             </CardContent>
             {images.length > 0 && (
                 <Dialog open={viewerIndex !== null} onClose={closeViewer}>
-                    <DialogContent>
+                    <DialogContent sx={{ p: 0 }}>
                         {viewerIndex !== null && (
                             <Box sx={{ position: 'relative', textAlign: 'center' }}>
                                 <IconButton
@@ -161,7 +161,11 @@ const CaseCard: React.FC<Props> = ({ item }) => {
                                 <Box
                                     component="img"
                                     src={images[viewerIndex]}
-                                    sx={{ maxWidth: '80vw', maxHeight: '80vh' }}
+                                    sx={{
+                                        maxWidth: '80vw',
+                                        maxHeight: '80vh',
+                                        objectFit: 'contain',
+                                    }}
                                 />
                                 <IconButton
                                     onClick={showNext}
