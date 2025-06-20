@@ -35,6 +35,8 @@ export interface CaseData {
     defendantName: string;
     defendantPhone: string;
     defendantIdNo: string;
+    location?: string;
+    district?: string;
     images?: string[];
     imageUrls?: string[];
 }
@@ -96,7 +98,7 @@ const CaseCard: React.FC<Props> = ({ item }) => {
         <Card sx={{ width: '100%', maxWidth: 600, mb: 3 }}>
             <CardHeader
                 title={item.title || `被告：${item.defendantName}`}
-                subheader={`被告：${item.defendantName} / 電話：${item.defendantPhone} / 身分證：${item.defendantIdNo}`}
+                subheader={`被告：${item.defendantName} / 電話：${item.defendantPhone} / 身分證：${item.defendantIdNo}${item.location ? ` / 地點：${item.location}${item.district || ''}` : ''}`}
             />
             {images.length > 0 && (
                 <Box sx={{ display: 'flex', gap: 1, p: 1, overflowX: 'auto' }}>
