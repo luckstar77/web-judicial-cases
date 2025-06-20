@@ -143,9 +143,28 @@ const CaseCard: React.FC<Props> = ({ item }) => {
             </CardContent>
             {images.length > 0 && (
                 <Dialog open={viewerIndex !== null} onClose={closeViewer}>
-                    <DialogContent sx={{ p: 0 }}>
+                    <DialogContent
+                        sx={{
+                            p: 0,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
                         {viewerIndex !== null && (
-                            <Box sx={{ position: 'relative', textAlign: 'center' }}>
+                            <Box
+                                sx={{
+                                    position: 'relative',
+                                    textAlign: 'center',
+                                    maxWidth: '80vw',
+                                    maxHeight: '80vh',
+                                    m: 'auto',
+                                    overflow: 'hidden',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
                                 <IconButton
                                     onClick={showPrev}
                                     disabled={images.length <= 1}
@@ -162,9 +181,10 @@ const CaseCard: React.FC<Props> = ({ item }) => {
                                     component="img"
                                     src={images[viewerIndex]}
                                     sx={{
-                                        maxWidth: '80vw',
-                                        maxHeight: '80vh',
+                                        maxWidth: '100%',
+                                        maxHeight: '100%',
                                         objectFit: 'contain',
+                                        display: 'block',
                                     }}
                                 />
                                 <IconButton
