@@ -97,14 +97,11 @@ const CaseCard: React.FC<Props> = ({ item }) => {
     return (
         <Card sx={{ width: '50vw', minWidth: 400, mb: 3 }}>
             <CardHeader
-                title={item.title || `被告：${item.defendantName}`}
+                title={item.title || `姓名：${item.defendantName}`}
                 subheader={
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                         <Typography variant="body2">
-                            被告：{item.defendantName}
-                        </Typography>
-                        <Typography variant="body2">
-                            電話：{item.defendantPhone} / 身分證：{item.defendantIdNo}
+                            姓名：{item.defendantName} / 電話：{item.defendantPhone} / 身分證：{item.defendantIdNo}
                         </Typography>
                         {item.location && (
                             <Typography variant="body2">
