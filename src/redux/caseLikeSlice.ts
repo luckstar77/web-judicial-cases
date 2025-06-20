@@ -26,7 +26,7 @@ export const fetchCaseLikeStatus = createAsyncThunk<
         if (token) {
             const config = { headers: { Authorization: `Bearer ${token}` } };
             const resp = await axios.get<{ liked: boolean }>(
-                `${CASE_API_URL}/${caseId}`,
+                `${CASE_API_URL}/${caseId}/like/status`,
                 config,
             );
             return { caseId, liked: resp.data.liked };
