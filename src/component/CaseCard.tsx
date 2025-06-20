@@ -101,6 +101,9 @@ const CaseCard: React.FC<Props> = ({ item }) => {
                 subheader={
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                         <Typography variant="body2">
+                            被告：{item.defendantName}
+                        </Typography>
+                        <Typography variant="body2">
                             電話：{item.defendantPhone} / 身分證：{item.defendantIdNo}
                         </Typography>
                         {item.location && (
