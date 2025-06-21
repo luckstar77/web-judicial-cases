@@ -24,7 +24,10 @@ import {
     fetchCaseLikeStatus,
     toggleCaseLike,
 } from '../redux/caseLikeSlice';
-import { selectCaseComments } from '../redux/caseCommentSlice';
+import {
+    fetchCaseComments,
+    selectCaseComments,
+} from '../redux/caseCommentSlice';
 import { setShowDialog } from '../redux/phoneSlice';
 import { USER_DIALOG_STATUS } from '../types/enums';
 
@@ -92,6 +95,7 @@ const CaseCard: React.FC<Props> = ({ item }) => {
     useEffect(() => {
         dispatch(fetchCaseLikeCount(item.id));
         dispatch(fetchCaseLikeStatus(item.id));
+        dispatch(fetchCaseComments(item.id));
     }, [dispatch, item.id]);
 
     const handleToggleLike = () => {
