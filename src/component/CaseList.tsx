@@ -37,7 +37,11 @@ function ExampleList(props: Props) {
     };
 
     const handleCommentClick = (id: number) => {
-        setOpenCommentId(id);
+        const item = items.find((i) => i.id === id);
+        if (item) {
+            setSelectedItem(item);
+            setOpenCommentId(id);
+        }
     };
 
     const handleClose = () => {
