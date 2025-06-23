@@ -50,7 +50,7 @@ export default function ButtonAppBar() {
                                 首頁
                             </Button>
                             <Button color="inherit" component={RouterLink} to="/cases">
-                                討論區
+                                租屋黑名單
                             </Button>
                             <Button color="inherit" component={RouterLink} to="/faq">
                                 FAQ

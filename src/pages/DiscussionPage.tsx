@@ -27,7 +27,7 @@ export default function DiscussionPage() {
             ) : (
                 <>
                     <Typography variant="h4" gutterBottom textAlign="center">
-                        討論區
+                        租屋黑名單
                     </Typography>
                     <Fab
                         color="primary"
