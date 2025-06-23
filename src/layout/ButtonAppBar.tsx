@@ -47,7 +47,7 @@ export default function ButtonAppBar() {
                     {isDesktop && (
                         <Box sx={{ display: 'flex' }}>
                             <Button color="inherit" component={RouterLink} to="/">
-                                首頁
+                                法院判決書
                             </Button>
                             <Button color="inherit" component={RouterLink} to="/cases">
                                 租屋黑名單
