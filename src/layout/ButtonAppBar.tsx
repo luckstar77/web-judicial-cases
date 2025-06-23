@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import TemporaryDrawer from '../component/TemporaryDrawer';
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@mui/material/Link';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserData } from '../redux/phoneSlice';
 import { setTokenFromLocalStorage, setShowDialog } from '../redux/phoneSlice';
@@ -13,6 +16,8 @@ import { USER_DIALOG_STATUS } from '../types/enums';
 
 export default function ButtonAppBar() {
     const dispatch = useDispatch(); // Hook to get the dispatch function
+    const theme = useTheme();
+    const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
     // When the component mounts, fetch the user data
     useEffect(() => {
@@ -37,18 +42,40 @@ export default function ButtonAppBar() {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
                 <Toolbar>
-                    <TemporaryDrawer />
-                    <Typography
-                        variant="h6"
-                        component="div"
-                        sx={{ flexGrow: 1 }}
-                    >
-                        {/* <img src={StockLogo} style={{ width: '50px' }} /> */}
-                    </Typography>
-                    <Button color="inherit" style={{fontSize:18}} onClick={handleClickOpen}>
+                    {/* Navigation on the left */}
+                    {!isDesktop && <TemporaryDrawer />}
+                    {isDesktop && (
+                        <Box sx={{ display: 'flex' }}>
+                            <Button color="inherit" component={RouterLink} to="/">
+                                首頁
+                            </Button>
+                            <Button color="inherit" component={RouterLink} to="/cases">
+                                討論區
+                            </Button>
+                            <Button color="inherit" component={RouterLink} to="/faq">
+                                FAQ
+                            </Button>
+                            <Button color="inherit" component={RouterLink} to="/about">
+                                關於我們
+                            </Button>
+                            <Button
+                                color="inherit"
+                                component={Link}
+                                href="https://www.facebook.com/profile.php?id=100093981245377"
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                粉絲專頁
+                            </Button>
+                        </Box>
+                    )}
+
+                    <Box sx={{ flexGrow: 1 }} />
+
+                    <Button color="inherit" style={{ fontSize: 18 }} onClick={handleClickOpen}>
                         {phone ? phone : '登入'}
                     </Button>
-                    <UserDialog/>
+                    <UserDialog />
                 </Toolbar>
             </AppBar>
         </Box>
