@@ -121,7 +121,7 @@ const CaseCard: React.FC<Props> = ({ item }) => {
                                 地點：{item.location}
                                 {item.district || ''}
                                 {item.createdAt
-                                    ? ` ${new Date(item.createdAt).toLocaleDateString()}`
+                                    ? ` 時間：${new Date(item.createdAt).toLocaleDateString()}`
                                     : ''}
                                 {item.ip ? ` 來自：${item.ip}` : ''}
                             </Typography>
