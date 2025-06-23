@@ -50,6 +50,7 @@ export interface CaseData {
     images?: string[];
     imageUrls?: string[];
     ip?: string;
+    createdAt?: string;
 }
 
 interface Props {
@@ -113,13 +114,16 @@ const CaseCard: React.FC<Props> = ({ item }) => {
                 subheader={
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                         <Typography variant="body2">
-                            姓名：{maskName(item.defendantName)} / 電話：{maskPhone(item.defendantPhone)} / 身分證：{maskId(item.defendantIdNo)}
+                            姓名：{maskName(item.defendantName)}，電話：{maskPhone(item.defendantPhone)}，身分證：{maskId(item.defendantIdNo)}
                         </Typography>
                         {item.location && (
                             <Typography variant="body2">
                                 地點：{item.location}
                                 {item.district || ''}
-                                {item.ip ? ` IP：${item.ip}` : ''}
+                                {item.createdAt
+                                    ? `，時間：${new Date(item.createdAt).toLocaleDateString()}`
+                                    : ''}
+                                {item.ip ? `，來自：${item.ip}` : ''}
                             </Typography>
                         )}
                     </Box>
