@@ -118,11 +118,11 @@ const CaseCard: React.FC<Props> = ({ item }) => {
                         </Typography>
                         {item.location && (
                             <Typography variant="body2">
+                                {item.createdAt
+                                    ? `${new Date(item.createdAt).toLocaleDateString()} `
+                                    : ''}
                                 地點：{item.location}
                                 {item.district || ''}
-                                {item.createdAt
-                                    ? ` ${new Date(item.createdAt).toLocaleDateString()}`
-                                    : ''}
                                 {item.ip ? ` IP：${item.ip}` : ''}
                             </Typography>
                         )}
