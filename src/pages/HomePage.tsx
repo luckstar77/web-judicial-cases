@@ -12,7 +12,7 @@ function App() {
     const dataStatus = useSelector((state: any) => state.data.status);
 
     return (
-        <div style={{marginTop:'-48px'}}>
+        <div>
             {dataStatus === 'loading' && (
                 <div
                     style={{

@@ -16,7 +16,7 @@ export default function DiscussionPage() {
     }, [dispatch]);
 
     return (
-        <Box sx={{ mt: '-48px', p: 2 }}>
+        <Box sx={{ mt: 0, p: 2 }}>
             {showUpload ? (
                 <UploadCasePage
                     onComplete={() => {
