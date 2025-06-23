@@ -53,13 +53,13 @@ export default function TemporaryDrawer() {
             onKeyDown={toggleDrawer(anchor, false)}
         >
             <List>
-                {/* 🔹 首頁 */}
+                {/* 🔹 法院判決書 */}
                 <ListItem disablePadding>
                     <ListItemButton component={RouterLink} to="/">
                         <ListItemIcon>
                             <HomeIcon />
                         </ListItemIcon>
-                        <ListItemText primary='首頁' />
+                        <ListItemText primary='法院判決書' />
                     </ListItemButton>
                 </ListItem>
 
