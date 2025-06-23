@@ -63,13 +63,13 @@ export default function TemporaryDrawer() {
                     </ListItemButton>
                 </ListItem>
 
-                {/* 討論區 */}
+                {/* 租屋黑名單 */}
                 <ListItem disablePadding>
                     <ListItemButton component={RouterLink} to="/cases">
                         <ListItemIcon>
                             <InboxIcon />
                         </ListItemIcon>
-                        <ListItemText primary="討論區" />
+                        <ListItemText primary="租屋黑名單" />
                     </ListItemButton>
                 </ListItem>
 
