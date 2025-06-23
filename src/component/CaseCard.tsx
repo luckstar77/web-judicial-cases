@@ -50,6 +50,7 @@ export interface CaseData {
     images?: string[];
     imageUrls?: string[];
     ip?: string;
+    createdAt?: string;
 }
 
 interface Props {
@@ -119,6 +120,9 @@ const CaseCard: React.FC<Props> = ({ item }) => {
                             <Typography variant="body2">
                                 地點：{item.location}
                                 {item.district || ''}
+                                {item.createdAt
+                                    ? ` ${new Date(item.createdAt).toLocaleDateString()}`
+                                    : ''}
                                 {item.ip ? ` IP：${item.ip}` : ''}
                             </Typography>
                         )}
