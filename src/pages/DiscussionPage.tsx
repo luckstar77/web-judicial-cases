@@ -30,6 +30,14 @@ export default function DiscussionPage() {
                     <Typography variant="h4" gutterBottom textAlign="center">
                         租屋黑名單
                     </Typography>
+                    <Typography
+                        variant="body1"
+                        paragraph
+                        textAlign="center"
+                    >
+                        會員登入後，可透過姓名、身份證或手機搜尋租屋黑名單，
+                        也可以新增租屋黑名單
+                    </Typography>
                     {isLoggedIn && (
                         <Fab
                             color="primary"
