@@ -6,6 +6,7 @@ import {
     RouterProvider,
     createRoutesFromElements,
     Route,
+    type FutureConfig,
 } from 'react-router-dom';
 
 import AppLayout from './layout/AppLayout';
@@ -30,7 +31,7 @@ export default function App() {
             future: {
                 v7_startTransition: true,
                 v7_relativeSplatPath: true,
-            },
+            } as Partial<FutureConfig>,
         },
     );
 
