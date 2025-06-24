@@ -104,5 +104,6 @@ const caseCommentSlice = createSlice({
 export const { clearCaseComments } = caseCommentSlice.actions;
 export default caseCommentSlice.reducer;
 
+const emptyCaseComments: CaseComment[] = [];
 export const selectCaseComments = (id: number) => (state: RootState) =>
-    state.caseComments.items[id] ?? [];
+    state.caseComments.items[id] ?? emptyCaseComments;
