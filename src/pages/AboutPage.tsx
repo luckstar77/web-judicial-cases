@@ -12,7 +12,7 @@ import {
 const preRegisterInfo = [
     '我們依照用戶回饋全面優化，再次感謝您的支持！',
     '申請帳號時須完成手機簡訊驗證。',
-    '本平台並非法律機構，若有疑問請透過留言板提問。',
+    '本平台並非法律機構，若有疑問請透過粉絲專頁提問。',
 ];
 
 export default function AboutPage() {
@@ -25,7 +25,7 @@ export default function AboutPage() {
             <Typography variant="body1" paragraph>
                 「租屋通」是由站長自發籌組維護，
                 採開源模式運作。以「資訊互通、風險減少」為核心理念，
-                協助房東與租客在整個租賃流程中快速掌握可能的風險，
+                協助房東與租客在租屋流程中快速掌握可能的風險，
                 同步促進租屋市場的透明與公平。
             </Typography>
 
