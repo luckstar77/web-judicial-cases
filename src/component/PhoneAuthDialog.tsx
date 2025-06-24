@@ -118,7 +118,7 @@ export function PhoneAuthDialog() {
         <div>
             <Dialog open={showDialog === USER_DIALOG_STATUS.PHONE_AUTH} onClose={handleClose}>
                 <DialogTitle>電話登入</DialogTitle>
-                <Typography variant="caption" sx={{ ml: 2 }}>
+                <Typography variant="body1" sx={{ ml: 2, mt: 1 }}>
                     用手機接收簡訊驗證碼即可登入發文留言
                 </Typography>
                 <DialogContent>
@@ -128,11 +128,11 @@ export function PhoneAuthDialog() {
                             p: '2px 4px',
                             display: 'flex',
                             alignItems: 'center',
-                            width: 400,
+                            width: { xs: '100%', sm: 400 },
                         }}
                     >
                         <InputBase
-                            sx={{ ml: 1, flex: 1 }}
+                            sx={{ ml: 1, flex: 1, fontSize: '1rem' }}
                             placeholder="請輸入你的電話號碼"
                             inputProps={{ 'aria-label': '請輸入你的電話號碼' }}
                             onChange={(e) => setPhoneNumber(e.target.value)}
@@ -163,12 +163,13 @@ export function PhoneAuthDialog() {
                         id="standard-basic"
                         placeholder="請接收簡訊並輸入簡訊驗證碼"
                         variant="standard"
+                        inputProps={{ style: { fontSize: '1rem' } }}
                         onChange={(e) => setVerificationCode(e.target.value)}
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>取消</Button>
-                    <Button onClick={handleConfirmCode}>登入</Button>
+                    <Button sx={{ fontSize: '1rem' }} onClick={handleClose}>取消</Button>
+                    <Button sx={{ fontSize: '1rem' }} onClick={handleConfirmCode}>登入</Button>
                 </DialogActions>
             </Dialog>
             <div id="recaptcha-container" ref={recaptchaContainer}></div>
