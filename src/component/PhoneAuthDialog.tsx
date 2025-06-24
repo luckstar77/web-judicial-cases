@@ -3,6 +3,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
@@ -117,6 +118,9 @@ export function PhoneAuthDialog() {
         <div>
             <Dialog open={showDialog === USER_DIALOG_STATUS.PHONE_AUTH} onClose={handleClose}>
                 <DialogTitle>電話登入</DialogTitle>
+                <Typography variant="caption" sx={{ ml: 2 }}>
+                    用手機接收簡訊驗證碼即可登入發文留言
+                </Typography>
                 <DialogContent>
                     <Paper
                         component="form"
