@@ -9,6 +9,7 @@ import UploadCasePage from './UploadCasePage';
 export default function DiscussionPage() {
     const dispatch = useAppDispatch();
     const cases = useAppSelector((s) => s.cases.list);
+    const isLoggedIn = useAppSelector((s) => s.user.isLoggedIn);
     const [showUpload, setShowUpload] = useState(false);
 
     useEffect(() => {
@@ -29,19 +30,21 @@ export default function DiscussionPage() {
                     <Typography variant="h4" gutterBottom textAlign="center">
                         租屋黑名單
                     </Typography>
-                    <Fab
-                        color="primary"
-                        aria-label="add"
-                        sx={{
-                            position: 'fixed',
-                            bottom: 16,
-                            right: 16,
-                            zIndex: 1000,
-                        }}
-                        onClick={() => setShowUpload(true)}
-                    >
-                        <AddIcon />
-                    </Fab>
+                    {isLoggedIn && (
+                        <Fab
+                            color="primary"
+                            aria-label="add"
+                            sx={{
+                                position: 'fixed',
+                                bottom: 16,
+                                right: 16,
+                                zIndex: 1000,
+                            }}
+                            onClick={() => setShowUpload(true)}
+                        >
+                            <AddIcon />
+                        </Fab>
+                    )}
                     <CaseCardList items={cases} />
                 </>
             )}
