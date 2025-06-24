@@ -106,5 +106,6 @@ export const { clearComments } = commentSlice.actions;
 export default commentSlice.reducer;
 
 // selector
+const emptyComments: Comment[] = [];
 export const selectCommentsByFileset = (id: number) => (state: RootState) =>
-    state.comments.items[id] ?? [];
+    state.comments.items[id] ?? emptyComments;
