@@ -16,6 +16,12 @@ export default function DiscussionPage() {
         dispatch(fetchCaseList({}));
     }, [dispatch]);
 
+    useEffect(() => {
+        if (!isLoggedIn) {
+            setShowUpload(false);
+        }
+    }, [isLoggedIn]);
+
     return (
         <Box sx={{ mt: 0, p: 2 }}>
             {showUpload ? (

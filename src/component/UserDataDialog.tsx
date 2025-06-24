@@ -8,6 +8,7 @@ import TextField from '@mui/material/TextField';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, setShowDialog, updateUserData } from '../redux/phoneSlice';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import { auth } from '../lib/firebase';
 import {
@@ -38,6 +39,8 @@ export function UserDataDialog() {
     }, [email]);
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
     
     const handleClose = async () => {
         dispatch(setShowDialog(USER_DIALOG_STATUS.NONE));
@@ -53,9 +56,10 @@ export function UserDataDialog() {
     };
 
     const handleLogout = async () => {
-        dispatch(
-            logout()
-        );
+        dispatch(logout());
+        if (location.pathname === '/upload') {
+            navigate('/cases');
+        }
     };
 
     return (
