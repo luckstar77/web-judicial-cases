@@ -15,7 +15,7 @@ const CaseCardList: React.FC<Props> = ({ items }) => {
         );
     }
     return (
-        <Box display="flex" flexDirection="column" alignItems="center">
+        <Box display="flex" flexDirection="column" alignItems="center" sx={{ gap: 2 }}>
             {items.map((item) => (
                 <CaseCard key={item.id} item={item} />
             ))}
