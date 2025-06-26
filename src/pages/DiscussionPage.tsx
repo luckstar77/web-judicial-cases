@@ -10,6 +10,7 @@ import {
     Alert,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
 import CaseCardList from '../component/CaseCardList';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
@@ -25,6 +26,7 @@ export default function DiscussionPage() {
     const [showUpload, setShowUpload] = useState(false);
     const [search, setSearch] = useState('');
     const [open, setOpen] = useState(false);
+    const [isSearching, setIsSearching] = useState(false);
 
     const handleSearch = () => {
         if (!isLoggedIn) {
@@ -39,6 +41,13 @@ export default function DiscussionPage() {
                 }
             })
             .catch(() => setOpen(true));
+        setIsSearching(true);
+    };
+
+    const cancelSearch = () => {
+        setSearch('');
+        setIsSearching(false);
+        dispatch(fetchCaseList({}));
     };
 
     const handleClose = (_?: any, reason?: string) => {
@@ -86,6 +95,11 @@ export default function DiscussionPage() {
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">
+                                            {isSearching && (
+                                                <IconButton onClick={cancelSearch} aria-label="cancel">
+                                                    <CloseIcon />
+                                                </IconButton>
+                                            )}
                                             <IconButton onClick={handleSearch} aria-label="search">
                                                 <SearchIcon />
                                             </IconButton>
