@@ -6,8 +6,6 @@ import {
     TextField,
     IconButton,
     InputAdornment,
-    Snackbar,
-    Alert,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
@@ -25,7 +23,6 @@ export default function DiscussionPage() {
     const isLoggedIn = useAppSelector((s) => s.user.isLoggedIn);
     const [showUpload, setShowUpload] = useState(false);
     const [search, setSearch] = useState('');
-    const [open, setOpen] = useState(false);
     const [isSearching, setIsSearching] = useState(false);
 
     const handleSearch = () => {
@@ -33,14 +30,7 @@ export default function DiscussionPage() {
             dispatch(setShowDialog(USER_DIALOG_STATUS.PHONE_AUTH));
             return;
         }
-        dispatch(searchCaseList(search))
-            .unwrap()
-            .then((res) => {
-                if (!res || res.length === 0) {
-                    setOpen(true);
-                }
-            })
-            .catch(() => setOpen(true));
+        dispatch(searchCaseList(search));
         setIsSearching(true);
     };
 
@@ -50,10 +40,6 @@ export default function DiscussionPage() {
         dispatch(fetchCaseList({}));
     };
 
-    const handleClose = (_?: any, reason?: string) => {
-        if (reason === 'clickaway') return;
-        setOpen(false);
-    };
 
     useEffect(() => {
         dispatch(fetchCaseList({}));
@@ -126,11 +112,6 @@ export default function DiscussionPage() {
                             <AddIcon />
                         </Fab>
                     )}
-                    <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-                        <Alert onClose={handleClose} severity="info" sx={{ width: '100%' }}>
-                            查無資料
-                        </Alert>
-                    </Snackbar>
                     <CaseCardList items={cases} />
                 </>
             )}
