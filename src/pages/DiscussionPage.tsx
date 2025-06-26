@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Box, Fab } from '@mui/material';
+import {
+    Typography,
+    Box,
+    Fab,
+    TextField,
+    IconButton,
+    InputAdornment,
+    Snackbar,
+    Alert,
+} from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import CaseCardList from '../component/CaseCardList';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { fetchCaseList } from '../redux/caseSlice';
+import { fetchCaseList, searchCaseList } from '../redux/caseSlice';
 import UploadCasePage from './UploadCasePage';
 
 export default function DiscussionPage() {
@@ -11,6 +21,24 @@ export default function DiscussionPage() {
     const cases = useAppSelector((s) => s.cases.list);
     const isLoggedIn = useAppSelector((s) => s.user.isLoggedIn);
     const [showUpload, setShowUpload] = useState(false);
+    const [search, setSearch] = useState('');
+    const [open, setOpen] = useState(false);
+
+    const handleSearch = () => {
+        dispatch(searchCaseList(search))
+            .unwrap()
+            .then((res) => {
+                if (!res || res.length === 0) {
+                    setOpen(true);
+                }
+            })
+            .catch(() => setOpen(true));
+    };
+
+    const handleClose = (_?: any, reason?: string) => {
+        if (reason === 'clickaway') return;
+        setOpen(false);
+    };
 
     useEffect(() => {
         dispatch(fetchCaseList({}));
@@ -39,6 +67,29 @@ export default function DiscussionPage() {
                         也可以新增租屋黑名單
                     </Typography>
                     {isLoggedIn && (
+                        <Box sx={{ my: 2, display: 'flex', justifyContent: 'center' }}>
+                            <TextField
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                onKeyUp={(e) => {
+                                    if (e.key === 'Enter') handleSearch();
+                                }}
+                                label="搜尋黑名單"
+                                variant="outlined"
+                                sx={{ backgroundColor: 'white', width: '100%', maxWidth: 400 }}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton onClick={handleSearch} aria-label="search">
+                                                <SearchIcon />
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </Box>
+                    )}
+                    {isLoggedIn && (
                         <Fab
                             color="primary"
                             aria-label="add"
@@ -53,6 +104,11 @@ export default function DiscussionPage() {
                             <AddIcon />
                         </Fab>
                     )}
+                    <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+                        <Alert onClose={handleClose} severity="info" sx={{ width: '100%' }}>
+                            查無資料
+                        </Alert>
+                    </Snackbar>
                     <CaseCardList items={cases} />
                 </>
             )}

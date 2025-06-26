@@ -13,6 +13,22 @@ export const fetchCaseList = createAsyncThunk<
     return response.data as CaseData[];
 });
 
+export const searchCaseList = createAsyncThunk<
+    CaseData[],
+    string,
+    { rejectValue: string }
+>('cases/searchCaseList', async (query, { rejectWithValue }) => {
+    try {
+        const token = localStorage.getItem('token');
+        const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+        const url = `${CASE_API_URL}/search/${encodeURIComponent(query)}`;
+        const resp = await axios.get(url, config);
+        return resp.data as CaseData[];
+    } catch (e: any) {
+        return rejectWithValue(e.message);
+    }
+});
+
 export const caseSlice = createSlice({
     name: 'cases',
     initialState: {
@@ -34,6 +50,19 @@ export const caseSlice = createSlice({
                 },
             )
             .addCase(fetchCaseList.rejected, (state) => {
+                state.status = 'failed';
+            })
+            .addCase(searchCaseList.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(
+                searchCaseList.fulfilled,
+                (state, action: PayloadAction<CaseData[]>) => {
+                    state.status = 'succeeded';
+                    state.list = action.payload;
+                },
+            )
+            .addCase(searchCaseList.rejected, (state) => {
                 state.status = 'failed';
             });
     },
