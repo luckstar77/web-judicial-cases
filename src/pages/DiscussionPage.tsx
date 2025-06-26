@@ -14,6 +14,8 @@ import AddIcon from '@mui/icons-material/Add';
 import CaseCardList from '../component/CaseCardList';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { fetchCaseList, searchCaseList } from '../redux/caseSlice';
+import { setShowDialog } from '../redux/phoneSlice';
+import { USER_DIALOG_STATUS } from '../types/enums';
 import UploadCasePage from './UploadCasePage';
 
 export default function DiscussionPage() {
@@ -25,6 +27,10 @@ export default function DiscussionPage() {
     const [open, setOpen] = useState(false);
 
     const handleSearch = () => {
+        if (!isLoggedIn) {
+            dispatch(setShowDialog(USER_DIALOG_STATUS.PHONE_AUTH));
+            return;
+        }
         dispatch(searchCaseList(search))
             .unwrap()
             .then((res) => {
