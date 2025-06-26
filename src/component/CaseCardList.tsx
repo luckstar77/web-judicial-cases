@@ -9,9 +9,17 @@ interface Props {
 const CaseCardList: React.FC<Props> = ({ items }) => {
     if (items.length === 0) {
         return (
-            <Typography gutterBottom variant="h5" component="h2">
-                查無資料
-            </Typography>
+            <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                sx={{ minHeight: 200 }}
+                width="100%"
+            >
+                <Typography gutterBottom variant="h5" component="h2">
+                    查無資料
+                </Typography>
+            </Box>
         );
     }
     return (
