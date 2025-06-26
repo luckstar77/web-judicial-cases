@@ -30,7 +30,15 @@ export default function DiscussionPage() {
             dispatch(setShowDialog(USER_DIALOG_STATUS.PHONE_AUTH));
             return;
         }
-        dispatch(searchCaseList(search));
+        const query = search.trim();
+        if (!query) {
+            if (isSearching) {
+                setIsSearching(false);
+                dispatch(fetchCaseList({}));
+            }
+            return;
+        }
+        dispatch(searchCaseList(query));
         setIsSearching(true);
     };
 
