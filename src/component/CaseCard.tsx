@@ -108,7 +108,7 @@ const CaseCard: React.FC<Props> = ({ item }) => {
     };
 
     return (
-        <Card sx={{ width: '50vw', minWidth: 400, mb: 3 }}>
+        <Card sx={{ width: '50vw', minWidth: 400 }}>
             <CardHeader
                 title={item.title || `姓名：${maskName(item.defendantName)}`}
                 subheader={

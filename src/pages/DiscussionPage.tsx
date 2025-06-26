@@ -1,9 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Box, Fab } from '@mui/material';
+import {
+    Typography,
+    Box,
+    Fab,
+    TextField,
+    IconButton,
+    InputAdornment,
+} from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
 import CaseCardList from '../component/CaseCardList';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { fetchCaseList } from '../redux/caseSlice';
+import { fetchCaseList, searchCaseList } from '../redux/caseSlice';
+import { setShowDialog } from '../redux/phoneSlice';
+import { USER_DIALOG_STATUS } from '../types/enums';
 import UploadCasePage from './UploadCasePage';
 
 export default function DiscussionPage() {
@@ -11,6 +22,32 @@ export default function DiscussionPage() {
     const cases = useAppSelector((s) => s.cases.list);
     const isLoggedIn = useAppSelector((s) => s.user.isLoggedIn);
     const [showUpload, setShowUpload] = useState(false);
+    const [search, setSearch] = useState('');
+    const [isSearching, setIsSearching] = useState(false);
+
+    const handleSearch = () => {
+        if (!isLoggedIn) {
+            dispatch(setShowDialog(USER_DIALOG_STATUS.PHONE_AUTH));
+            return;
+        }
+        const query = search.trim();
+        if (!query) {
+            if (isSearching) {
+                setIsSearching(false);
+                dispatch(fetchCaseList({}));
+            }
+            return;
+        }
+        dispatch(searchCaseList(query));
+        setIsSearching(true);
+    };
+
+    const cancelSearch = () => {
+        setSearch('');
+        setIsSearching(false);
+        dispatch(fetchCaseList({}));
+    };
+
 
     useEffect(() => {
         dispatch(fetchCaseList({}));
@@ -30,14 +67,44 @@ export default function DiscussionPage() {
                     <Typography variant="h4" gutterBottom textAlign="center">
                         租屋黑名單
                     </Typography>
-                    <Typography
-                        variant="body1"
-                        paragraph
-                        textAlign="center"
-                    >
-                        會員登入後，可透過姓名、身份證或手機搜尋租屋黑名單，
-                        也可以新增租屋黑名單
-                    </Typography>
+                    {!isLoggedIn && (
+                        <Typography
+                            variant="body1"
+                            paragraph
+                            textAlign="center"
+                        >
+                            會員登入後，可透過姓名、身份證或手機搜尋租屋黑名單，
+                            也可以新增租屋黑名單
+                        </Typography>
+                    )}
+                    {isLoggedIn && (
+                        <Box sx={{ my: 2, display: 'flex', justifyContent: 'center' }}>
+                            <TextField
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                onKeyUp={(e) => {
+                                    if (e.key === 'Enter') handleSearch();
+                                }}
+                                label="搜尋黑名單"
+                                variant="outlined"
+                                sx={{ backgroundColor: 'white', width: '100%', maxWidth: 400 }}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            {isSearching && (
+                                                <IconButton onClick={cancelSearch} aria-label="cancel">
+                                                    <CloseIcon />
+                                                </IconButton>
+                                            )}
+                                            <IconButton onClick={handleSearch} aria-label="search">
+                                                <SearchIcon />
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+                        </Box>
+                    )}
                     {isLoggedIn && (
                         <Fab
                             color="primary"
