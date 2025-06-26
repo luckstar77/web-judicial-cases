@@ -49,6 +49,17 @@ function App() {
     const searchMode = useSelector((state: any) => state.data.searchMode);
     const search = useSelector((state: any) => state.data.search);
 
+    const executeSearch = () => {
+        const query = search.trim();
+        if (!query) {
+            setErrorMessage('空白不需要查詢');
+            setOpen(true);
+            return;
+        }
+        dispatch(updateSearchCompare(search));
+        dispatch(fetchData({ search }));
+    };
+
     return (
         <Box
             sx={{
@@ -95,10 +106,7 @@ function App() {
                             fullWidth
                             onKeyUp={(event) => {
                                 if (event.key === 'Enter') {
-                                    dispatch(
-                                        updateSearchCompare(search)
-                                    );
-                                    dispatch(fetchData({ search }));
+                                    executeSearch();
                                     event.preventDefault();
                                 }
                             }}
@@ -108,18 +116,7 @@ function App() {
                                         <IconButton
                                             type="button"
                                             aria-label="search"
-                                            onClick={() => {
-                                                dispatch(
-                                                    updateSearchCompare(
-                                                        search
-                                                    )
-                                                );
-                                                dispatch(
-                                                    fetchData({
-                                                        search,
-                                                    })
-                                                );
-                                            }}
+                                            onClick={executeSearch}
                                         >
                                             <SearchIcon />
                                         </IconButton>
