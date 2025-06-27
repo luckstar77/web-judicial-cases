@@ -30,6 +30,7 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const { status, error } = useAppSelector((s) => s.upload);
+    const [submitDisabled, setSubmitDisabled] = useState(false);
     const isLoggedIn = useAppSelector((s) => s.user.isLoggedIn);
 
     const [form, setForm] = useState<{
@@ -79,12 +80,26 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
         };
     }, [imagePreviews]);
 
+    useEffect(() => {
+        if (status === 'failed') {
+            setSubmitDisabled(false);
+        }
+    }, [status]);
+
+    useEffect(() => {
+        return () => {
+            dispatch(resetStatus());
+            setSubmitDisabled(false);
+        };
+    }, [dispatch]);
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!isLoggedIn) {
             dispatch(setShowDialog(USER_DIALOG_STATUS.PHONE_AUTH));
             return;
         }
+        setSubmitDisabled(true);
         dispatch(uploadCase(form));
     };
 
@@ -219,7 +234,7 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
                 <Button
                     type="submit"
                     variant="contained"
-                    disabled={status === 'loading'}
+                    disabled={status === 'loading' || submitDisabled}
                 >
                     送出
                 </Button>
