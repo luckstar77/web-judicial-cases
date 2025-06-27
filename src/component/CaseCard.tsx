@@ -123,7 +123,6 @@ const CaseCard: React.FC<Props> = ({ item }) => {
                                 {item.createdAt
                                     ? `，時間：${new Date(item.createdAt).toLocaleDateString()}`
                                     : ''}
-                                {item.ip ? `，來自：${item.ip}` : ''}
                             </Typography>
                         )}
                     </Box>
