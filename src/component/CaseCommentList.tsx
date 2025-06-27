@@ -63,7 +63,7 @@ const CaseCommentList: React.FC<Props> = ({ caseId }) => {
                                     primary={c.content}
                                     secondary={
                                         <>
-                                            {c.name || '匿名'} ({c.ip}) ·{' '}
+                                            {c.name || '匿名'} ·{' '}
                                             {new Date(
                                                 c.createdAt,
                                             ).toLocaleString()}
