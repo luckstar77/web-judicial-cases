@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Container,
     Typography,
@@ -52,6 +52,8 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
         images: [],
     });
 
+    const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+
     const handleInputChange =
         (key: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
             setForm({ ...form, [key]: e.target.value });
@@ -64,9 +66,18 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
-            setForm({ ...form, images: Array.from(e.target.files) });
+            const files = Array.from(e.target.files);
+            setForm({ ...form, images: files });
+            const urls = files.map((f) => URL.createObjectURL(f));
+            setImagePreviews(urls);
         }
     };
+
+    useEffect(() => {
+        return () => {
+            imagePreviews.forEach((url) => URL.revokeObjectURL(url));
+        };
+    }, [imagePreviews]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -193,6 +204,18 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
                         onChange={handleFileChange}
                     />
                 </Button>
+                {imagePreviews.length > 0 && (
+                    <Box sx={{ display: 'flex', gap: 1, overflowX: 'auto' }}>
+                        {imagePreviews.map((src, idx) => (
+                            <Box
+                                key={idx}
+                                component="img"
+                                src={src}
+                                sx={{ width: 80, height: 80, objectFit: 'cover', borderRadius: 1 }}
+                            />
+                        ))}
+                    </Box>
+                )}
                 <Button
                     type="submit"
                     variant="contained"
