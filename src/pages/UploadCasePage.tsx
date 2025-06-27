@@ -162,19 +162,19 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
                     required
                 />
                 <TextField
-                    label="被告姓名"
+                    label="黑名單姓名"
                     value={form.defendantName}
                     onChange={handleInputChange('defendantName')}
                     required
                 />
                 <TextField
-                    label="被告電話"
+                    label="黑名單電話"
                     value={form.defendantPhone}
                     onChange={handleInputChange('defendantPhone')}
                     required
                 />
                 <TextField
-                    label="被告身分證字號"
+                    label="黑名單身分證字號"
                     value={form.defendantIdNo}
                     onChange={handleInputChange('defendantIdNo')}
                     required
