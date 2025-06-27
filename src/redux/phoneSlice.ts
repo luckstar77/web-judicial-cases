@@ -137,7 +137,9 @@ const phoneSlice = createSlice({
                 getUserData.fulfilled,
                 (state, action: PayloadAction<any>) => {
                     const { phone, ip, uid, name, email } = action.payload;
-                    state.fetchStatus = FETCH_STATUS.SUCCESS;
+                    // Do not trigger success alert when merely fetching user data
+                    // Ensure the fetch status is reset instead
+                    state.fetchStatus = FETCH_STATUS.NONE;
                     state.phone = phone;
                     state.isLoggedIn = true;
                     state.name = name;
