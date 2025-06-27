@@ -48,7 +48,7 @@ function ExampleList(props: Props) {
         setSelectedItem(null);
         setOpenCommentId(null);
     };
-    if (items.length === 0)
+    if (items.length === 0 && search.trim() !== '')
         return (
             <Box
                 display="flex"

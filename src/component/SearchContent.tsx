@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import TextField from '@mui/material/TextField';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
 import StockLogo from '../asset/rental_icon.png';
-import { Button } from '@mui/material';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
     fetchData,
     setSearch,
     updateSearchCompare,
-    updateSearchMode,
 } from '../redux/dataSlice';
 
 const selected = {
@@ -32,18 +28,6 @@ interface Map {
 }
 
 function App() {
-    const [open, setOpen] = React.useState(false);
-    const [errorMessage, setErrorMessage] = React.useState('');
-    const handleClose = (
-        event?: React.SyntheticEvent | Event,
-        reason?: string
-    ) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        setOpen(false);
-    };
 
     const dispatch = useDispatch();
     const searchMode = useSelector((state: any) => state.data.searchMode);
@@ -52,8 +36,6 @@ function App() {
     const executeSearch = () => {
         const query = search.trim();
         if (!query) {
-            setErrorMessage('空白不需要查詢');
-            setOpen(true);
             return;
         }
         dispatch(updateSearchCompare(search));
@@ -67,15 +49,6 @@ function App() {
                 height: '390px',
             }}
         >
-            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-                <Alert
-                    onClose={handleClose}
-                    severity="error"
-                    sx={{ width: '100%' }}
-                >
-                    {errorMessage.toString()}
-                </Alert>
-            </Snackbar>
             <Grid
                 container
                 direction="row"
