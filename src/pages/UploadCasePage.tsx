@@ -171,13 +171,11 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
                     label="黑名單電話"
                     value={form.defendantPhone}
                     onChange={handleInputChange('defendantPhone')}
-                    required
                 />
                 <TextField
                     label="黑名單身分證字號"
                     value={form.defendantIdNo}
                     onChange={handleInputChange('defendantIdNo')}
-                    required
                 />
                 <FormControl fullWidth>
                     <InputLabel id="location-label">縣市</InputLabel>
