@@ -3,7 +3,7 @@ import axios, { AxiosError } from 'axios';
 import { FETCH_STATUS, USER_DIALOG_STATUS } from '../types/enums';
 
 const API_URL = process.env.REACT_APP_API_URL;
-const CASES_API_URL = `${API_URL}/verify`;
+const VERIFY_API_URL = `${API_URL}/verify`;
 const USER_API_URL = `${API_URL}/user`;
 
 // Create the async thunk for phone verification
@@ -11,7 +11,7 @@ export const verifyPhoneNumber: any = createAsyncThunk(
     'phone/verify',
     async (data, thunkAPI) => {
         try {
-            const response = await axios.post(CASES_API_URL, data);
+            const response = await axios.post(VERIFY_API_URL, data);
             return response.data;
         } catch (error) {
             const axiosError = error as AxiosError;
