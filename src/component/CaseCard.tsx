@@ -99,7 +99,7 @@ const CaseCard: React.FC<Props> = ({ item }) => {
 
     const handleToggleLike = () => {
         if (!isLoggedIn) {
-            dispatch(setShowDialog(USER_DIALOG_STATUS.PHONE_AUTH));
+            dispatch(setShowDialog(USER_DIALOG_STATUS.LOGIN));
             return;
         }
         if (!loading) {

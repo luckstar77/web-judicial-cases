@@ -78,7 +78,7 @@ export default function OutlinedCard(props: Props) {
         e: React.MouseEvent) => {
         e.stopPropagation();      // ← 阻止冒泡
         if (!isLoggedIn) {
-            dispatch(setShowDialog(USER_DIALOG_STATUS.PHONE_AUTH));
+            dispatch(setShowDialog(USER_DIALOG_STATUS.LOGIN));
             return;
         }
         if (!loading) {

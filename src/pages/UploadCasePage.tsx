@@ -96,7 +96,7 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!isLoggedIn) {
-            dispatch(setShowDialog(USER_DIALOG_STATUS.PHONE_AUTH));
+            dispatch(setShowDialog(USER_DIALOG_STATUS.LOGIN));
             return;
         }
         setSubmitDisabled(true);

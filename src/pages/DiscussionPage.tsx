@@ -27,7 +27,7 @@ export default function DiscussionPage() {
 
     const handleSearch = () => {
         if (!isLoggedIn) {
-            dispatch(setShowDialog(USER_DIALOG_STATUS.PHONE_AUTH));
+            dispatch(setShowDialog(USER_DIALOG_STATUS.LOGIN));
             return;
         }
         const query = search.trim();

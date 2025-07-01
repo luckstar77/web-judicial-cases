@@ -20,7 +20,7 @@ const CaseCommentForm: React.FC<Props> = ({ caseId }) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!isLoggedIn) {
-            dispatch(setShowDialog(USER_DIALOG_STATUS.PHONE_AUTH));
+            dispatch(setShowDialog(USER_DIALOG_STATUS.LOGIN));
             return;
         }
         if (!content.trim()) return;
