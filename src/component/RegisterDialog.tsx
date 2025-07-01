@@ -18,7 +18,16 @@ export function RegisterDialog() {
     };
 
     const handleSubmit = () => {
-        dispatch(registerUser({ token, password, name, displayName: name, email }));
+        dispatch(
+            registerUser({
+                token,
+                password,
+                name,
+                displayName: name,
+                email,
+                phone,
+            })
+        );
     };
 
     return (
