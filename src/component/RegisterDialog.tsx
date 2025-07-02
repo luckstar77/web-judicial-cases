@@ -1,14 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser, setShowDialog } from '../redux/phoneSlice';
-import { USER_DIALOG_STATUS } from '../types/enums';
+import { USER_DIALOG_STATUS, FETCH_STATUS } from '../types/enums';
 import { auth } from '../lib/firebase';
 import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from 'firebase/auth';
 
 export function RegisterDialog() {
     const dispatch = useDispatch();
-    const { showDialog } = useSelector((state: any) => state.user);
+    const { showDialog, fetchStatus, error } = useSelector((state: any) => state.user);
     const [code, setCode] = useState('');
     const [password, setPassword] = useState('');
     const [phone, setPhone] = useState('');
@@ -64,7 +65,7 @@ export function RegisterDialog() {
             try {
                 const result: any = await confirmationResult.confirm(code);
                 const firebaseToken = result.user.accessToken;
-                dispatch(
+                await dispatch(
                     registerUser({
                         token: firebaseToken,
                         password,
@@ -73,10 +74,11 @@ export function RegisterDialog() {
                         email,
                         phone,
                     })
-                );
+                ).unwrap();
                 handleClose();
             } catch (error) {
                 console.error(error);
+                // Do not close on failure so user can see the error
             }
         }
     };
@@ -101,6 +103,11 @@ export function RegisterDialog() {
                     }}
                 />
                 <div id="recaptcha-container" ref={recaptchaContainer}></div>
+                {fetchStatus === FETCH_STATUS.ERROR && (
+                    <Typography color="error" sx={{ mt: 1 }}>
+                        {error || '註冊失敗'}
+                    </Typography>
+                )}
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>取消</Button>
