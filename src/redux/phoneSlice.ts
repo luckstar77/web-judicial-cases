@@ -3,8 +3,34 @@ import axios, { AxiosError } from 'axios';
 import { FETCH_STATUS, USER_DIALOG_STATUS } from '../types/enums';
 
 const API_URL = process.env.REACT_APP_API_URL;
-const VERIFY_API_URL = `${API_URL}/verify`;
+const VERIFY_API_URL = `${API_URL}/user/verify`;
 const USER_API_URL = `${API_URL}/user`;
+
+export const loginUser: any = createAsyncThunk(
+    'user/login',
+    async (data, thunkAPI) => {
+        try {
+            const response = await axios.post(`${USER_API_URL}/login`, data);
+            return response.data;
+        } catch (error) {
+            const axiosError = error as AxiosError;
+            return thunkAPI.rejectWithValue(axiosError.response?.data);
+        }
+    }
+);
+
+export const registerUser: any = createAsyncThunk(
+    'user/register',
+    async (data, thunkAPI) => {
+        try {
+            const response = await axios.post(`${USER_API_URL}/register`, data);
+            return response.data;
+        } catch (error) {
+            const axiosError = error as AxiosError;
+            return thunkAPI.rejectWithValue(axiosError.response?.data);
+        }
+    }
+);
 
 // Create the async thunk for phone verification
 export const verifyPhoneNumber: any = createAsyncThunk(
@@ -178,7 +204,34 @@ const phoneSlice = createSlice({
                     state.fetchStatus = FETCH_STATUS.ERROR;
                     state.error = action.payload.message;
                 }
-            );
+            )
+            .addCase(loginUser.pending, (state) => {
+                state.fetchStatus = FETCH_STATUS.LOADING;
+            })
+            .addCase(loginUser.fulfilled, (state, action: PayloadAction<any>) => {
+                const { phone, token, name, email } = action.payload;
+                state.fetchStatus = FETCH_STATUS.SUCCESS;
+                state.phone = phone;
+                state.token = token;
+                state.name = name;
+                state.email = email;
+                state.isLoggedIn = true;
+                localStorage.setItem('token', token);
+            })
+            .addCase(loginUser.rejected, (state, action: PayloadAction<any>) => {
+                state.fetchStatus = FETCH_STATUS.ERROR;
+                state.error = action.payload.message;
+            })
+            .addCase(registerUser.pending, (state) => {
+                state.fetchStatus = FETCH_STATUS.LOADING;
+            })
+            .addCase(registerUser.fulfilled, (state) => {
+                state.fetchStatus = FETCH_STATUS.SUCCESS;
+            })
+            .addCase(registerUser.rejected, (state, action: PayloadAction<any>) => {
+                state.fetchStatus = FETCH_STATUS.ERROR;
+                state.error = action.payload.message;
+            });
     },
 });
 export const { setTokenFromLocalStorage, setShowDialog, setFetchStatus, logout } = phoneSlice.actions;

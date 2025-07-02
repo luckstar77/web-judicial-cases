@@ -21,7 +21,7 @@ const CommentForm: React.FC<Props> = ({ filesetId }) => {
         e.preventDefault();
         if (!isLoggedIn) {
             // 觸發電話登入對話框
-            dispatch(setShowDialog(USER_DIALOG_STATUS.PHONE_AUTH));
+            dispatch(setShowDialog(USER_DIALOG_STATUS.LOGIN));
             return;
         }
         if (!content.trim()) return;

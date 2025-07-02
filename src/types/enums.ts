@@ -1,6 +1,8 @@
 export enum USER_DIALOG_STATUS {
     NONE,
-    PHONE_AUTH,
+    LOGIN,
+    REGISTER,
+    FORGOT_PASSWORD,
     USER_DATA
 }
 

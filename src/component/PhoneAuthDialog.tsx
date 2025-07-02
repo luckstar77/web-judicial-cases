@@ -116,10 +116,10 @@ export function PhoneAuthDialog() {
 
     return (
         <div>
-            <Dialog open={showDialog === USER_DIALOG_STATUS.PHONE_AUTH} onClose={handleClose}>
-                <DialogTitle>電話登入</DialogTitle>
+            <Dialog open={showDialog === USER_DIALOG_STATUS.FORGOT_PASSWORD} onClose={handleClose}>
+                <DialogTitle>忘記密碼</DialogTitle>
                 <Typography variant="body1" sx={{ ml: 2, mt: 1 }}>
-                    用手機接收簡訊驗證碼即可登入發文留言
+                    用手機接收簡訊驗證碼以重設密碼
                 </Typography>
                 <DialogContent>
                     <Paper
@@ -169,7 +169,7 @@ export function PhoneAuthDialog() {
                 </DialogContent>
                 <DialogActions>
                     <Button sx={{ fontSize: '1rem' }} onClick={handleClose}>取消</Button>
-                    <Button sx={{ fontSize: '1rem' }} onClick={handleConfirmCode}>登入</Button>
+                    <Button sx={{ fontSize: '1rem' }} onClick={handleConfirmCode}>確認</Button>
                 </DialogActions>
             </Dialog>
             <div id="recaptcha-container" ref={recaptchaContainer}></div>

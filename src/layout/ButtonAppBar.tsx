@@ -35,7 +35,7 @@ export default function ButtonAppBar() {
 
     const handleClickOpen = () => {
         if(phone) dispatch(setShowDialog(USER_DIALOG_STATUS.USER_DATA));
-        else dispatch(setShowDialog(USER_DIALOG_STATUS.PHONE_AUTH));
+        else dispatch(setShowDialog(USER_DIALOG_STATUS.LOGIN));
     };
 
     return (
