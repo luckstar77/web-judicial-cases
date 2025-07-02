@@ -3,7 +3,7 @@ import axios, { AxiosError } from 'axios';
 import { FETCH_STATUS, USER_DIALOG_STATUS } from '../types/enums';
 
 const API_URL = process.env.REACT_APP_API_URL;
-const VERIFY_API_URL = `${API_URL}/verify`;
+const VERIFY_API_URL = `${API_URL}/user/verify`;
 const USER_API_URL = `${API_URL}/user`;
 
 export const loginUser: any = createAsyncThunk(
