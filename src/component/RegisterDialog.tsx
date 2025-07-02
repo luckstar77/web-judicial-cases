@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerUser, setShowDialog } from '../redux/phoneSlice';
+import { registerUser, verifyPhoneNumber, setShowDialog } from '../redux/phoneSlice';
 import { USER_DIALOG_STATUS, FETCH_STATUS } from '../types/enums';
 import { auth } from '../lib/firebase';
 import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from 'firebase/auth';
@@ -75,6 +75,13 @@ export function RegisterDialog() {
                         phone,
                     })
                 ).unwrap();
+
+                await dispatch(
+                    verifyPhoneNumber({
+                        token: firebaseToken,
+                    })
+                ).unwrap();
+
                 handleClose();
             } catch (error) {
                 console.error(error);
