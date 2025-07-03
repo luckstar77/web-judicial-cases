@@ -14,6 +14,7 @@ export function RegisterDialog() {
     const [password, setPassword] = useState('');
     const [phone, setPhone] = useState('');
     const [name, setName] = useState('');
+    const [displayName, setDisplayName] = useState('');
     const [email, setEmail] = useState('');
     const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
     const recaptchaContainer = useRef(null);
@@ -52,9 +53,13 @@ export function RegisterDialog() {
             throw new Error('Unable to initialize recaptcha verifier.');
         }
 
+        const formattedPhone = phone.startsWith('0')
+            ? '+886' + phone.slice(1)
+            : phone;
+
         const result = await signInWithPhoneNumber(
             auth,
-            '+886' + phone,
+            formattedPhone,
             recaptchaVerifier.current
         );
         setConfirmationResult(result);
@@ -65,14 +70,19 @@ export function RegisterDialog() {
             try {
                 const result: any = await confirmationResult.confirm(code);
                 const firebaseToken = result.user.accessToken;
+
+                const formattedPhone = phone.startsWith('0')
+                    ? '+886' + phone.slice(1)
+                    : phone;
+
                 await dispatch(
                     registerUser({
                         token: firebaseToken,
                         password,
                         name,
-                        displayName: name,
+                        displayName,
                         email,
-                        phone,
+                        phone: formattedPhone,
                     })
                 ).unwrap();
 
@@ -94,20 +104,47 @@ export function RegisterDialog() {
         <Dialog open={showDialog === USER_DIALOG_STATUS.REGISTER} onClose={handleClose}>
             <DialogTitle>註冊</DialogTitle>
             <DialogContent>
-                <TextField fullWidth margin="dense" label="電話" onChange={(e) => setPhone(e.target.value)} />
-                <TextField fullWidth margin="dense" label="密碼" type="password" onChange={(e) => setPassword(e.target.value)} />
-                <TextField fullWidth margin="dense" label="姓名" onChange={(e) => setName(e.target.value)} />
-                <TextField fullWidth margin="dense" label="Email" onChange={(e) => setEmail(e.target.value)} />
                 <TextField
                     fullWidth
                     margin="dense"
-                    label="驗證 Token"
-                    onChange={(e) => setCode(e.target.value)}
+                    label="電話"
+                    onChange={(e) => setPhone(e.target.value)}
                     InputProps={{
                         endAdornment: (
                             <Button onClick={handleSendCode}>取得驗證碼</Button>
                         ),
                     }}
+                />
+                <TextField
+                    fullWidth
+                    margin="dense"
+                    label="驗證碼"
+                    onChange={(e) => setCode(e.target.value)}
+                />
+                <TextField
+                    fullWidth
+                    margin="dense"
+                    label="密碼"
+                    type="password"
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <TextField
+                    fullWidth
+                    margin="dense"
+                    label="姓名"
+                    onChange={(e) => setName(e.target.value)}
+                />
+                <TextField
+                    fullWidth
+                    margin="dense"
+                    label="顯示名稱"
+                    onChange={(e) => setDisplayName(e.target.value)}
+                />
+                <TextField
+                    fullWidth
+                    margin="dense"
+                    label="Email"
+                    onChange={(e) => setEmail(e.target.value)}
                 />
                 <div id="recaptcha-container" ref={recaptchaContainer}></div>
                 {fetchStatus === FETCH_STATUS.ERROR && (
