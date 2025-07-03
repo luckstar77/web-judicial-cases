@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -9,32 +9,29 @@ import TextField from '@mui/material/TextField';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, setShowDialog, updateUserData } from '../redux/phoneSlice';
 
-import { auth } from '../lib/firebase';
-import {
-    ConfirmationResult,
-} from 'firebase/auth';
 import { USER_DIALOG_STATUS } from '../types/enums';
 
 export function UserDataDialog() {
-    const [nameInComponent, setNameInComponent] = useState('');
     const [emailInComponent, setEmailInComponent] = useState('');
+    const [displayNameInComponent, setDisplayNameInComponent] = useState('');
+    const [passwordInComponent, setPasswordInComponent] = useState('********');
 
 
-    const { phone, name, email, showDialog } = useSelector(
+    const { phone, name, email, displayName, showDialog } = useSelector(
         (state: any) => state.user
     );
-
-    useEffect(() => {
-        if (name) {
-            setNameInComponent(name);
-        }
-    }, [name]);
 
     useEffect(() => {
         if (email) {
             setEmailInComponent(email);
         }
     }, [email]);
+
+    useEffect(() => {
+        if (displayName) {
+            setDisplayNameInComponent(displayName);
+        }
+    }, [displayName]);
 
     const dispatch = useDispatch();
     
@@ -43,12 +40,14 @@ export function UserDataDialog() {
     };
 
     const handleConfirmData = async () => {
-        dispatch(
-            updateUserData({
-                name: nameInComponent,
-                email: emailInComponent
-            })
-        );
+        const payload: any = {
+            email: emailInComponent,
+            displayName: displayNameInComponent,
+        };
+        if (passwordInComponent !== '********' && passwordInComponent !== '') {
+            payload.password = passwordInComponent;
+        }
+        dispatch(updateUserData(payload));
     };
 
     const handleLogout = async () => {
@@ -79,11 +78,10 @@ export function UserDataDialog() {
                             color: 'gray',
                         }}
                         fullWidth
-                        required
-                        id="outlined-required"
+                        disabled
+                        id="outlined-disabled-name"
                         label="姓名"
                         defaultValue={name}
-                        onChange={(e) => setNameInComponent(e.target.value)}
                     />
                     <TextField
                         sx={{
@@ -91,11 +89,33 @@ export function UserDataDialog() {
                             color: 'gray',
                         }}
                         fullWidth
-                        required
+                        id="outlined-display-name"
+                        label="顯示名稱"
+                        value={displayNameInComponent}
+                        onChange={(e) => setDisplayNameInComponent(e.target.value)}
+                    />
+                    <TextField
+                        sx={{
+                            margin: '10px 0px',
+                            color: 'gray',
+                        }}
+                        fullWidth
                         id="outlined-required"
                         label="Email"
-                        defaultValue={email}
+                        value={emailInComponent}
                         onChange={(e) => setEmailInComponent(e.target.value)}
+                    />
+                    <TextField
+                        sx={{
+                            margin: '10px 0px',
+                            color: 'gray',
+                        }}
+                        fullWidth
+                        id="outlined-password"
+                        label="密碼"
+                        type="password"
+                        value={passwordInComponent}
+                        onChange={(e) => setPasswordInComponent(e.target.value)}
                     />
                 </DialogContent>
                 <DialogActions>

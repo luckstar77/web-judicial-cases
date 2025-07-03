@@ -59,7 +59,7 @@ export const updateUserData: any = createAsyncThunk(
                         Authorization: `Bearer ${token}`,
                     },
                 };
-                const response = await axios.post(USER_API_URL, data, config);
+                const response = await axios.put(USER_API_URL, data, config);
                 return response.data;
             }
         } catch (error) {
@@ -106,6 +106,7 @@ const phoneSlice = createSlice({
         showData: false,
         showDialog: USER_DIALOG_STATUS.NONE,
         name: '',
+        displayName: '',
         email: '',
         isLoggedIn: false,
     },
@@ -134,13 +135,14 @@ const phoneSlice = createSlice({
             .addCase(
                 verifyPhoneNumber.fulfilled,
                 (state, action: PayloadAction<any>) => {
-                    const { phone, ip, uid, token, name, email } = action.payload;
+                    const { phone, ip, uid, token, name, email, displayName } = action.payload;
                     state.fetchStatus = FETCH_STATUS.SUCCESS;
                     state.phone = phone;
                     state.isLoggedIn = true;
                     state.ip = ip;
                     state.uid = uid;
                     state.name = name;
+                    state.displayName = displayName || '';
                     state.email = email;
                     state.token = token;
 
@@ -162,13 +164,14 @@ const phoneSlice = createSlice({
             .addCase(
                 getUserData.fulfilled,
                 (state, action: PayloadAction<any>) => {
-                    const { phone, ip, uid, name, email } = action.payload;
+                    const { phone, ip, uid, name, email, displayName } = action.payload;
                     // Do not trigger success alert when merely fetching user data
                     // Ensure the fetch status is reset instead
                     state.fetchStatus = FETCH_STATUS.NONE;
                     state.phone = phone;
                     state.isLoggedIn = true;
                     state.name = name;
+                    state.displayName = displayName || '';
                     state.email = email;
                     state.ip = ip;
                     state.uid = uid;
@@ -188,9 +191,10 @@ const phoneSlice = createSlice({
             .addCase(
                 updateUserData.fulfilled,
                 (state, action: PayloadAction<any>) => {
-                    const { name, email, token } = action.payload;
+                    const { name, email, displayName, token } = action.payload;
                     state.fetchStatus = FETCH_STATUS.SUCCESS;
                     state.name = name;
+                    state.displayName = displayName || '';
                     state.email = email;
                     state.token = token;
 
@@ -209,11 +213,12 @@ const phoneSlice = createSlice({
                 state.fetchStatus = FETCH_STATUS.LOADING;
             })
             .addCase(loginUser.fulfilled, (state, action: PayloadAction<any>) => {
-                const { phone, token, name, email } = action.payload;
+                const { phone, token, name, email, displayName } = action.payload;
                 state.fetchStatus = FETCH_STATUS.SUCCESS;
                 state.phone = phone;
                 state.token = token;
                 state.name = name;
+                state.displayName = displayName || '';
                 state.email = email;
                 state.isLoggedIn = true;
                 state.showDialog = USER_DIALOG_STATUS.NONE;
