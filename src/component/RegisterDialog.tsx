@@ -114,7 +114,7 @@ export function RegisterDialog() {
                 <TextField
                     fullWidth
                     margin="dense"
-                    label="電話"
+                    label="帳號(電話，需完成驗證)"
                     onChange={(e) => setPhone(e.target.value)}
                     InputProps={{
                         endAdornment: (
@@ -136,26 +136,26 @@ export function RegisterDialog() {
                 <TextField
                     fullWidth
                     margin="dense"
-                    label="密碼"
+                    label="密碼(8個字以上)"
                     type="password"
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <TextField
                     fullWidth
                     margin="dense"
-                    label="姓名"
+                    label="姓名(實名認證，日後修改需聯絡管理員)"
                     onChange={(e) => setName(e.target.value)}
                 />
                 <TextField
                     fullWidth
                     margin="dense"
-                    label="顯示名稱"
+                    label="顯示名稱(平台內的稱呼)"
                     onChange={(e) => setDisplayName(e.target.value)}
                 />
                 <TextField
                     fullWidth
                     margin="dense"
-                    label="Email"
+                    label="Email(平台透過郵件發通知)"
                     onChange={(e) => setEmail(e.target.value)}
                 />
                 <div id="recaptcha-container" ref={recaptchaContainer}></div>
