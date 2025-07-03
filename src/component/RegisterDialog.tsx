@@ -7,6 +7,7 @@ import {
     DialogActions,
     Button,
 } from '@mui/material';
+import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone';
 import Typography from '@mui/material/Typography';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser, verifyPhoneNumber, setShowDialog } from '../redux/phoneSlice';
@@ -121,6 +122,7 @@ export function RegisterDialog() {
                             <Button
                                 onClick={handleSendCode}
                                 sx={{ minWidth: 100 }}
+                                startIcon={<PhoneIphoneIcon />}
                             >
                                 取得驗證碼
                             </Button>
