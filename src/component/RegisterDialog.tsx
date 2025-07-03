@@ -118,7 +118,12 @@ export function RegisterDialog() {
                     onChange={(e) => setPhone(e.target.value)}
                     InputProps={{
                         endAdornment: (
-                            <Button onClick={handleSendCode}>取得驗證碼</Button>
+                            <Button
+                                onClick={handleSendCode}
+                                sx={{ minWidth: 100 }}
+                            >
+                                取得驗證碼
+                            </Button>
                         ),
                     }}
                 />
