@@ -24,8 +24,6 @@ export function LoginDialog() {
         dispatch(setShowDialog(USER_DIALOG_STATUS.NONE));
     };
 
-
-
     const handleLogin = () => {
         const formattedPhone = phone.startsWith('0')
             ? '+886' + phone.slice(1)

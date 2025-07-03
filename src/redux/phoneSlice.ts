@@ -216,6 +216,7 @@ const phoneSlice = createSlice({
                 state.name = name;
                 state.email = email;
                 state.isLoggedIn = true;
+                state.showDialog = USER_DIALOG_STATUS.NONE;
                 localStorage.setItem('token', token);
             })
             .addCase(loginUser.rejected, (state, action: PayloadAction<any>) => {
