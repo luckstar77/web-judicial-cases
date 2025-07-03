@@ -115,6 +115,13 @@ export function RegisterDialog() {
                         ),
                     }}
                 />
+                <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ display: 'block', mb: 1 }}
+                >
+                    此電話需要通過驗證且日後不可修改
+                </Typography>
                 <TextField
                     fullWidth
                     margin="dense"
@@ -134,6 +141,13 @@ export function RegisterDialog() {
                     label="姓名"
                     onChange={(e) => setName(e.target.value)}
                 />
+                <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ display: 'block', mb: 1 }}
+                >
+                    若日後需要修改姓名，請聯絡管理員
+                </Typography>
                 <TextField
                     fullWidth
                     margin="dense"
@@ -146,6 +160,13 @@ export function RegisterDialog() {
                     label="Email"
                     onChange={(e) => setEmail(e.target.value)}
                 />
+                <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ display: 'block', mb: 1 }}
+                >
+                    若日後需要修改 Email，請聯絡管理員
+                </Typography>
                 <div id="recaptcha-container" ref={recaptchaContainer}></div>
                 {fetchStatus === FETCH_STATUS.ERROR && (
                     <Typography color="error" sx={{ mt: 1 }}>
