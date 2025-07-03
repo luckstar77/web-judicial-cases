@@ -109,19 +109,13 @@ export function RegisterDialog() {
                     margin="dense"
                     label="電話"
                     onChange={(e) => setPhone(e.target.value)}
+                    helperText="此電話需要通過驗證且日後不可修改"
                     InputProps={{
                         endAdornment: (
                             <Button onClick={handleSendCode}>取得驗證碼</Button>
                         ),
                     }}
                 />
-                <Typography
-                    variant="caption"
-                    color="text.secondary"
-                    sx={{ display: 'block', mb: 1 }}
-                >
-                    此電話需要通過驗證且日後不可修改
-                </Typography>
                 <TextField
                     fullWidth
                     margin="dense"
@@ -140,14 +134,8 @@ export function RegisterDialog() {
                     margin="dense"
                     label="姓名"
                     onChange={(e) => setName(e.target.value)}
+                    helperText="若日後需要修改姓名，請聯絡管理員"
                 />
-                <Typography
-                    variant="caption"
-                    color="text.secondary"
-                    sx={{ display: 'block', mb: 1 }}
-                >
-                    若日後需要修改姓名，請聯絡管理員
-                </Typography>
                 <TextField
                     fullWidth
                     margin="dense"
@@ -159,14 +147,8 @@ export function RegisterDialog() {
                     margin="dense"
                     label="Email"
                     onChange={(e) => setEmail(e.target.value)}
+                    helperText="若日後需要修改 Email，請聯絡管理員"
                 />
-                <Typography
-                    variant="caption"
-                    color="text.secondary"
-                    sx={{ display: 'block', mb: 1 }}
-                >
-                    若日後需要修改 Email，請聯絡管理員
-                </Typography>
                 <div id="recaptcha-container" ref={recaptchaContainer}></div>
                 {fetchStatus === FETCH_STATUS.ERROR && (
                     <Typography color="error" sx={{ mt: 1 }}>
