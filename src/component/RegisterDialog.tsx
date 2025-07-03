@@ -130,7 +130,7 @@ export function RegisterDialog() {
                 <TextField
                     fullWidth
                     margin="dense"
-                    label="驗證碼"
+                    label="驗證碼(從簡訊取得的驗證碼)"
                     onChange={(e) => setCode(e.target.value)}
                 />
                 <TextField
