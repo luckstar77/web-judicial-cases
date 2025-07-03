@@ -24,13 +24,7 @@ export function LoginDialog() {
         dispatch(setShowDialog(USER_DIALOG_STATUS.NONE));
     };
 
-    const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        let value = e.target.value;
-        if (value.startsWith('0')) {
-            value = '+886' + value.slice(1);
-        }
-        setPhone(value);
-    };
+
 
     const handleLogin = () => {
         const formattedPhone = phone.startsWith('0')
@@ -59,7 +53,7 @@ export function LoginDialog() {
                     margin="dense"
                     label="電話"
                     value={phone}
-                    onChange={handlePhoneChange}
+                    onChange={(e) => setPhone(e.target.value)}
                 />
                 <TextField
                     fullWidth
