@@ -109,7 +109,6 @@ export function RegisterDialog() {
                     margin="dense"
                     label="電話"
                     onChange={(e) => setPhone(e.target.value)}
-                    helperText="此電話需要通過驗證且日後不可修改"
                     InputProps={{
                         endAdornment: (
                             <Button onClick={handleSendCode}>取得驗證碼</Button>
@@ -134,7 +133,6 @@ export function RegisterDialog() {
                     margin="dense"
                     label="姓名"
                     onChange={(e) => setName(e.target.value)}
-                    helperText="若日後需要修改姓名，請聯絡管理員"
                 />
                 <TextField
                     fullWidth
@@ -147,7 +145,6 @@ export function RegisterDialog() {
                     margin="dense"
                     label="Email"
                     onChange={(e) => setEmail(e.target.value)}
-                    helperText="若日後需要修改 Email，請聯絡管理員"
                 />
                 <div id="recaptcha-container" ref={recaptchaContainer}></div>
                 {fetchStatus === FETCH_STATUS.ERROR && (
