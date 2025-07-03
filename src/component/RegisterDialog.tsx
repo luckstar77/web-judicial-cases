@@ -1,5 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from '@mui/material';
+import {
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    TextField,
+    DialogActions,
+    Button,
+    Paper,
+    InputBase,
+    Divider,
+    IconButton,
+} from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
 import Typography from '@mui/material/Typography';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser, verifyPhoneNumber, setShowDialog } from '../redux/phoneSlice';
@@ -104,17 +116,32 @@ export function RegisterDialog() {
         <Dialog open={showDialog === USER_DIALOG_STATUS.REGISTER} onClose={handleClose}>
             <DialogTitle>註冊</DialogTitle>
             <DialogContent>
-                <TextField
-                    fullWidth
-                    margin="dense"
-                    label="電話"
-                    onChange={(e) => setPhone(e.target.value)}
-                    InputProps={{
-                        endAdornment: (
-                            <Button onClick={handleSendCode}>取得驗證碼</Button>
-                        ),
+                <Paper
+                    component="form"
+                    sx={{
+                        p: '2px 4px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        width: { xs: '100%', sm: 400 },
                     }}
-                />
+                >
+                    <InputBase
+                        sx={{ ml: 1, flex: 1, fontSize: '1rem' }}
+                        placeholder="請輸入你的電話號碼"
+                        inputProps={{ 'aria-label': '請輸入你的電話號碼' }}
+                        onChange={(e) => setPhone(e.target.value)}
+                    />
+                    <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+                    <IconButton
+                        color="primary"
+                        sx={{ p: '10px' }}
+                        aria-label="send"
+                        onClick={handleSendCode}
+                    >
+                        <SendIcon />
+                    </IconButton>
+                    <div id="recaptcha-container" ref={recaptchaContainer}></div>
+                </Paper>
                 <TextField
                     fullWidth
                     margin="dense"
@@ -146,7 +173,6 @@ export function RegisterDialog() {
                     label="Email"
                     onChange={(e) => setEmail(e.target.value)}
                 />
-                <div id="recaptcha-container" ref={recaptchaContainer}></div>
                 {fetchStatus === FETCH_STATUS.ERROR && (
                     <Typography color="error" sx={{ mt: 1 }}>
                         {error || '註冊失敗'}
