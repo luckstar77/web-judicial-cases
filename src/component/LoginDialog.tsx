@@ -1,85 +1,85 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  TextField,
-  DialogActions,
-  Button,
-  Typography,
-} from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { loginUser, setShowDialog } from "../redux/phoneSlice";
-import { USER_DIALOG_STATUS, FETCH_STATUS } from "../types/enums";
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    TextField,
+    DialogActions,
+    Button,
+    Typography,
+} from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser, setShowDialog } from '../redux/phoneSlice';
+import { USER_DIALOG_STATUS, FETCH_STATUS } from '../types/enums';
 
 export function LoginDialog() {
-  const dispatch = useDispatch();
-  const { showDialog, fetchStatus, error } = useSelector(
-    (state: any) => state.user,
-  );
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
+    const dispatch = useDispatch();
+    const { showDialog, fetchStatus, error } = useSelector(
+        (state: any) => state.user,
+    );
+    const [phone, setPhone] = useState('');
+    const [password, setPassword] = useState('');
 
-  const handleClose = () => {
-    dispatch(setShowDialog(USER_DIALOG_STATUS.NONE));
-  };
+    const handleClose = () => {
+        dispatch(setShowDialog(USER_DIALOG_STATUS.NONE));
+    };
 
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value;
-    if (value.startsWith("0")) {
-      value = "+886" + value.slice(1);
-    }
-    setPhone(value);
-  };
+    const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let value = e.target.value;
+        if (value.startsWith('0')) {
+            value = '+886' + value.slice(1);
+        }
+        setPhone(value);
+    };
 
-  const handleLogin = () => {
-    const formattedPhone = phone.startsWith("0")
-      ? "+886" + phone.slice(1)
-      : phone;
-    dispatch(loginUser({ phone: formattedPhone, password }));
-  };
+    const handleLogin = () => {
+        const formattedPhone = phone.startsWith('0')
+            ? '+886' + phone.slice(1)
+            : phone;
+        dispatch(loginUser({ phone: formattedPhone, password }));
+    };
 
-  const handleRegister = () => {
-    dispatch(setShowDialog(USER_DIALOG_STATUS.REGISTER));
-  };
+    const handleRegister = () => {
+        dispatch(setShowDialog(USER_DIALOG_STATUS.REGISTER));
+    };
 
-  const handleForgot = () => {
-    dispatch(setShowDialog(USER_DIALOG_STATUS.FORGOT_PASSWORD));
-  };
+    const handleForgot = () => {
+        dispatch(setShowDialog(USER_DIALOG_STATUS.FORGOT_PASSWORD));
+    };
 
-  return (
-    <Dialog
-      open={showDialog === USER_DIALOG_STATUS.LOGIN}
-      onClose={handleClose}
-    >
-      <DialogTitle>登入</DialogTitle>
-      <DialogContent>
-        <TextField
-          fullWidth
-          margin="dense"
-          label="電話"
-          value={phone}
-          onChange={handlePhoneChange}
-        />
-        <TextField
-          fullWidth
-          margin="dense"
-          label="密碼"
-          type="password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        {fetchStatus === FETCH_STATUS.ERROR && (
-          <Typography color="error" sx={{ mt: 1 }}>
-            {error || "登入失敗"}
-          </Typography>
-        )}
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleRegister}>註冊</Button>
-        <Button onClick={handleForgot}>忘記密碼</Button>
-        <Button onClick={handleClose}>取消</Button>
-        <Button onClick={handleLogin}>登入</Button>
-      </DialogActions>
-    </Dialog>
-  );
+    return (
+        <Dialog
+            open={showDialog === USER_DIALOG_STATUS.LOGIN}
+            onClose={handleClose}
+        >
+            <DialogTitle>登入</DialogTitle>
+            <DialogContent>
+                <TextField
+                    fullWidth
+                    margin="dense"
+                    label="電話"
+                    value={phone}
+                    onChange={handlePhoneChange}
+                />
+                <TextField
+                    fullWidth
+                    margin="dense"
+                    label="密碼"
+                    type="password"
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                {fetchStatus === FETCH_STATUS.ERROR && (
+                    <Typography color="error" sx={{ mt: 1 }}>
+                        {error || '登入失敗'}
+                    </Typography>
+                )}
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleRegister}>註冊</Button>
+                <Button onClick={handleForgot}>忘記密碼</Button>
+                <Button onClick={handleClose}>取消</Button>
+                <Button onClick={handleLogin}>登入</Button>
+            </DialogActions>
+        </Dialog>
+    );
 }
