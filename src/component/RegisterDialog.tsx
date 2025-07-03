@@ -121,7 +121,7 @@ export function RegisterDialog() {
                         endAdornment: (
                             <Button
                                 onClick={handleSendCode}
-                                sx={{ minWidth: 100 }}
+                                sx={{ minWidth: 150 }}
                                 startIcon={<PhoneIphoneIcon />}
                             >
                                 取得驗證碼
