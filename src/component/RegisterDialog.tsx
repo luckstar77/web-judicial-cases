@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, Box } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser, verifyPhoneNumber, setShowDialog } from '../redux/phoneSlice';
@@ -104,17 +104,17 @@ export function RegisterDialog() {
         <Dialog open={showDialog === USER_DIALOG_STATUS.REGISTER} onClose={handleClose}>
             <DialogTitle>註冊</DialogTitle>
             <DialogContent>
-                <TextField
-                    fullWidth
-                    margin="dense"
-                    label="電話"
-                    onChange={(e) => setPhone(e.target.value)}
-                    InputProps={{
-                        endAdornment: (
-                            <Button onClick={handleSendCode}>取得驗證碼</Button>
-                        ),
-                    }}
-                />
+                <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
+                    <TextField
+                        sx={{ flex: 1 }}
+                        margin="dense"
+                        label="電話"
+                        onChange={(e) => setPhone(e.target.value)}
+                    />
+                    <Button sx={{ ml: 1, mt: '4px', height: '40px' }} onClick={handleSendCode}>
+                        取得驗證碼
+                    </Button>
+                </Box>
                 <TextField
                     fullWidth
                     margin="dense"
