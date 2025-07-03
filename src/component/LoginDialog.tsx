@@ -1,12 +1,22 @@
 import React, { useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from '@mui/material';
+import {
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    TextField,
+    DialogActions,
+    Button,
+    Typography,
+} from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, setShowDialog } from '../redux/phoneSlice';
-import { USER_DIALOG_STATUS } from '../types/enums';
+import { USER_DIALOG_STATUS, FETCH_STATUS } from '../types/enums';
 
 export function LoginDialog() {
     const dispatch = useDispatch();
-    const { showDialog } = useSelector((state: any) => state.user);
+    const { showDialog, fetchStatus, error } = useSelector(
+        (state: any) => state.user,
+    );
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
 
@@ -15,7 +25,10 @@ export function LoginDialog() {
     };
 
     const handleLogin = () => {
-        dispatch(loginUser({ phone, password }));
+        const formattedPhone = phone.startsWith('0')
+            ? '+886' + phone.slice(1)
+            : phone;
+        dispatch(loginUser({ phone: formattedPhone, password }));
     };
 
     const handleRegister = () => {
@@ -27,13 +40,17 @@ export function LoginDialog() {
     };
 
     return (
-        <Dialog open={showDialog === USER_DIALOG_STATUS.LOGIN} onClose={handleClose}>
+        <Dialog
+            open={showDialog === USER_DIALOG_STATUS.LOGIN}
+            onClose={handleClose}
+        >
             <DialogTitle>登入</DialogTitle>
             <DialogContent>
                 <TextField
                     fullWidth
                     margin="dense"
                     label="電話"
+                    value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                 />
                 <TextField
@@ -43,6 +60,11 @@ export function LoginDialog() {
                     type="password"
                     onChange={(e) => setPassword(e.target.value)}
                 />
+                {fetchStatus === FETCH_STATUS.ERROR && (
+                    <Typography color="error" sx={{ mt: 1 }}>
+                        {error || '登入失敗'}
+                    </Typography>
+                )}
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleRegister}>註冊</Button>
