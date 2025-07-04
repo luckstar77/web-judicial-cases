@@ -43,8 +43,9 @@ export interface CaseData {
     title?: string;
     content?: string;
     defendantName: string;
-    defendantPhone: string;
-    defendantIdNo: string;
+    defendantPhone?: string;
+    defendantIdNo?: string;
+    rent?: number;
     location?: string;
     district?: string;
     images?: string[];
@@ -114,12 +115,20 @@ const CaseCard: React.FC<Props> = ({ item }) => {
                 subheader={
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                         <Typography variant="body2">
-                            姓名：{maskName(item.defendantName)}，電話：{maskPhone(item.defendantPhone)}，身分證：{maskId(item.defendantIdNo)}
+                            姓名：{maskName(item.defendantName)}，電話：
+                            {item.defendantPhone && item.defendantPhone.trim()
+                                ? maskPhone(item.defendantPhone)
+                                : '**********'}
+                            ，身分證：
+                            {item.defendantIdNo && item.defendantIdNo.trim()
+                                ? maskId(item.defendantIdNo)
+                                : '**********'}
                         </Typography>
                         {item.location && (
                             <Typography variant="body2">
                                 地點：{item.location}
                                 {item.district || ''}
+                                {typeof item.rent === 'number' ? `，租金：${item.rent}` : ''}
                                 {item.createdAt
                                     ? `，時間：${new Date(item.createdAt).toLocaleDateString()}`
                                     : ''}

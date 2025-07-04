@@ -39,6 +39,7 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
         defendantName: string;
         defendantPhone: string;
         defendantIdNo: string;
+        rent: string;
         location: string;
         district: string;
         images: File[];
@@ -48,6 +49,7 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
         defendantName: '',
         defendantPhone: '',
         defendantIdNo: '',
+        rent: '',
         location: '',
         district: '',
         images: [],
@@ -100,7 +102,12 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
             return;
         }
         setSubmitDisabled(true);
-        dispatch(uploadCase(form));
+        dispatch(
+            uploadCase({
+                ...form,
+                rent: parseInt(form.rent, 10),
+            })
+        );
     };
 
     const handleClose = () => {
@@ -177,7 +184,14 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
                     value={form.defendantIdNo}
                     onChange={handleInputChange('defendantIdNo')}
                 />
-                <FormControl fullWidth>
+                <TextField
+                    label="租金"
+                    type="number"
+                    value={form.rent}
+                    onChange={handleInputChange('rent')}
+                    required
+                />
+                <FormControl fullWidth required>
                     <InputLabel id="location-label">縣市</InputLabel>
                     <Select
                         labelId="location-label"
