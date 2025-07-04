@@ -16,6 +16,7 @@ import JudicialFilesetComments from './JudicialFilesetComments';
 type Props = {
     items: any[];
     search: string;
+    status?: string;
 };
 
 type ListItemButtonProps = {
@@ -28,7 +29,7 @@ const ListItemButton = styled(ListItem)<ListItemButtonProps>(({ theme }) => ({
 }));
 
 function ExampleList(props: Props) {
-    const { items, search } = props;
+    const { items, search, status } = props;
     const [selectedItem, setSelectedItem] = useState<any | null>(null);
     const [openCommentId, setOpenCommentId] = useState<number | null>(null);
 
@@ -48,7 +49,7 @@ function ExampleList(props: Props) {
         setSelectedItem(null);
         setOpenCommentId(null);
     };
-    if (items.length === 0 && search.trim() !== '')
+    if (items.length === 0 && search.trim() !== '' && status === 'succeeded')
         return (
             <Box
                 display="flex"

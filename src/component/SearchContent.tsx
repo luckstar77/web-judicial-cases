@@ -79,7 +79,6 @@ function App() {
                             fullWidth
                             onKeyUp={(event) => {
                                 if (event.key === 'Enter') {
-                                    executeSearch();
                                     event.preventDefault();
                                 }
                             }}
