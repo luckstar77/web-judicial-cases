@@ -118,11 +118,11 @@ const CaseCard: React.FC<Props> = ({ item }) => {
                             姓名：{maskName(item.defendantName)}，電話：
                             {item.defendantPhone && item.defendantPhone.trim()
                                 ? maskPhone(item.defendantPhone)
-                                : '無提供'}
+                                : '**********'}
                             ，身分證：
                             {item.defendantIdNo && item.defendantIdNo.trim()
                                 ? maskId(item.defendantIdNo)
-                                : '無提供'}
+                                : '**********'}
                         </Typography>
                         {item.location && (
                             <Typography variant="body2">
