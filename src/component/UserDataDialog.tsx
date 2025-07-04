@@ -33,6 +33,12 @@ export function UserDataDialog() {
         }
     }, [displayName]);
 
+    useEffect(() => {
+        if (showDialog === USER_DIALOG_STATUS.USER_DATA) {
+            setPasswordInComponent('********');
+        }
+    }, [showDialog]);
+
     const dispatch = useDispatch();
     
     const handleClose = async () => {
