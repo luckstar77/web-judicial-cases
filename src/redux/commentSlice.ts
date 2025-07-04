@@ -11,7 +11,7 @@ export interface Comment {
   filesetId: number;
   content: string;
   createdAt: string;
-  name?: string;
+  displayName?: string;
   email?: string;
   ip?: string;
 }
