@@ -25,13 +25,14 @@ type ApiResponse = {
 const YourComponent = () => {
     const cases = useSelector((state: any) => state.data.list);
     const searchCompare = useSelector((state: any) => state.data.searchCompare);
+    const dataStatus = useSelector((state: any) => state.data.status);
     const searchMode = useSelector((state: any) => state.data.searchMode);
     const results: ApiResponse[] = useSelector(
         (state: any) => state.search.results
     );
     return (
         <Box display="flex" flexDirection="column" alignItems="center">
-            <CaseList items={cases} search={searchCompare}></CaseList>
+            <CaseList items={cases} search={searchCompare} status={dataStatus}></CaseList>
             
         </Box>
     );

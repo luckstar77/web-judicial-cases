@@ -83,7 +83,7 @@ export default function DiscussionPage() {
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 onKeyUp={(e) => {
-                                    if (e.key === 'Enter') handleSearch();
+                                    if (e.key === 'Enter') e.preventDefault();
                                 }}
                                 label="搜尋黑名單"
                                 variant="outlined"
