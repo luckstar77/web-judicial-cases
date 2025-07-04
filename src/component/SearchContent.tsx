@@ -77,11 +77,6 @@ function App() {
                             variant="outlined"
                             sx={{ backgroundColor: 'white' }} // 白色背景
                             fullWidth
-                            onKeyUp={(event) => {
-                                if (event.key === 'Enter') {
-                                    event.preventDefault();
-                                }
-                            }}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">

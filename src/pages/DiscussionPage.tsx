@@ -82,9 +82,6 @@ export default function DiscussionPage() {
                             <TextField
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                onKeyUp={(e) => {
-                                    if (e.key === 'Enter') e.preventDefault();
-                                }}
                                 label="搜尋黑名單"
                                 variant="outlined"
                                 sx={{ backgroundColor: 'white', width: '100%', maxWidth: 400 }}
