@@ -29,7 +29,7 @@ export default function ButtonAppBar() {
         }
     }, [dispatch]);
 
-    const { phone } = useSelector(
+    const { phone, displayName } = useSelector(
         (state: any) => state.user
     );
 
@@ -73,7 +73,7 @@ export default function ButtonAppBar() {
                     <Box sx={{ flexGrow: 1 }} />
 
                     <Button color="inherit" style={{ fontSize: 18 }} onClick={handleClickOpen}>
-                        {phone ? phone : '登入'}
+                        {phone ? displayName || phone : '登入'}
                     </Button>
                     <UserDialog />
                 </Toolbar>
