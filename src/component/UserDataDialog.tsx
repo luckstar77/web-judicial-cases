@@ -121,6 +121,11 @@ export function UserDataDialog() {
                         label="密碼"
                         type="password"
                         value={passwordInComponent}
+                        onFocus={() => {
+                            if (passwordInComponent === '********') {
+                                setPasswordInComponent('');
+                            }
+                        }}
                         onChange={(e) => setPasswordInComponent(e.target.value)}
                     />
                 </DialogContent>
