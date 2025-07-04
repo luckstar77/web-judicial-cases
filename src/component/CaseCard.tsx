@@ -45,6 +45,7 @@ export interface CaseData {
     defendantName: string;
     defendantPhone: string;
     defendantIdNo: string;
+    rent?: number;
     location?: string;
     district?: string;
     images?: string[];
@@ -120,6 +121,7 @@ const CaseCard: React.FC<Props> = ({ item }) => {
                             <Typography variant="body2">
                                 地點：{item.location}
                                 {item.district || ''}
+                                {typeof item.rent === 'number' ? `，租金：${item.rent}` : ''}
                                 {item.createdAt
                                     ? `，時間：${new Date(item.createdAt).toLocaleDateString()}`
                                     : ''}
