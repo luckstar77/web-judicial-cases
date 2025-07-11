@@ -119,7 +119,7 @@ const CaseCard: React.FC<Props> = ({ item }) => {
             onClick={handleToggleExpand}
             sx={{
                 width: '100%',
-                minWidth: 1000,
+                maxWidth: 1000,
                 cursor: 'pointer',
                 bgcolor: 'primary.main',
                 border: '1px solid',
