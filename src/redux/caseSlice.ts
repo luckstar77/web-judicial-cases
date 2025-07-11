@@ -7,10 +7,22 @@ const CASE_API_URL = `${API_URL}/case`;
 
 export const fetchCaseList = createAsyncThunk<
     CaseData[],
-    Record<string, unknown> | void
->('cases/fetchCaseList', async (params) => {
-    const response = await axios.get(CASE_API_URL, { params });
+    { page: number; pageSize: number }
+>('cases/fetchCaseList', async ({ page, pageSize }) => {
+    const response = await axios.get(CASE_API_URL, {
+        params: { page, pageSize },
+    });
     return response.data as CaseData[];
+});
+
+export const fetchCasePages = createAsyncThunk<
+    number,
+    { pageSize: number }
+>('cases/fetchCasePages', async ({ pageSize }) => {
+    const { data } = await axios.get<number>(`${CASE_API_URL}/pages`, {
+        params: { pageSize },
+    });
+    return data;
 });
 
 export const searchCaseList = createAsyncThunk<
@@ -33,6 +45,7 @@ export const caseSlice = createSlice({
     name: 'cases',
     initialState: {
         list: [] as CaseData[],
+        totalPages: 0,
         status: 'idle',
         error: null as string | null,
     },
@@ -51,6 +64,9 @@ export const caseSlice = createSlice({
             )
             .addCase(fetchCaseList.rejected, (state) => {
                 state.status = 'failed';
+            })
+            .addCase(fetchCasePages.fulfilled, (state, action: PayloadAction<number>) => {
+                state.totalPages = action.payload;
             })
             .addCase(searchCaseList.pending, (state) => {
                 state.status = 'loading';

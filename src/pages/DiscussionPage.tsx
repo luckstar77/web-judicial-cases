@@ -6,13 +6,14 @@ import {
     TextField,
     IconButton,
     InputAdornment,
+    Pagination,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
 import CaseCardList from '../component/CaseCardList';
 import { useAppDispatch, useAppSelector } from '../hooks/redux';
-import { fetchCaseList, searchCaseList } from '../redux/caseSlice';
+import { fetchCaseList, searchCaseList, fetchCasePages } from '../redux/caseSlice';
 import { setShowDialog } from '../redux/phoneSlice';
 import { USER_DIALOG_STATUS } from '../types/enums';
 import UploadCasePage from './UploadCasePage';
@@ -20,10 +21,13 @@ import UploadCasePage from './UploadCasePage';
 export default function DiscussionPage() {
     const dispatch = useAppDispatch();
     const cases = useAppSelector((s) => s.cases.list);
+    const totalPages = useAppSelector((s) => s.cases.totalPages);
     const isLoggedIn = useAppSelector((s) => s.user.isLoggedIn);
     const [showUpload, setShowUpload] = useState(false);
     const [search, setSearch] = useState('');
     const [isSearching, setIsSearching] = useState(false);
+    const [page, setPage] = useState(1);
+    const pageSize = 10;
 
     const handleSearch = () => {
         if (!isLoggedIn) {
@@ -34,7 +38,9 @@ export default function DiscussionPage() {
         if (!query) {
             if (isSearching) {
                 setIsSearching(false);
-                dispatch(fetchCaseList({}));
+                setPage(1);
+                dispatch(fetchCaseList({ page: 1, pageSize }));
+                dispatch(fetchCasePages({ pageSize }));
             }
             return;
         }
@@ -45,13 +51,18 @@ export default function DiscussionPage() {
     const cancelSearch = () => {
         setSearch('');
         setIsSearching(false);
-        dispatch(fetchCaseList({}));
+        setPage(1);
+        dispatch(fetchCaseList({ page: 1, pageSize }));
+        dispatch(fetchCasePages({ pageSize }));
     };
 
 
     useEffect(() => {
-        dispatch(fetchCaseList({}));
-    }, [dispatch]);
+        if (!isSearching) {
+            dispatch(fetchCaseList({ page, pageSize }));
+            dispatch(fetchCasePages({ pageSize }));
+        }
+    }, [dispatch, page, pageSize, isSearching]);
 
     return (
         <Box sx={{ mt: 0, p: 2 }}>
@@ -59,7 +70,9 @@ export default function DiscussionPage() {
                 <UploadCasePage
                     onComplete={() => {
                         setShowUpload(false);
-                        dispatch(fetchCaseList({}));
+                        setPage(1);
+                        dispatch(fetchCaseList({ page: 1, pageSize }));
+                        dispatch(fetchCasePages({ pageSize }));
                     }}
                 />
             ) : (
@@ -118,6 +131,14 @@ export default function DiscussionPage() {
                         </Fab>
                     )}
                     <CaseCardList items={cases} />
+                    {!isSearching && totalPages > 1 && (
+                        <Pagination
+                            count={totalPages}
+                            page={page}
+                            onChange={(e, value) => setPage(value)}
+                            sx={{ my: 2, display: 'flex', justifyContent: 'center' }}
+                        />
+                    )}
                 </>
             )}
         </Box>
