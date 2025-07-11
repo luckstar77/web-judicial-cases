@@ -32,7 +32,11 @@ const CaseCommentList: React.FC<Props> = ({ caseId }) => {
 
     if (loading) {
         return (
-            <Paper elevation={0} sx={{ p: 2 }} onClick={(e) => e.stopPropagation()}>
+            <Paper
+                elevation={0}
+                sx={{ p: 2, bgcolor: 'grey.100' }}
+                onClick={(e) => e.stopPropagation()}
+            >
                 <Typography variant="h6" gutterBottom>
                     留言
                 </Typography>
@@ -43,7 +47,11 @@ const CaseCommentList: React.FC<Props> = ({ caseId }) => {
     }
 
     return (
-        <Paper elevation={0} sx={{ p: 2 }} onClick={(e) => e.stopPropagation()}>
+        <Paper
+            elevation={0}
+            sx={{ p: 2, bgcolor: 'grey.100' }}
+            onClick={(e) => e.stopPropagation()}
+        >
             <Typography variant="h6" gutterBottom>
                 留言（{comments.length}）
             </Typography>

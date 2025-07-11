@@ -37,7 +37,7 @@ const CaseCommentForm: React.FC<Props> = ({ caseId }) => {
     return (
         <Paper
             elevation={1}
-            sx={{ p: 2, mb: 3 }}
+            sx={{ p: 2, mb: 3, bgcolor: 'grey.100' }}
             onClick={(e) => e.stopPropagation()}
         >
             <Typography variant="h6" gutterBottom>

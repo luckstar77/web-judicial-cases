@@ -115,7 +115,22 @@ const CaseCard: React.FC<Props> = ({ item }) => {
     };
 
     return (
-        <Card onClick={handleToggleExpand} sx={{ width: '50vw', minWidth: 400, cursor: 'pointer' }}>
+        <Card
+            onClick={handleToggleExpand}
+            sx={{
+                width: '100%',
+                maxWidth: 1000,
+                cursor: 'pointer',
+                bgcolor: 'grey.100',
+                border: '1px solid',
+                borderColor: 'grey.300',
+                color: 'text.primary',
+                boxShadow: 1,
+                borderRadius: 2,
+                transition: 'box-shadow 0.3s',
+                '&:hover': { boxShadow: 4 },
+            }}
+        >
             <CardHeader
                 title={item.title || `姓名：${maskName(item.defendantName)}`}
                 subheader={
