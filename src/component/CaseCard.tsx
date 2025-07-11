@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     Card,
+    Collapse,
     CardHeader,
     CardContent,
     CardActions,
@@ -69,6 +70,7 @@ const CaseCard: React.FC<Props> = ({ item }) => {
     const images = item.imageUrls || item.images || [];
     const [viewerIndex, setViewerIndex] = useState<number | null>(null);
     const [showComments, setShowComments] = useState(false);
+    const [expanded, setExpanded] = useState(false);
 
     const openViewer = (idx: number) => {
         setViewerIndex(idx);
@@ -98,7 +100,8 @@ const CaseCard: React.FC<Props> = ({ item }) => {
         dispatch(fetchCaseComments(item.id));
     }, [dispatch, item.id]);
 
-    const handleToggleLike = () => {
+    const handleToggleLike = (e: React.MouseEvent) => {
+        e.stopPropagation();
         if (!isLoggedIn) {
             dispatch(setShowDialog(USER_DIALOG_STATUS.LOGIN));
             return;
@@ -108,8 +111,12 @@ const CaseCard: React.FC<Props> = ({ item }) => {
         }
     };
 
+    const handleToggleExpand = () => {
+        setExpanded((prev) => !prev);
+    };
+
     return (
-        <Card sx={{ width: '50vw', minWidth: 400 }}>
+        <Card onClick={handleToggleExpand} sx={{ width: '50vw', minWidth: 400, cursor: 'pointer' }}>
             <CardHeader
                 title={item.title || `姓名：${maskName(item.defendantName)}`}
                 subheader={
@@ -144,7 +151,10 @@ const CaseCard: React.FC<Props> = ({ item }) => {
                             key={idx}
                             component="img"
                             src={src}
-                            onClick={() => openViewer(idx)}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                openViewer(idx);
+                            }}
                             sx={{
                                 width: 80,
                                 height: 80,
@@ -165,19 +175,26 @@ const CaseCard: React.FC<Props> = ({ item }) => {
                     {loading ? <CircularProgress size={24} /> : <FavoriteIcon />}
                     <Typography sx={{ ml: 0.5 }}>{likeCount}</Typography>
                 </IconButton>
-                <IconButton onClick={() => setShowComments((prev) => !prev)}>
+                <IconButton
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setShowComments((prev) => !prev);
+                    }}
+                >
                     <CommentIcon />
                     <Typography sx={{ ml: 0.5 }}>{comments.length}</Typography>
                 </IconButton>
             </CardActions>
-            <CardContent>
-                {item.content && (
-                    <Typography sx={{ whiteSpace: 'pre-wrap', mb: 2 }}>
-                        {item.content}
-                    </Typography>
-                )}
-                {showComments && <CaseComments caseId={item.id} />}
-            </CardContent>
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <CardContent>
+                    {item.content && (
+                        <Typography sx={{ whiteSpace: 'pre-wrap', mb: 2 }}>
+                            {item.content}
+                        </Typography>
+                    )}
+                    {showComments && <CaseComments caseId={item.id} />}
+                </CardContent>
+            </Collapse>
             {images.length > 0 && (
                 <Dialog open={viewerIndex !== null} onClose={closeViewer}>
                     <DialogContent
