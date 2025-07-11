@@ -6,12 +6,13 @@ import {
     TextField,
     IconButton,
     InputAdornment,
-    Pagination,
 } from '@mui/material';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
@@ -149,28 +150,45 @@ export default function DiscussionPage() {
                             >
                                 <KeyboardDoubleArrowLeftIcon />
                             </IconButton>
-                            <Pagination
-                                count={totalPages}
-                                page={page}
-                                onChange={(e, value) => setPage(value)}
-                                siblingCount={2}
-                                boundaryCount={0}
-                                sx={{ mx: 1 }}
-                            />
-                            <IconButton
-                                onClick={() =>
-                                    setPage(Math.min(totalPages, page + 5))
+                            <IconButton onClick={() => setPage(Math.max(1, page - 1))} disabled={page === 1} size="small">
+                                <NavigateBeforeIcon />
+                            </IconButton>
+                            {(() => {
+                                const pages = [] as number[];
+                                let start = Math.max(1, page - 2);
+                                let end = Math.min(totalPages, page + 2);
+                                if (end - start < 4) {
+                                    if (start === 1) {
+                                        end = Math.min(totalPages, start + 4);
+                                    } else if (end === totalPages) {
+                                        start = Math.max(1, end - 4);
+                                    }
                                 }
+                                for (let p = start; p <= end; p++) {
+                                    pages.push(p);
+                                }
+                                return pages.map((p) => (
+                                    <IconButton
+                                        key={p}
+                                        onClick={() => setPage(p)}
+                                        color={p === page ? 'primary' : 'default'}
+                                        size="small"
+                                    >
+                                        {p}
+                                    </IconButton>
+                                ));
+                            })()}
+                            <IconButton onClick={() => setPage(Math.min(totalPages, page + 1))} disabled={page === totalPages} size="small">
+                                <NavigateNextIcon />
+                            </IconButton>
+                            <IconButton
+                                onClick={() => setPage(Math.min(totalPages, page + 5))}
                                 disabled={page + 5 > totalPages}
                                 size="small"
                             >
                                 <KeyboardDoubleArrowRightIcon />
                             </IconButton>
-                            <IconButton
-                                onClick={() => setPage(totalPages)}
-                                disabled={page === totalPages}
-                                size="small"
-                            >
+                            <IconButton onClick={() => setPage(totalPages)} disabled={page === totalPages} size="small">
                                 <LastPageIcon />
                             </IconButton>
                         </Box>

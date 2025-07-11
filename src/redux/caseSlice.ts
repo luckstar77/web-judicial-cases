@@ -19,10 +19,13 @@ export const fetchCasePages = createAsyncThunk<
     number,
     { pageSize: number }
 >('cases/fetchCasePages', async ({ pageSize }) => {
-    const { data } = await axios.get<number>(`${CASE_API_URL}/pages`, {
+    const { data } = await axios.get(`${CASE_API_URL}/pages`, {
         params: { pageSize },
     });
-    return data;
+    if (typeof data === 'number') {
+        return data;
+    }
+    return data.pages ?? data.totalPages ?? 0;
 });
 
 export const searchCaseList = createAsyncThunk<
