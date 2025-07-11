@@ -135,7 +135,7 @@ export default function DiscussionPage() {
                         </Fab>
                     )}
                     <CaseCardList items={cases} />
-                    {!isSearching && totalPages > 1 && (
+                    {!isSearching && totalPages > 0 && (
                         <Box
                             sx={{ my: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 1 }}
                         >
@@ -154,7 +154,7 @@ export default function DiscussionPage() {
                                 page={page}
                                 onChange={(e, value) => setPage(value)}
                                 siblingCount={2}
-                                boundaryCount={1}
+                                boundaryCount={0}
                                 sx={{ mx: 1 }}
                             />
                             <IconButton
