@@ -119,11 +119,12 @@ const CaseCard: React.FC<Props> = ({ item }) => {
             onClick={handleToggleExpand}
             sx={{
                 width: '100%',
-                maxWidth: 800,
+                minWidth: 1000,
                 cursor: 'pointer',
-                bgcolor: 'grey.50',
+                bgcolor: 'primary.main',
                 border: '1px solid',
-                borderColor: 'grey.300',
+                borderColor: 'primary.main',
+                color: 'primary.contrastText',
                 boxShadow: 1,
                 borderRadius: 2,
                 transition: 'box-shadow 0.3s',
