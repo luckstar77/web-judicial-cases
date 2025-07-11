@@ -178,6 +178,9 @@ export default function DiscussionPage() {
                                             borderRadius: '50%',
                                             bgcolor: p === page ? 'primary.main' : 'transparent',
                                             color: p === page ? 'white' : 'inherit',
+                                            '&:hover': {
+                                                bgcolor: p === page ? 'primary.light' : 'action.hover',
+                                            },
                                         }}
                                     >
                                         {p}
