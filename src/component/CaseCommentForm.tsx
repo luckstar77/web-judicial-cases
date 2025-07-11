@@ -19,6 +19,7 @@ const CaseCommentForm: React.FC<Props> = ({ caseId }) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        e.stopPropagation();
         if (!isLoggedIn) {
             dispatch(setShowDialog(USER_DIALOG_STATUS.LOGIN));
             return;
@@ -34,11 +35,20 @@ const CaseCommentForm: React.FC<Props> = ({ caseId }) => {
     if (!isLoggedIn) return <></>;
 
     return (
-        <Paper elevation={1} sx={{ p: 2, mb: 3 }}>
+        <Paper
+            elevation={1}
+            sx={{ p: 2, mb: 3 }}
+            onClick={(e) => e.stopPropagation()}
+        >
             <Typography variant="h6" gutterBottom>
                 發表留言
             </Typography>
-            <Stack component="form" spacing={2} onSubmit={handleSubmit}>
+            <Stack
+                component="form"
+                spacing={2}
+                onSubmit={handleSubmit}
+                onClick={(e) => e.stopPropagation()}
+            >
                 <TextField
                     label="留言內容"
                     value={content}
