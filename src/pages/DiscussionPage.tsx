@@ -171,8 +171,14 @@ export default function DiscussionPage() {
                                     <IconButton
                                         key={p}
                                         onClick={() => setPage(p)}
-                                        color={p === page ? 'primary' : 'default'}
                                         size="small"
+                                        sx={{
+                                            border: p === page ? 1 : 0,
+                                            borderColor: 'primary.main',
+                                            borderRadius: '50%',
+                                            bgcolor: p === page ? 'primary.main' : 'transparent',
+                                            color: p === page ? 'white' : 'inherit',
+                                        }}
                                     >
                                         {p}
                                     </IconButton>
