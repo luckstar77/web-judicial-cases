@@ -8,6 +8,10 @@ import {
     InputAdornment,
     Pagination,
 } from '@mui/material';
+import FirstPageIcon from '@mui/icons-material/FirstPage';
+import LastPageIcon from '@mui/icons-material/LastPage';
+import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import AddIcon from '@mui/icons-material/Add';
@@ -132,12 +136,44 @@ export default function DiscussionPage() {
                     )}
                     <CaseCardList items={cases} />
                     {!isSearching && totalPages > 1 && (
-                        <Pagination
-                            count={totalPages}
-                            page={page}
-                            onChange={(e, value) => setPage(value)}
-                            sx={{ my: 2, display: 'flex', justifyContent: 'center' }}
-                        />
+                        <Box
+                            sx={{ my: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 1 }}
+                        >
+                            <IconButton onClick={() => setPage(1)} disabled={page === 1} size="small">
+                                <FirstPageIcon />
+                            </IconButton>
+                            <IconButton
+                                onClick={() => setPage(Math.max(1, page - 5))}
+                                disabled={page <= 5}
+                                size="small"
+                            >
+                                <KeyboardDoubleArrowLeftIcon />
+                            </IconButton>
+                            <Pagination
+                                count={totalPages}
+                                page={page}
+                                onChange={(e, value) => setPage(value)}
+                                siblingCount={2}
+                                boundaryCount={1}
+                                sx={{ mx: 1 }}
+                            />
+                            <IconButton
+                                onClick={() =>
+                                    setPage(Math.min(totalPages, page + 5))
+                                }
+                                disabled={page + 5 > totalPages}
+                                size="small"
+                            >
+                                <KeyboardDoubleArrowRightIcon />
+                            </IconButton>
+                            <IconButton
+                                onClick={() => setPage(totalPages)}
+                                disabled={page === totalPages}
+                                size="small"
+                            >
+                                <LastPageIcon />
+                            </IconButton>
+                        </Box>
                     )}
                 </>
             )}
