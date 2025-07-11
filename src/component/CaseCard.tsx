@@ -69,7 +69,6 @@ const CaseCard: React.FC<Props> = ({ item }) => {
 
     const images = item.imageUrls || item.images || [];
     const [viewerIndex, setViewerIndex] = useState<number | null>(null);
-    const [showComments, setShowComments] = useState(false);
     const [expanded, setExpanded] = useState(false);
 
     const openViewer = (idx: number) => {
@@ -178,7 +177,7 @@ const CaseCard: React.FC<Props> = ({ item }) => {
                 <IconButton
                     onClick={(e) => {
                         e.stopPropagation();
-                        setShowComments((prev) => !prev);
+                        handleToggleExpand();
                     }}
                 >
                     <CommentIcon />
@@ -192,7 +191,7 @@ const CaseCard: React.FC<Props> = ({ item }) => {
                             {item.content}
                         </Typography>
                     )}
-                    {showComments && <CaseComments caseId={item.id} />}
+                    <CaseComments caseId={item.id} />
                 </CardContent>
             </Collapse>
             {images.length > 0 && (
