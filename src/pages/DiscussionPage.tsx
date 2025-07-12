@@ -102,6 +102,7 @@ export default function DiscussionPage() {
                                 onChange={(e) => setSearch(e.target.value)}
                                 label="搜尋黑名單"
                                 variant="outlined"
+                                placeholder="請輸入完整姓名、電話、身分證字號"
                                 sx={{ backgroundColor: 'white', width: '100%', maxWidth: 400 }}
                                 InputProps={{
                                     endAdornment: (
