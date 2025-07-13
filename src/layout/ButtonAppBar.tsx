@@ -72,7 +72,11 @@ export default function ButtonAppBar() {
 
                     <Box sx={{ flexGrow: 1 }} />
 
-                    <Button color="inherit" style={{ fontSize: 18 }} onClick={handleClickOpen}>
+                    <Button
+                        color="inherit"
+                        style={{ fontSize: 18, textTransform: 'none' }}
+                        onClick={handleClickOpen}
+                    >
                         {phone ? displayName || phone : '登入'}
                     </Button>
                     <UserDialog />
