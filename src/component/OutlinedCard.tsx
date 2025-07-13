@@ -98,7 +98,10 @@ export default function OutlinedCard(props: Props) {
                 avatar={<BalanceIcon />}
                 title={jtitle}
                 titleTypographyProps={{
-                    sx: { fontSize: { xs: '1rem', sm: '1.25rem' } }
+                    sx: {
+                        fontSize: { xs: '1rem', sm: '1.25rem' },
+                        fontWeight: 'bold',
+                    },
                 }}
                 subheader={`${jyear}年`}
             />
