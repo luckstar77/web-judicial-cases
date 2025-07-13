@@ -59,7 +59,7 @@ export default function TemporaryDrawer() {
                         <ListItemIcon>
                             <HomeIcon />
                         </ListItemIcon>
-                        <ListItemText primary='法院判決書' />
+                        <ListItemText primary='法院判決書' primaryTypographyProps={{ fontSize: 18 }} />
                     </ListItemButton>
                 </ListItem>
 
@@ -69,7 +69,7 @@ export default function TemporaryDrawer() {
                         <ListItemIcon>
                             <InboxIcon />
                         </ListItemIcon>
-                        <ListItemText primary="租屋黑名單" />
+                        <ListItemText primary="租屋黑名單" primaryTypographyProps={{ fontSize: 18 }} />
                     </ListItemButton>
                 </ListItem>
 
@@ -79,7 +79,7 @@ export default function TemporaryDrawer() {
                         <ListItemIcon>
                             <QuizIcon />
                         </ListItemIcon>
-                        <ListItemText primary='FAQ' />
+                        <ListItemText primary='FAQ' primaryTypographyProps={{ fontSize: 18 }} />
                     </ListItemButton>
                 </ListItem>
 
@@ -89,7 +89,7 @@ export default function TemporaryDrawer() {
                         <ListItemIcon>
                             <InfoIcon />
                         </ListItemIcon>
-                        <ListItemText primary="關於我們" />
+                        <ListItemText primary="關於我們" primaryTypographyProps={{ fontSize: 18 }} />
                     </ListItemButton>
                 </ListItem>
                 <Link
@@ -101,7 +101,7 @@ export default function TemporaryDrawer() {
                             <ListItemIcon>
                                 <FacebookIcon />
                             </ListItemIcon>
-                            <ListItemText primary={'粉絲專頁'} />
+                            <ListItemText primary={'粉絲專頁'} primaryTypographyProps={{ fontSize: 18 }} />
                         </ListItemButton>
                     </ListItem>
                 </Link>

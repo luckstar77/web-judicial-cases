@@ -46,16 +46,16 @@ export default function ButtonAppBar() {
                     {!isDesktop && <TemporaryDrawer />}
                     {isDesktop && (
                         <Box sx={{ display: 'flex' }}>
-                            <Button color="inherit" component={RouterLink} to="/">
+                            <Button color="inherit" component={RouterLink} to="/" style={{ fontSize: 18 }}>
                                 法院判決書
                             </Button>
-                            <Button color="inherit" component={RouterLink} to="/cases">
+                            <Button color="inherit" component={RouterLink} to="/cases" style={{ fontSize: 18 }}>
                                 租屋黑名單
                             </Button>
-                            <Button color="inherit" component={RouterLink} to="/faq">
+                            <Button color="inherit" component={RouterLink} to="/faq" style={{ fontSize: 18 }}>
                                 FAQ
                             </Button>
-                            <Button color="inherit" component={RouterLink} to="/about">
+                            <Button color="inherit" component={RouterLink} to="/about" style={{ fontSize: 18 }}>
                                 關於我們
                             </Button>
                             <Button
@@ -64,6 +64,7 @@ export default function ButtonAppBar() {
                                 href="https://www.facebook.com/profile.php?id=100093981245377"
                                 target="_blank"
                                 rel="noopener"
+                                style={{ fontSize: 18 }}
                             >
                                 粉絲專頁
                             </Button>
