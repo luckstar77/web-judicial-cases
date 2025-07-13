@@ -133,6 +133,7 @@ const CaseCard: React.FC<Props> = ({ item }) => {
         >
             <CardHeader
                 title={item.title || `姓名：${maskName(item.defendantName)}`}
+                titleTypographyProps={{ sx: { fontSize: { xs: '1rem' } } }}
                 subheader={
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                         <Typography variant="body2">
