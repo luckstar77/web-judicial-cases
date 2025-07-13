@@ -82,7 +82,12 @@ export default function DiscussionPage() {
                 />
             ) : (
                 <>
-                    <Typography variant="h4" gutterBottom textAlign="center">
+                    <Typography
+                        variant="h4"
+                        gutterBottom
+                        textAlign="center"
+                        sx={{ fontSize: { xs: '1rem', md: '2.125rem' } }}
+                    >
                         租屋黑名單
                     </Typography>
                     {!isLoggedIn && (
