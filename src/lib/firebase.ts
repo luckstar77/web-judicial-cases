@@ -14,7 +14,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth();
-auth.useDeviceLanguage();
+auth.languageCode = 'zh-TW';
 export const provider = new PhoneAuthProvider(auth);
 
 export default app;
