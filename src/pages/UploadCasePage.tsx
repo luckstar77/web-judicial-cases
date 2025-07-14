@@ -180,7 +180,7 @@ export default function UploadCasePage({ onComplete }: UploadCasePageProps) {
                     onChange={handleInputChange('defendantPhone')}
                 />
                 <TextField
-                    label="案例身分證字號"
+                    label="案例身分證"
                     value={form.defendantIdNo}
                     onChange={handleInputChange('defendantIdNo')}
                 />
