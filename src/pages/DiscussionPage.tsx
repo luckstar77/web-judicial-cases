@@ -83,7 +83,7 @@ export default function DiscussionPage() {
             ) : (
                 <>
                     <Typography variant="h4" gutterBottom textAlign="center">
-                        租屋黑名單
+                        租屋案例
                     </Typography>
                     {!isLoggedIn && (
                         <Typography
@@ -91,8 +91,8 @@ export default function DiscussionPage() {
                             paragraph
                             textAlign="center"
                         >
-                            會員登入後，可透過姓名、身份證或手機搜尋租屋黑名單，
-                            也可以新增租屋黑名單
+                            會員登入後，可透過姓名、身份證或手機搜尋租屋案例，
+                            也可以新增租屋案例
                         </Typography>
                     )}
                     {isLoggedIn && (
@@ -100,9 +100,9 @@ export default function DiscussionPage() {
                             <TextField
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                label="搜尋黑名單"
+                                label="搜尋案例"
                                 variant="outlined"
-                                placeholder="請輸入完整姓名、電話、身分證字號"
+                                placeholder="請輸入完整姓名、電話、身分證"
                                 sx={{ backgroundColor: 'white', width: '100%', maxWidth: 400 }}
                                 InputProps={{
                                     endAdornment: (

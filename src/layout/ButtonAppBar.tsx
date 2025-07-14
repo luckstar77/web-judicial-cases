@@ -50,7 +50,7 @@ export default function ButtonAppBar() {
                                 法院判決書
                             </Button>
                             <Button color="inherit" component={RouterLink} to="/cases" style={{ fontSize: 18 }}>
-                                租屋黑名單
+                                租屋案例
                             </Button>
                             <Button color="inherit" component={RouterLink} to="/faq" style={{ fontSize: 18 }}>
                                 FAQ
