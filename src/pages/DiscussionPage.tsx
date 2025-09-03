@@ -69,6 +69,12 @@ export default function DiscussionPage() {
         }
     }, [dispatch, page, pageSize, isSearching]);
 
+    useEffect(() => {
+        if (!isLoggedIn) {
+            setShowUpload(false);
+        }
+    }, [isLoggedIn]);
+
     return (
         <Box sx={{ mt: 0, p: 2 }}>
             {showUpload ? (
