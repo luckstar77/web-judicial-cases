@@ -7,7 +7,7 @@ import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { BRAND_COLORS } from '@/app/theme';
 import { ROUTES } from '@/shared/constants/routes';
-import { BOTTOM_NAV_HEIGHT, BOTTOM_NAV_VALUES, getBottomNavValue } from './nav-items';
+import { BOTTOM_NAV_BORDER_WIDTH, BOTTOM_NAV_HEIGHT, BOTTOM_NAV_VALUES, getBottomNavValue } from './nav-items';
 
 const ITEMS = [
   { value: BOTTOM_NAV_VALUES.home, label: '首頁', to: ROUTES.home, icon: <HomeOutlinedIcon /> },
@@ -32,7 +32,7 @@ export function BottomNav() {
         right: 0,
         bottom: 0,
         zIndex: (theme) => theme.zIndex.appBar,
-        borderTop: `1px solid ${BRAND_COLORS.border}`,
+        borderTop: `${BOTTOM_NAV_BORDER_WIDTH}px solid ${BRAND_COLORS.border}`,
         pb: 'env(safe-area-inset-bottom)',
       }}
     >

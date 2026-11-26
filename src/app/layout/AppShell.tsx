@@ -5,7 +5,7 @@ import { RouteProgress } from '@/shared/components/RouteProgress';
 import { trackPageView } from '@/shared/utils/analytics';
 import { BottomNav } from './BottomNav';
 import { Footer } from './Footer';
-import { BOTTOM_NAV_HEIGHT } from './nav-items';
+import { BOTTOM_NAV_OFFSET } from './nav-items';
 import { TopBar } from './TopBar';
 
 const MAIN_CONTENT_ID = 'main-content';
@@ -18,9 +18,7 @@ export function AppShell() {
   }, [location.pathname, location.search]);
 
   return (
-    <Box
-      sx={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column', pb: { xs: `calc(${BOTTOM_NAV_HEIGHT}px + env(safe-area-inset-bottom))`, md: 0 } }}
-    >
+    <Box sx={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column', pb: { xs: BOTTOM_NAV_OFFSET, md: 0 } }}>
       <Box
         component="a"
         href={`#${MAIN_CONTENT_ID}`}

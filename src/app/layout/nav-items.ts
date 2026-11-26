@@ -50,3 +50,7 @@ export const getBottomNavValue = (pathname: string): BottomNavValue | false => {
 };
 
 export const BOTTOM_NAV_HEIGHT = 64;
+export const BOTTOM_NAV_BORDER_WIDTH = 1;
+
+/** 底部導覽實際佔用的高度（導覽列 + 上框線 + iOS 安全區域），頁面底部要留出同樣的空間才不會被蓋住。 */
+export const BOTTOM_NAV_OFFSET = `calc(${BOTTOM_NAV_HEIGHT + BOTTOM_NAV_BORDER_WIDTH}px + env(safe-area-inset-bottom))`;
