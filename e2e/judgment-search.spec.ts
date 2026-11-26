@@ -5,7 +5,7 @@ test('home → judgment search → judgment detail', async ({ page }) => {
   await expect(page.getByRole('heading', { name: '租屋前，先查一下' })).toBeVisible();
 
   await page.getByRole('textbox', { name: '輸入姓名查詢判決' }).fill('王大明');
-  await page.getByRole('button', { name: '查詢' }).click();
+  await page.getByRole('button', { name: '查詢', exact: true }).click();
 
   await expect(page).toHaveURL(/\/judgments\?keyword=/);
   await expect(page.getByText(/找到 5 筆與「王大明」相關的判決/)).toBeVisible();

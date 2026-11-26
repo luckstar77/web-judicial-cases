@@ -30,7 +30,7 @@ test('city chip filters the feed', async ({ page }) => {
   await expect(page).toHaveURL(/city=/);
   const cards = page.getByRole('article');
   await expect(cards.first()).toBeVisible();
-  for (const card of await cards.all()) {
-    await expect(card).toContainText('台中市');
-  }
+  // 篩選結果回來前畫面可能還是舊列表：等到沒有任何非台中市的卡片（自動重試），不要先取快照再逐一檢查
+  await expect(cards.filter({ hasNotText: '台中市' })).toHaveCount(0);
+  await expect(cards.first()).toContainText('台中市');
 });
