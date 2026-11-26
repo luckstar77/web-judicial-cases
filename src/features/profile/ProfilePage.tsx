@@ -1,9 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Alert, Avatar, Box, Button, Divider, Paper, Skeleton, Stack, TextField, Typography } from '@mui/material';
+import { Alert, Avatar, Box, Button, Collapse, Divider, Paper, Skeleton, Stack, TextField, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { useMutation } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { BRAND_COLORS } from '@/app/theme';
@@ -12,14 +12,30 @@ import { useAuth } from '@/features/auth/auth-context';
 import { PasswordField } from '@/features/auth/components/PasswordField';
 import { formatPhoneForDisplay } from '@/features/auth/phone';
 import { RequireAuth } from '@/features/auth/RequireAuth';
-import { getErrorMessage } from '@/shared/api/api-error';
+import { getErrorMessage, isApiErrorCode } from '@/shared/api/api-error';
+import type { UpdateProfileRequest } from '@/shared/api/types';
 import { PageContainer } from '@/shared/components/PageContainer';
 import { Seo } from '@/shared/components/Seo';
+import { API_CODES } from '@/shared/constants/api';
 import { ROUTES } from '@/shared/constants/routes';
 import { useSnackbar } from '@/shared/hooks/snackbar-context';
-import { profileSchema, type ProfileFormValues, toProfileFormValues, toUpdateProfileRequest } from './profile-schema';
+import { createProfileSchema, CURRENT_PASSWORD_INCORRECT_MESSAGE, type ProfileFormValues, toProfileFormValues, toUpdateProfileRequest } from './profile-schema';
 
 const NOT_SET = '未設定';
+const PROFILE_UPDATED_MESSAGE = '個人資料已更新';
+/** 改密碼後後端會撤銷所有舊 token，其他裝置需要重新登入。 */
+const PASSWORD_UPDATED_MESSAGE = '密碼已更新，其他裝置需重新登入';
+
+/**
+ * 表單下方的錯誤訊息。目前密碼錯誤（40101）已標在「目前密碼」欄位上，不重複顯示；
+ * 只有帳號資料過期、畫面上沒有該欄位時才在這裡提示。
+ */
+const getFormErrorMessage = (error: unknown, hasCurrentPasswordField: boolean): string | null => {
+  if (!isApiErrorCode(error, API_CODES.invalidCredentials)) {
+    return getErrorMessage(error);
+  }
+  return hasCurrentPasswordField ? null : CURRENT_PASSWORD_INCORRECT_MESSAGE;
+};
 
 function ProfileSummary() {
   const { user, isLoadingUser, signOut } = useAuth();
@@ -73,32 +89,48 @@ function ProfileSummary() {
 function ProfileForm() {
   const { user, signIn } = useAuth();
   const { showMessage } = useSnackbar();
+  const requireCurrentPassword = Boolean(user?.hasPassword);
+  const schema = useMemo(() => createProfileSchema({ requireCurrentPassword }), [requireCurrentPassword]);
   const {
     register,
     handleSubmit,
     reset,
+    setError,
+    watch,
     formState: { errors, isDirty },
-  } = useForm<ProfileFormValues>({ resolver: zodResolver(profileSchema), defaultValues: toProfileFormValues(user) });
+  } = useForm<ProfileFormValues>({ resolver: zodResolver(schema), defaultValues: toProfileFormValues(user) });
+  const showCurrentPassword = requireCurrentPassword && watch('password').length > 0;
 
   useEffect(() => {
     reset(toProfileFormValues(user));
   }, [reset, user]);
 
   const mutation = useMutation({
-    mutationFn: (values: ProfileFormValues) => authApi.updateMe(toUpdateProfileRequest(values, user)),
-    onSuccess: (result) => {
+    mutationFn: (request: UpdateProfileRequest) => authApi.updateMe(request),
+    onSuccess: (result, request) => {
+      // 改密碼後舊 token 會全部失效：signIn 立即改存回傳的新 token，避免下一個請求被登出
       signIn(result);
-      showMessage('個人資料已更新');
+      // 只改密碼時個人資料不變，query 的 structural sharing 會保留同一個 user 物件，effect 不會觸發，所以這裡直接清空表單
+      reset(toProfileFormValues(result.user));
+      showMessage(request.password ? PASSWORD_UPDATED_MESSAGE : PROFILE_UPDATED_MESSAGE);
+    },
+    onError: (error) => {
+      if (isApiErrorCode(error, API_CODES.invalidCredentials)) {
+        setError('currentPassword', { type: 'server', message: CURRENT_PASSWORD_INCORRECT_MESSAGE }, { shouldFocus: true });
+      }
     },
   });
 
   const onSubmit = (values: ProfileFormValues) => {
-    if (Object.keys(toUpdateProfileRequest(values, user)).length === 0) {
+    const request = toUpdateProfileRequest(values, user);
+    if (Object.keys(request).length === 0) {
       showMessage('資料沒有變更', 'info');
       return;
     }
-    mutation.mutate(values);
+    mutation.mutate(request);
   };
+
+  const formErrorMessage = mutation.isError ? getFormErrorMessage(mutation.error, requireCurrentPassword) : null;
 
   return (
     <Paper variant="outlined" component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ p: { xs: 2.5, md: 4 }, borderRadius: '16px' }}>
@@ -132,7 +164,17 @@ function ProfileForm() {
           error={Boolean(errors.confirmPassword)}
           helperText={errors.confirmPassword?.message}
         />
-        {mutation.isError && <Alert severity="error">{getErrorMessage(mutation.error)}</Alert>}
+        <Collapse in={showCurrentPassword} unmountOnExit>
+          <PasswordField
+            label="目前密碼"
+            autoComplete="current-password"
+            fullWidth
+            {...register('currentPassword')}
+            error={Boolean(errors.currentPassword)}
+            helperText={errors.currentPassword?.message ?? '為了保護帳號安全，變更密碼前請輸入目前密碼'}
+          />
+        </Collapse>
+        {formErrorMessage && <Alert severity="error">{formErrorMessage}</Alert>}
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1.5 }}>
           <Button color="inherit" disabled={!isDirty || mutation.isPending} onClick={() => reset(toProfileFormValues(user))}>
             取消

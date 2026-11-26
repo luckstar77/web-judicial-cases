@@ -48,6 +48,8 @@ export interface UserProfile {
   name?: string;
   displayName?: string;
   email?: string;
+  /** 是否已設定密碼；只用簡訊登入的帳號為 false（可直接設定第一組密碼）。 */
+  hasPassword: boolean;
 }
 
 export interface AuthResult {
@@ -76,6 +78,8 @@ export interface UpdateProfileRequest {
   displayName?: string;
   email?: string;
   password?: string;
+  /** 帶 `password` 且 `hasPassword` 為 true 時必填，錯誤回 40101。 */
+  currentPassword?: string;
 }
 
 // ---------- Judgments ----------

@@ -21,6 +21,8 @@ import { fail, maskHalf, maskIp, normalizePhone, notFound, ok, paginate, parsePa
 export const MOCK_ACCESS_TOKEN_PREFIX = 'mock-access-token.';
 
 const BEARER_PREFIX = 'Bearer ';
+const TOKEN_VERSION_SEPARATOR = '.';
+const INITIAL_TOKEN_VERSION = 0;
 const ANONYMOUS_NAME_MARK = '○';
 const WARNING_NAME_MAX_LENGTH = 12;
 const WARNING_LIST_MAX = 100;
@@ -30,7 +32,28 @@ const MOCK_IP = '203.69.88.120';
 
 const url = (path: string) => `${API_BASE_URL}${path}`;
 
-const issueToken = (user: UserRecord) => `${MOCK_ACCESS_TOKEN_PREFIX}${encodeURIComponent(user.phone)}`;
+/**
+ * Mock token：`mock-access-token.<手機>[.<版本>]`。版本 0 省略，與舊格式相容。
+ * 改密碼會遞增使用者的 token 版本，版本較舊的 token 回 HTTP 401（模擬後端撤銷舊 token）。
+ */
+export const createMockAccessToken = (phone: string, version: number = INITIAL_TOKEN_VERSION): string => {
+  const base = `${MOCK_ACCESS_TOKEN_PREFIX}${encodeURIComponent(phone)}`;
+  return version === INITIAL_TOKEN_VERSION ? base : `${base}${TOKEN_VERSION_SEPARATOR}${version}`;
+};
+
+const parseMockAccessToken = (token: string): { phone: string; version: number } | null => {
+  if (!token.startsWith(MOCK_ACCESS_TOKEN_PREFIX)) {
+    return null;
+  }
+  const [encodedPhone, versionText] = token.slice(MOCK_ACCESS_TOKEN_PREFIX.length).split(TOKEN_VERSION_SEPARATOR);
+  const version = versionText === undefined ? INITIAL_TOKEN_VERSION : Number(versionText);
+  if (!encodedPhone || !Number.isInteger(version)) {
+    return null;
+  }
+  return { phone: decodeURIComponent(encodedPhone), version };
+};
+
+const issueToken = (user: UserRecord) => createMockAccessToken(user.phone, user.tokenVersion);
 
 const toProfile = (user: UserRecord): UserProfile => ({
   uid: user.uid,
@@ -38,6 +61,7 @@ const toProfile = (user: UserRecord): UserProfile => ({
   name: user.name,
   displayName: user.displayName,
   email: user.email,
+  hasPassword: Boolean(user.password),
 });
 
 const toAuthResult = (user: UserRecord): AuthResult => ({ user: toProfile(user), accessToken: issueToken(user) });
@@ -52,17 +76,18 @@ const findOrCreateUser = (db: MockDb, phone: string): UserRecord => {
   return created;
 };
 
-/** Mock token 內含手機號碼，重新整理頁面（db 重置）後仍可維持登入。 */
+/** Mock token 內含手機號碼，重新整理頁面（db 重置）後仍可維持登入；版本比使用者目前版本舊的 token 視為已撤銷。 */
 const getCurrentUser = (db: MockDb, request: Request): UserRecord | null => {
   const header = request.headers.get('Authorization');
   if (!header?.startsWith(BEARER_PREFIX)) {
     return null;
   }
-  const token = header.slice(BEARER_PREFIX.length);
-  if (!token.startsWith(MOCK_ACCESS_TOKEN_PREFIX)) {
+  const parsed = parseMockAccessToken(header.slice(BEARER_PREFIX.length));
+  if (!parsed) {
     return null;
   }
-  return findOrCreateUser(db, decodeURIComponent(token.slice(MOCK_ACCESS_TOKEN_PREFIX.length)));
+  const user = findOrCreateUser(db, parsed.phone);
+  return parsed.version < (user.tokenVersion ?? INITIAL_TOKEN_VERSION) ? null : user;
 };
 
 const parseFirebaseToken = (token: unknown): string | null => {
@@ -310,24 +335,32 @@ export const createHandlers = ({ db = createMockDb(), latency = false }: Handler
       if (!user) {
         return unauthorized();
       }
-      const body = await readJson(request);
-      if (body.displayName !== undefined) {
-        if (!isNonEmptyString(body.displayName, DISPLAY_NAME_MAX_LENGTH)) {
-          return validationError('displayName must be between 1 and 30 characters');
-        }
-        user.displayName = body.displayName;
+      const { displayName, email, password, currentPassword } = await readJson(request);
+      // 先驗證全部欄位，任何一項失敗都不寫入（與後端相同）
+      if (displayName !== undefined && !isNonEmptyString(displayName, DISPLAY_NAME_MAX_LENGTH)) {
+        return validationError('displayName must be between 1 and 30 characters');
       }
-      if (body.email !== undefined) {
-        if (typeof body.email !== 'string' || !body.email.includes('@')) {
-          return validationError('email must be an email');
-        }
-        user.email = body.email;
+      if (email !== undefined && (typeof email !== 'string' || !email.includes('@'))) {
+        return validationError('email must be an email');
       }
-      if (body.password !== undefined) {
-        if (typeof body.password !== 'string' || body.password.length < PASSWORD_MIN_LENGTH || body.password.length > PASSWORD_MAX_LENGTH) {
-          return validationError('password must be between 8 and 64 characters');
-        }
-        user.password = body.password;
+      if (password !== undefined && (typeof password !== 'string' || password.length < PASSWORD_MIN_LENGTH || password.length > PASSWORD_MAX_LENGTH)) {
+        return validationError('password must be between 8 and 64 characters');
+      }
+      if (currentPassword !== undefined && typeof currentPassword !== 'string') {
+        return validationError('currentPassword must be a string');
+      }
+      if (typeof password === 'string' && user.password && currentPassword !== user.password) {
+        return fail(API_CODES.invalidCredentials, 'current password is incorrect');
+      }
+      if (typeof displayName === 'string') {
+        user.displayName = displayName;
+      }
+      if (typeof email === 'string') {
+        user.email = email;
+      }
+      if (typeof password === 'string') {
+        user.password = password;
+        user.tokenVersion = (user.tokenVersion ?? INITIAL_TOKEN_VERSION) + 1;
       }
       return ok(toAuthResult(user));
     }),

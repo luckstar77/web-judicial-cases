@@ -68,6 +68,38 @@ describe('api client', () => {
     unsubscribe();
   });
 
+  it('keeps a newer token when a request sent with a revoked token comes back 401', async () => {
+    window.localStorage.setItem(TOKEN_STORAGE_KEY, 'old-token');
+    const listener = vi.fn();
+    const unsubscribe = subscribeUnauthorized(listener);
+    server.use(
+      http.get(TEST_URL, () => {
+        // 請求送出後才換發新 token（例如同時間改密碼成功）
+        window.localStorage.setItem(TOKEN_STORAGE_KEY, 'new-token');
+        return HttpResponse.json({ status: 'error', code: API_CODES.unauthorized, error: { message: 'Unauthorized' } }, { status: 401 });
+      }),
+    );
+
+    await expect(apiGet(TEST_PATH)).rejects.toMatchObject({ code: API_CODES.unauthorized });
+
+    expect(window.localStorage.getItem(TOKEN_STORAGE_KEY)).toBe('new-token');
+    expect(listener).not.toHaveBeenCalled();
+    unsubscribe();
+  });
+
+  it('clears the token when the envelope says 40100 even with HTTP 200', async () => {
+    window.localStorage.setItem(TOKEN_STORAGE_KEY, 'expired-token');
+    const listener = vi.fn();
+    const unsubscribe = subscribeUnauthorized(listener);
+    server.use(http.get(TEST_URL, () => HttpResponse.json({ status: 'error', code: API_CODES.unauthorized, error: { message: 'Unauthorized' } })));
+
+    await expect(apiGet(TEST_PATH)).rejects.toMatchObject({ code: API_CODES.unauthorized });
+
+    expect(window.localStorage.getItem(TOKEN_STORAGE_KEY)).toBeNull();
+    expect(listener).toHaveBeenCalledTimes(1);
+    unsubscribe();
+  });
+
   it('does not notify listeners on 401 when the user was not logged in', async () => {
     const listener = vi.fn();
     const unsubscribe = subscribeUnauthorized(listener);
