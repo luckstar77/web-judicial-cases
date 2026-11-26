@@ -19,7 +19,7 @@
 | 測試     | Vitest + Testing Library + MSW v2、Playwright      |
 | 程式品質 | ESLint（typescript-eslint、react-hooks）+ Prettier |
 
-Node 版本：20（見 `.nvmrc`），套件管理：npm。
+Node 版本：22（見 `.nvmrc`），套件管理：npm。
 
 ## 專案結構
 
