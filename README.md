@@ -1,174 +1,105 @@
-## 流程
+# 租屋通（前端）
 
--   查詢房東或房客姓名
-    -   若有回傳資訊，沒有回傳空陣列
-        -   原告姓名
-        -   被告姓名
-        -   租金
-        -   地區
-        -   勝訴方
-        -   案件 ID
-        -   年份
+[租屋通](https://rental.imallenlai.com) 協助房東與房客在簽約前查詢租賃糾紛的**法院判決**，以及其他會員分享的**網友回報**，降低遇到惡房東、惡房客的風險。
 
-## 後台 API
+後端 API：[`luckstar77/api-judicial-cases`](https://github.com/luckstar77/api-judicial-cases)（契約見該 repo 的 `docs/api-v1.md`）。
 
--   取得預警資訊 <http://localhost:3010/cases?search=張淑晶>
-    -   query
-        -   search `string` 可搜尋房東或房客姓名
+## 技術架構
 
-```
-{
-"judicialFileset": [
-	{
-		"id" : "CCEV,100,潮簡,260,20910811,1",
-		"jyear" : "100",
-		"plaintiff" : "張淑晶",
-		"defendant" : "張淑晶",
-		"rent" : 10000,
-		"city" : "屏東",
-		"win" : "plaintiff"
-	}
-]}
+| 類別     | 使用套件                                           |
+| -------- | -------------------------------------------------- |
+| 建置     | Vite 6、TypeScript 5（strict）                     |
+| UI       | React 18、MUI v6 + `@mui/icons-material`           |
+| 資料存取 | TanStack Query v5、axios                           |
+| 路由     | react-router-dom v6（data router、lazy routes）    |
+| 表單     | react-hook-form + zod                              |
+| 登入     | Firebase v11（僅手機簡訊驗證）                     |
+| 地圖     | react-simple-maps（TopoJSON）                      |
+| SEO      | react-helmet-async                                 |
+| 測試     | Vitest + Testing Library + MSW v2、Playwright      |
+| 程式品質 | ESLint（typescript-eslint、react-hooks）+ Prettier |
 
+Node 版本：20（見 `.nvmrc`），套件管理：npm。
 
-```
+## 專案結構
 
-## 網站環境架設
-
--   在 AWS S3 建立公開儲存桶
-
-    -   名稱為 rental.imallenlai.com
-    -   關閉「封鎖所有公有存取權」
-
--   選擇已建立的儲存桶，選擇許可，編輯儲存桶政策
-
-```
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "PublicRead",
-            "Effect": "Allow",
-            "Principal": "*",
-            "Action": [
-                "s3:GetObject",
-                "s3:GetObjectVersion"
-            ],
-            "Resource": "arn:aws:s3:::rental.imallenlai.com/*"
-        }
-    ]
-}
+```text
+src/
+├── app/            # 應用程式外殼：路由、Provider、主題、版面（TopBar / BottomNav / Footer）
+├── features/       # 依功能切分，各自包含 api / hooks / components / 頁面
+│   ├── auth/       # 登入、註冊、簡訊驗證、RequireAuth
+│   ├── cases/      # 網友回報：列表、詳情、發文
+│   ├── engagement/ # 按讚與留言（判決、回報共用）
+│   ├── home/       # 首頁區塊與站台統計
+│   ├── judgments/  # 判決查詢、判決詳情、高風險名單與地圖
+│   └── profile/    # 會員資料
+├── pages/          # 不屬於單一功能的頁面（首頁、FAQ、關於我們、404）
+├── shared/         # 跨功能共用：API client、常數、元件、hooks、工具函式
+├── mocks/          # MSW handlers 與模擬資料（依 API 契約實作）
+├── asset/          # 臺灣縣市 TopoJSON
+└── test/           # Vitest setup 與 render helper
+e2e/                # Playwright smoke tests
+public/             # 靜態資源（icon、manifest、OG 圖、MSW worker）
 ```
 
--   選擇屬性，編輯靜態網站託管
-    -   啟用託管靜態網站
-    -   索引文件 `index.html`
-    -   錯誤文件 `index.html`
--   專案設定 homepage `https://rental.imallenlai.com/`
--   編譯專案產出 build 資料夾
--   上傳 build 資料夾內所有檔案到 S3 儲存桶
--   建立 cloudfront
-    -   在 route 53 建立紀錄驗證 ACM SSL 憑證
-    -   來源網域選 S3 的儲存桶 rental.imallenlai.com
-    -   名稱輸入 rental.imallenlai.com
-    -   快取政策選 CachingOptimized
-    -   備用網域名稱設定 rental.imallenlai.com
-    -   自訂 ACM SSL 憑證 rental.imallenlai.com
-        -   DNS 驗證
-    -   建立錯誤回應
-        -   HTTP 錯誤碼 404
-        -   錯誤快取最短 TTL 300
-        -   自訂錯誤回應
-            -   回應頁面路徑 index.html
-            -   HTTP 回應碼 200
--   建立 Route 53 A 紀錄
-    -   設定別名到 Cloudfront 的 rental.imallenlai.com
+命名規則：元件檔案使用 `PascalCase.tsx`，其餘檔案使用 `kebab-case.ts`。
 
-## 建立.env.local
+## 常用指令
 
-REACT_APP_FIREBASE_API_KEY=
-REACT_APP_FIREBASE_AUTH_DOMAIN=
-REACT_APP_FIREBASE_PROJECT_ID=
-REACT_APP_FIREBASE_STORAGE_BUCKET=
-REACT_APP_FIREBASE_MESSAGING_SENDER_ID=
-REACT_APP_FIREBASE_APP_ID=
-REACT_APP_MEASUREMENT_ID=
+| 指令                | 說明                                                                    |
+| ------------------- | ----------------------------------------------------------------------- |
+| `npm run dev`       | 啟動開發伺服器（http://localhost:3011），串接 `.env.development` 的 API |
+| `npm run dev:mock`  | 以 mock 模式啟動，所有 API 由 MSW 模擬，不需要後端                      |
+| `npm run build`     | 型別檢查並建置到 `dist/`                                                |
+| `npm run preview`   | 預覽建置結果                                                            |
+| `npm run lint`      | ESLint（不允許任何 warning）                                            |
+| `npm run typecheck` | TypeScript 型別檢查                                                     |
+| `npm run format`    | Prettier 格式化                                                         |
+| `npm test`          | Vitest 單元與元件測試                                                   |
+| `npm run test:e2e`  | Playwright smoke tests（自動以 mock 模式啟動 dev server）               |
 
-## 參考技術文章
+第一次執行 e2e 前請先安裝瀏覽器：`npx playwright install chromium`。
 
--   [在 s3 上架設網站](https://blog.cloudthat.com/step-by-step-guide-to-deploy-reactjs-app-on-aws-s3/)
--   [CRA 自定義環境變數](https://create-react-app.dev/docs/adding-custom-environment-variables/)
--   [cloudfront 連結 s3 權限問題](https://aws.amazon.com/tw/premiumsupport/knowledge-center/s3-website-cloudfront-error-403/)
--   [cloudfront 連結 s3 經由 https](https://www.youtube.com/watch?v=2VpsKK0nZi8)
--   [cloudfront 連結 github page](https://medium.com/@pieter.fiers/seo-git-pages-spa-with-cloudfront-696ae7c784fb)
+## 環境變數
 
-# Getting Started with Create React App
+| 變數                                | 說明                              | 設定位置                                           |
+| ----------------------------------- | --------------------------------- | -------------------------------------------------- |
+| `VITE_API_BASE_URL`                 | API 位址（含 `/v1`）              | `.env.development`、`.env.production`、`.env.mock` |
+| `VITE_API_MOCK`                     | `true` 時啟用 MSW 模擬 API        | `.env.mock`                                        |
+| `VITE_FIREBASE_API_KEY`             | Firebase 設定                     | `.env.local`（不進版控）                           |
+| `VITE_FIREBASE_AUTH_DOMAIN`         | Firebase 設定                     | `.env.local`                                       |
+| `VITE_FIREBASE_PROJECT_ID`          | Firebase 設定                     | `.env.local`                                       |
+| `VITE_FIREBASE_STORAGE_BUCKET`      | Firebase 設定                     | `.env.local`                                       |
+| `VITE_FIREBASE_MESSAGING_SENDER_ID` | Firebase 設定                     | `.env.local`                                       |
+| `VITE_FIREBASE_APP_ID`              | Firebase 設定                     | `.env.local`                                       |
+| `VITE_MEASUREMENT_ID`               | Firebase Analytics measurement ID | `.env.local`                                       |
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Firebase 相關變數請放在 `.env.local`（已列入 `.gitignore`），**不要提交到版控**。Google Analytics 只會在正式環境且非 mock 模式下載入。
 
-## Available Scripts
+## Mock 模式
 
-In the project directory, you can run:
+`npm run dev:mock` 會在瀏覽器啟動 MSW，依照 API 契約回應所有端點（`{ status, code, data }` 格式、分頁、錯誤碼、個資遮罩）。資料存在記憶體中，重新整理頁面即重置。
 
-### `npm start`
+- 示範帳號：手機 `0912345678`、密碼 `password123`
+- 簡訊驗證：任意手機號碼皆可，驗證碼固定為 `123456`（不會呼叫 Firebase）
+- 可搜尋的判決姓名範例：`王大明`、`林美玲`、`劉文雄`
 
-Runs the app in the development mode.\
-Open [http://localhost:3011](http://localhost:3011) to view it in your browser.
+## 部署
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+部署由 CI 將 `dist/` 上傳至 S3，並透過 CloudFront 提供服務（本 repo 的 `.github/workflows/ci.yml` 只做檢查與建置，不含部署 job）。
 
-### `npm test`
+- `index.html`：設定 `Cache-Control: no-cache`，確保使用者每次都拿到最新版本的入口。
+- `assets/` 底下帶 hash 的 JS / CSS：設定 `Cache-Control: public, max-age=31536000, immutable`。
+- SPA 路由：CloudFront 需將 403 / 404 導回 `/index.html`（回應 200）。
+- `public/mockServiceWorker.js` 會一併輸出，但只在 mock 模式註冊，正式環境不會啟用。
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 其他說明
 
-### `npm run build`
+- JWT 存在 `localStorage` 的 `token` key，與舊版相容。
+- 舊網址 `/upload` 會自動導向 `/cases/new`。
+- `src/asset/taiwan-counties.topo.json` 由舊版的 `taiwanCountry.json`（GeoJSON，約 9 MB）以 mapshaper 簡化轉為 TopoJSON（約 67 KB）：
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+  ```sh
+  npx mapshaper@0.6 taiwanCountry.json -filter-fields NAME_2014 -rename-fields name=NAME_2014 \
+    -rename-layers counties -simplify 4% keep-shapes -o format=topojson quantization=10000 taiwan-counties.topo.json
+  ```
