@@ -5,8 +5,6 @@ export const DEFAULT_TITLE = `${SITE_NAME} - ${SITE_TAGLINE}`;
 export const DEFAULT_DESCRIPTION = '適合房東和房客查詢預警資訊，歡迎利用網站查詢，手機平板電腦全平台適用，使用上有任何問題或者建議皆可以留言，謝謝。';
 
 export const FACEBOOK_PAGE_URL = 'https://www.facebook.com/profile.php?id=100093981245377';
-export const GITHUB_WEB_REPO_URL = 'https://github.com/luckstar77/web-judicial-cases';
-export const GITHUB_API_REPO_URL = 'https://github.com/luckstar77/api-judicial-cases';
 
 /** Google Analytics（沿用舊版 index.html 的 gtag ID，僅在 production 載入）。 */
 export const GA_MEASUREMENT_ID = 'G-85N9BLD4JG';
