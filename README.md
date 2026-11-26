@@ -80,22 +80,31 @@ Firebase 相關變數請放在 `.env.local`（已列入 `.gitignore`），**不�
 
 `npm run dev:mock` 會在瀏覽器啟動 MSW，依照 API 契約回應所有端點（`{ status, code, data }` 格式、分頁、錯誤碼、個資遮罩）。資料存在記憶體中，重新整理頁面即重置。
 
-- 示範帳號：手機 `0912345678`、密碼 `password123`
+- 示範帳號：手機 `0912345678`、密碼 `password123`（變更密碼時需輸入目前密碼）
+- 只用簡訊登入、尚未設定密碼的帳號：手機 `0922333444`（以簡訊登入，可直接設定第一組密碼）
 - 簡訊驗證：任意手機號碼皆可，驗證碼固定為 `123456`（不會呼叫 Firebase）
 - 可搜尋的判決姓名範例：`王大明`、`林美玲`、`劉文雄`
 
 ## 部署
 
-部署由 CI 將 `dist/` 上傳至 S3，並透過 CloudFront 提供服務（本 repo 的 `.github/workflows/ci.yml` 只做檢查與建置，不含部署 job）。
+`.github/workflows/ci.yml`：
 
-- `index.html`：設定 `Cache-Control: no-cache`，確保使用者每次都拿到最新版本的入口。
-- `assets/` 底下帶 hash 的 JS / CSS：設定 `Cache-Control: public, max-age=31536000, immutable`。
+- `test` job（PR、push 到 `main`）：lint → typecheck → 單元測試 → build → Playwright e2e（mock API）。
+- `deploy` job（只在 push 到 `main` 且 `test` 通過後，`production` environment）：以 secrets 建置後上傳 S3：
+  - `assets/` 底下帶 hash 的 JS / CSS：`Cache-Control: public, max-age=31536000, immutable`。
+  - 其他檔案：`Cache-Control: public, max-age=3600`。
+  - `index.html` 最後上傳：`Cache-Control: no-cache`，上傳後比對 S3 上的內容與本次 build 一致。
+  - 不使用 `--delete`：舊版（CRA）的 `/static/*` 必須保留，CloudFront 快取的舊 `index.html` 才載入得到舊 JS。
+  - 有設定 `CLOUDFRONT_DISTRIBUTION_ID` 時才 invalidate `/index.html` 與 `/`。
+
+需要的 GitHub secrets：`AWS_ACCESS_KEY_ID`、`AWS_SECRET_ACCESS_KEY`、`AWS_REGION`、`S3_BUCKET`、`VITE_FIREBASE_API_KEY`、`VITE_FIREBASE_AUTH_DOMAIN`、`VITE_FIREBASE_PROJECT_ID`、`VITE_FIREBASE_STORAGE_BUCKET`、`VITE_FIREBASE_MESSAGING_SENDER_ID`、`VITE_FIREBASE_APP_ID`、`VITE_MEASUREMENT_ID`，選填 `CLOUDFRONT_DISTRIBUTION_ID`。`VITE_API_BASE_URL` 來自已提交的 `.env.production`，不要另外設成 secret（空值會蓋掉 `.env.production`）。
+
 - SPA 路由：CloudFront 需將 403 / 404 導回 `/index.html`（回應 200）。
 - `public/mockServiceWorker.js` 會一併輸出，但只在 mock 模式註冊，正式環境不會啟用。
 
 ## 其他說明
 
-- JWT 存在 `localStorage` 的 `token` key，與舊版相容。
+- JWT 存在 `localStorage` 的 `token` key，與舊版相容。改密碼成功後後端會撤銷所有舊 token，前端立即改存 `PATCH /v1/users/me` 回傳的新 token；任何 HTTP 401 都會清除登入狀態。
 - 舊網址 `/upload` 會自動導向 `/cases/new`。
 - `src/asset/taiwan-counties.topo.json` 由舊版的 `taiwanCountry.json`（GeoJSON，約 9 MB）以 mapshaper 簡化轉為 TopoJSON（約 67 KB）：
 
