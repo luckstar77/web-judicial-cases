@@ -1,15 +1,11 @@
 import { Box, Container, Divider, Link, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { Link as RouterLink } from 'react-router-dom';
-import { DISCLAIMER_TEXT, FACEBOOK_PAGE_URL, GITHUB_API_REPO_URL, GITHUB_WEB_REPO_URL, SITE_NAME } from '@/shared/constants/site';
+import { DISCLAIMER_TEXT, FACEBOOK_PAGE_URL, SITE_NAME } from '@/shared/constants/site';
 import { Logo } from './Logo';
 import { DESKTOP_NAV_ITEMS } from './nav-items';
 
-const EXTERNAL_LINKS = [
-  { label: '粉絲專頁', href: FACEBOOK_PAGE_URL },
-  { label: 'GitHub・前端', href: GITHUB_WEB_REPO_URL },
-  { label: 'GitHub・後端 API', href: GITHUB_API_REPO_URL },
-];
+const EXTERNAL_LINKS = [{ label: '粉絲專頁', href: FACEBOOK_PAGE_URL }];
 
 const linkSx = {
   color: 'text.secondary',
@@ -46,7 +42,7 @@ export function Footer() {
           </Grid>
           <Grid size={{ xs: 6, md: 3 }}>
             <Typography variant="subtitle2" component="h2" sx={{ mb: 1.5 }}>
-              社群與原始碼
+              社群
             </Typography>
             <Stack component="ul" spacing={1} sx={{ listStyle: 'none', m: 0, p: 0 }}>
               {EXTERNAL_LINKS.map((item) => (

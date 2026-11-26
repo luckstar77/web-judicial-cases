@@ -1,4 +1,3 @@
-import CodeIcon from '@mui/icons-material/Code';
 import HandshakeOutlinedIcon from '@mui/icons-material/HandshakeOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
@@ -7,7 +6,7 @@ import type { ReactElement } from 'react';
 import { BRAND_COLORS } from '@/app/theme';
 import { PageContainer } from '@/shared/components/PageContainer';
 import { Seo } from '@/shared/components/Seo';
-import { FACEBOOK_PAGE_URL, GITHUB_API_REPO_URL, GITHUB_WEB_REPO_URL } from '@/shared/constants/site';
+import { FACEBOOK_PAGE_URL } from '@/shared/constants/site';
 
 /** 移植自舊版 AboutPage。 */
 const PRE_REGISTER_INFO = [
@@ -19,18 +18,17 @@ const PRE_REGISTER_INFO = [
 const VALUES: { icon: ReactElement; title: string; description: string }[] = [
   { icon: <VisibilityOutlinedIcon />, title: '資訊互通', description: '整理公開判決與會員經驗，讓租屋資訊不再不對等。' },
   { icon: <HandshakeOutlinedIcon />, title: '風險減少', description: '簽約前先查詢，協助房東與房客快速掌握可能的風險。' },
-  { icon: <CodeIcon />, title: '開源透明', description: '由站長自發籌組維護，程式碼公開於 GitHub。' },
 ];
 
 export function AboutPage() {
   return (
     <PageContainer title="關於我們" subtitle="資訊互通、風險減少" maxWidth="md">
-      <Seo title="關於我們" description="租屋通由站長自發籌組維護、採開源模式運作，協助房東與租客在租屋流程中快速掌握可能的風險。" />
+      <Seo title="關於我們" description="租屋通由站長自發籌組維護，協助房東與租客在租屋流程中快速掌握可能的風險。" />
       <Stack spacing={4}>
         <Typography variant="body1" sx={{ fontSize: '1.0625rem', lineHeight: 1.9 }}>
-          「租屋通」是由站長自發籌組維護，採開源模式運作。以「資訊互通、風險減少」為核心理念，協助房東與租客在租屋流程中快速掌握可能的風險，同步促進租屋市場的透明與公平。
+          「租屋通」是由站長自發籌組維護，以「資訊互通、風險減少」為核心理念，協助房東與租客在租屋流程中快速掌握可能的風險，同步促進租屋市場的透明與公平。
         </Typography>
-        <Box sx={{ display: 'grid', gap: 2, gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, minmax(0, 1fr))' } }}>
+        <Box sx={{ display: 'grid', gap: 2, gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))' } }}>
           {VALUES.map((value) => (
             <Paper key={value.title} variant="outlined" sx={{ p: 2.5, borderRadius: '16px' }}>
               <Box
@@ -67,17 +65,11 @@ export function AboutPage() {
             ))}
           </Box>
         </Paper>
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5}>
+        <Box>
           <Button variant="contained" href={FACEBOOK_PAGE_URL} target="_blank" rel="noopener noreferrer">
             粉絲專頁
           </Button>
-          <Button variant="outlined" href={GITHUB_WEB_REPO_URL} target="_blank" rel="noopener noreferrer" startIcon={<CodeIcon />}>
-            前端原始碼
-          </Button>
-          <Button variant="outlined" href={GITHUB_API_REPO_URL} target="_blank" rel="noopener noreferrer" startIcon={<CodeIcon />}>
-            後端原始碼
-          </Button>
-        </Stack>
+        </Box>
         <Alert severity="info" icon={<InfoOutlinedIcon />} sx={{ borderRadius: '12px' }}>
           免責聲明：本網站僅為資訊交流之用，對使用者所張貼的內容不承擔法律責任。若您對個別案例有進一步意見，歡迎透過留言留下你的意見。
         </Alert>
