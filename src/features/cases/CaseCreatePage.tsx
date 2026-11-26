@@ -27,7 +27,6 @@ import { useState } from 'react';
 import { Controller, type FieldErrors, useForm, type UseFormReturn } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { RequireAuth } from '@/features/auth/RequireAuth';
-import { getErrorMessage } from '@/shared/api/api-error';
 import { PageContainer } from '@/shared/components/PageContainer';
 import { Seo } from '@/shared/components/Seo';
 import { buildCaseDetailPath } from '@/shared/constants/routes';
@@ -43,6 +42,7 @@ import {
   type CaseCreateFormValues,
   toCreateCaseInput,
 } from './case-create-schema';
+import { getCaseCreateErrorMessage } from './case-create-errors';
 import { CaseGuidelines } from './components/CaseGuidelines';
 import { ImageDropzone } from './components/ImageDropzone';
 import { CASE_LIMITS, CONTENT_PROMPTS, CONTENT_TEMPLATE } from './constants';
@@ -366,7 +366,7 @@ function CaseCreateForm() {
           <StepComponent form={form} />
           {mutation.isError && (
             <Alert severity="error" sx={{ mt: 3 }}>
-              {getErrorMessage(mutation.error, '發布失敗，請稍後再試')}
+              {getCaseCreateErrorMessage(mutation.error)}
             </Alert>
           )}
           <Stack direction="row" spacing={1.5} sx={{ mt: 4, justifyContent: 'space-between' }}>

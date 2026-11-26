@@ -12,7 +12,20 @@ import type { CaseRecord } from './fixtures/cases';
 import { commentTargetKey } from './fixtures/comments';
 import type { JudgmentRecord } from './fixtures/judgments';
 import type { UserRecord } from './fixtures/users';
-import { fail, maskHalf, maskIp, normalizePhone, notFound, ok, paginate, parsePageQuery, unauthorized, validationError } from './utils';
+import {
+  detectImageType,
+  fail,
+  IMAGE_SIGNATURE_BYTES,
+  maskHalf,
+  maskIp,
+  normalizePhone,
+  notFound,
+  ok,
+  paginate,
+  parsePageQuery,
+  unauthorized,
+  validationError,
+} from './utils';
 
 /**
  * MSW handlers：完全依照 docs/api-v1.md 合約回應（成功 `{status, code, data}`、失敗 `{status, code, error}`）。
@@ -513,6 +526,13 @@ export const createHandlers = ({ db = createMockDb(), latency = false }: Handler
         images.some((file) => file.size > IMAGE_LIMITS.maxSizeBytes || !IMAGE_LIMITS.acceptedTypes.includes(file.type))
       ) {
         return validationError('images are invalid');
+      }
+      const detectedTypes = await Promise.all(
+        images.map(async (file) => detectImageType(new Uint8Array(await file.slice(0, IMAGE_SIGNATURE_BYTES).arrayBuffer()))),
+      );
+      const mismatchIndex = images.findIndex((file, index) => detectedTypes[index] !== file.type);
+      if (mismatchIndex !== -1) {
+        return validationError(`images[${mismatchIndex}] is not a valid ${images[mismatchIndex].type} file`);
       }
       const now = new Date().toISOString();
       const record: CaseRecord = {

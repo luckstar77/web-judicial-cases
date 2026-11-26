@@ -98,6 +98,30 @@ export const createRandom = (seed: number) => {
   };
 };
 
+const startsWithBytes = (bytes: Uint8Array, signature: number[], offset = 0) => signature.every((value, index) => bytes[offset + index] === value);
+
+const ASCII_RIFF = [0x52, 0x49, 0x46, 0x46];
+const ASCII_WEBP = [0x57, 0x45, 0x42, 0x50];
+const WEBP_FORMAT_OFFSET = 8;
+/** GIF87a / GIF89a */
+const GIF_SIGNATURES = [
+  [0x47, 0x49, 0x46, 0x38, 0x37, 0x61],
+  [0x47, 0x49, 0x46, 0x38, 0x39, 0x61],
+];
+
+const IMAGE_SIGNATURES: { mimetype: string; matches: (bytes: Uint8Array) => boolean }[] = [
+  { mimetype: 'image/jpeg', matches: (bytes) => startsWithBytes(bytes, [0xff, 0xd8, 0xff]) },
+  { mimetype: 'image/png', matches: (bytes) => startsWithBytes(bytes, [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]) },
+  { mimetype: 'image/gif', matches: (bytes) => GIF_SIGNATURES.some((signature) => startsWithBytes(bytes, signature)) },
+  { mimetype: 'image/webp', matches: (bytes) => startsWithBytes(bytes, ASCII_RIFF) && startsWithBytes(bytes, ASCII_WEBP, WEBP_FORMAT_OFFSET) },
+];
+
+/** 判斷圖片格式需要的檔頭長度（WebP 需要前 12 bytes）。 */
+export const IMAGE_SIGNATURE_BYTES = 12;
+
+/** 與後端 detectImageType 相同：依檔案開頭的 magic bytes 判斷格式，不信任宣告的 Content-Type。 */
+export const detectImageType = (bytes: Uint8Array): string | undefined => IMAGE_SIGNATURES.find((signature) => signature.matches(bytes))?.mimetype;
+
 const TW_COUNTRY_CODE = '+886';
 
 export const normalizePhone = (phone: string): string => {
