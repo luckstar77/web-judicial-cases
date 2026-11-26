@@ -11,7 +11,8 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: IS_CI,
   retries: IS_CI ? 1 : 0,
-  reporter: IS_CI ? 'github' : 'list',
+  // CI 另外輸出 HTML 報告，失敗時由 workflow 上傳成 artifact
+  reporter: IS_CI ? [['github'], ['html', { open: 'never' }]] : 'list',
   use: {
     baseURL: BASE_URL,
     locale: 'zh-TW',
